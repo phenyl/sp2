@@ -1,0 +1,19 @@
+{
+  "name": "sp2",
+  "version": "1.0.0",
+  "description": "`sp2` is a set of JavaScript modules using syntax for **State-operating Procedures with Portability**. Portability means that procedures are expressed by JSON data. This makes procedures portable and applicable over different environments.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/phenyl-js/sp2.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/phenyl-js/sp2/issues"
+  },
+  "homepage": "https://github.com/phenyl-js/sp2#readme"
+}
