@@ -1,0 +1,11 @@
+{
+  "name": "@sp2/syntax",
+  "version": "1.0.0",
+  "description": "@sp2/syntax provides type definitions of operations used by sp2/updater and sp2/retriever.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
