@@ -6,6 +6,6 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
-  "license": "ISC"
+  "author": "Shin Suzuki <shinout310@gmail.com>",
+  "license": "Apache License 2.0"
 }

@@ -10,8 +10,8 @@
     "type": "git",
     "url": "git+https://github.com/phenyl-js/sp2.git"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "Shin Suzuki <shinout310@gmail.com>",
+  "license": "",
   "bugs": {
     "url": "https://github.com/phenyl-js/sp2/issues"
   },
