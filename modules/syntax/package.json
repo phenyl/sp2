@@ -4,7 +4,8 @@
   "description": "@sp2/syntax provides type definitions of operations used by sp2/updater and sp2/retriever.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Shin Suzuki <shinout310@gmail.com>",
   "license": "Apache License 2.0"

@@ -4,7 +4,11 @@
   "description": "`sp2` is a set of JavaScript modules using syntax for **State-operating Procedures with Portability**. Portability means that procedures are expressed by JSON data. This makes procedures portable and applicable over different environments.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "lerna run test",
+    "lint": "lerna run lint",
+    "bootstrap": "lerna bootstrap",
+    "clean": "lerna clean --yes",
+    "type-check": "lerna run type-check"
   },
   "repository": {
     "type": "git",
@@ -17,7 +21,13 @@
   },
   "homepage": "https://github.com/phenyl-js/sp2#readme",
   "devDependencies": {
+    "@babel/core": "^7.1.5",
+    "eslint": "^5.9.0",
+    "eslint-plugin-prettier": "^3.0.0",
+    "eslint-plugin-typescript": "^0.13.0",
     "lerna": "^3.4.3",
-    "typescript": "^3.1.6"
+    "prettier": "^1.15.2",
+    "typescript": "^3.1.6",
+    "typescript-eslint-parser": "^20.1.1"
   }
 }
