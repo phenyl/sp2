@@ -15,5 +15,9 @@
   "bugs": {
     "url": "https://github.com/phenyl-js/sp2/issues"
   },
-  "homepage": "https://github.com/phenyl-js/sp2#readme"
+  "homepage": "https://github.com/phenyl-js/sp2#readme",
+  "devDependencies": {
+    "lerna": "^3.4.3",
+    "typescript": "^3.1.6"
+  }
 }
