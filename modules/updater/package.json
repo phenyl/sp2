@@ -2,15 +2,31 @@
   "name": "@sp2/updater",
   "version": "1.0.0",
   "description": "@sp2/updater is a immutable updater of POJO using MongoDB's operator, easier access to nested values.",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "lint": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "Shin Suzuki <shinout310@gmail.com>",
+  "bugs": "https://github.com/phenyl-js/sp2/issues",
+  "repository": "phenyl-js/sp2",
   "license": "Apache License 2.0",
+  "author": "Shin Suzuki <shinout310@gmail.com>",
+  "files": [
+    "lib",
+    "LICENSE",
+    "README.md"
+  ],
+  "main": "./lib/index.js",
+  "types": "./lib/index.d.ts",
+  "scripts": {
+    "build": "upbin tsc --declaration",
+    "clean": "upbin rimraf $(cat ../../.temporary-files)",
+    "lint": "upbin eslint 'src/**/*.ts' 'test/**/*.ts' --fix",
+    "test": "upbin mocha --require ts-node/register 'test/**/*.test.ts' --color always",
+    "type-check": "upbin tsc --noEmit",
+    "watch": "upbin tsc --declaration --watch"
+  },
+  "dependencies": {
+    "@sp2/format": "~1.0.0",
+    "@sp2/retriever": "~1.0.0",
+    "deepmerge": "^2.2.1"
+  },
   "devDependencies": {
-    "lerna": "^3.4.3",
-    "typescript": "^3.1.6"
+    "upbin": "^0.8.1"
   }
 }
