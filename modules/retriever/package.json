@@ -28,5 +28,8 @@
   "devDependencies": {
     "fast-deep-equal": "^2.0.1",
     "upbin": "^0.8.1"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }

@@ -27,5 +27,8 @@
   },
   "devDependencies": {
     "upbin": "^0.8.1"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }
