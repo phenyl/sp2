@@ -10,7 +10,7 @@ commands:
   prepare:
     steps:
       - checkout
-      - run: ls packages/*/package.json | xargs -n1 md5sum > deps.txt
+      - run: ls modules/*/package.json | xargs -n1 md5sum > deps.txt
       - run:
           # https://yarnpkg.com/ja/docs/install#linux-tab
           name: Install Yarn@1.12.3
