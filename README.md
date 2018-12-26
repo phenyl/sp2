@@ -1,4 +1,5 @@
 # sp2
+[![CircleCI](https://circleci.com/gh/phenyl-js/sp2/tree/master.svg?style=svg)](https://circleci.com/gh/phenyl-js/sp2/tree/master)
 
 `sp2` is a set of JavaScript modules using syntax for **State-operating Procedures with Portability**.
 Portability means that procedures are expressed by JSON data. This makes procedures portable and applicable over different environments.
