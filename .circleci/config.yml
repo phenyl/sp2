@@ -48,6 +48,7 @@ jobs:
             - modules/rx-mbaas/node_modules
           key: v{{ .Environment.CIRCLECI_CACHE_VERSION }}-dependencies-{{ .Branch }}-{{ checksum "deps.txt" }}
       - run: yarn bootstrap
+      - run: yarn build
       - run: yarn ci-test
   deploy:
     executor:
