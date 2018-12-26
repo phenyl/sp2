@@ -29,7 +29,6 @@ jobs:
     executor:
       name: default
     steps:
-      - run: "echo 'export PATH=./node_modules/.bin:$PATH' >> $BASH_ENV"
       - prepare
       - run: |
           echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > ~/.npmrc
