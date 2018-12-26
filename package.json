@@ -1,33 +1,39 @@
 {
   "name": "sp2",
   "version": "1.0.0",
-  "description": "`sp2` is a set of JavaScript modules using syntax for **State-operating Procedures with Portability**. Portability means that procedures are expressed by JSON data. This makes procedures portable and applicable over different environments.",
-  "main": "index.js",
-  "scripts": {
-    "test": "lerna run test",
-    "lint": "lerna run lint",
-    "bootstrap": "lerna bootstrap",
-    "clean": "lerna clean --yes",
-    "type-check": "lerna run type-check"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/phenyl-js/sp2.git"
-  },
-  "author": "Shin Suzuki <shinout310@gmail.com>",
-  "license": "Apache License 2.0",
-  "bugs": {
-    "url": "https://github.com/phenyl-js/sp2/issues"
-  },
+  "private": true,
+  "description": "sp2 is a set of JavaScript modules using syntax for State-operating Procedures with Portability.",
   "homepage": "https://github.com/phenyl-js/sp2#readme",
+  "bugs": "https://github.com/phenyl-js/sp2/issues",
+  "repository": "phenyl-js/sp2",
+  "license": "Apache License 2.0",
+  "author": "Shin Suzuki <shinout310@gmail.com>",
+  "scripts": {
+    "bootstrap": "lerna bootstrap",
+    "build": "lerna run build",
+    "clean": "lerna run clean && lerna clean --yes",
+    "clean-tmp": "lerna run clean",
+    "commit": "npx git-cz",
+    "lint": "lerna run lint",
+    "test": "lerna run test",
+    "type-check": "lerna run type-check",
+    "watch": "lerna run watch --parallel"
+  },
+  "dependencies": {
+    "eslint": "^5",
+    "eslint-plugin-prettier": "^3",
+    "eslint-plugin-typescript": "0.13.0",
+    "lerna": "3.4.3",
+    "prettier": "1.15.2",
+    "typescript-eslint-parser": "^21"
+  },
   "devDependencies": {
-    "@babel/core": "^7.1.5",
-    "eslint": "^5.9.0",
-    "eslint-plugin-prettier": "^3.0.0",
-    "eslint-plugin-typescript": "^0.13.0",
-    "lerna": "^3.4.3",
-    "prettier": "^1.15.2",
-    "typescript": "^3.1.6",
-    "typescript-eslint-parser": "^20.1.1"
+    "@types/mocha": "^5",
+    "@types/node": "~8.10",
+    "mocha": "^5",
+    "nyc": "^13",
+    "rimraf": "^2.6.2",
+    "ts-node": "^7",
+    "typescript": "~3.1"
   }
 }
