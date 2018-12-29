@@ -10,9 +10,14 @@ describe("$bind returns an object", () => {
     assert(typeof $inc === "function");
   });
 
-  it("documentPathCreator function", () => {
+  it("with documentPathCreator function", () => {
     const { $docPath } = $bind();
     assert(typeof $docPath === "function");
+  });
+
+  it("with retarget function", () => {
+    const { $retarget } = $bind();
+    assert(typeof $retarget === "function");
   });
 
   it("containing setter functions($set) and docPathGenerator($docPath) \
@@ -33,6 +38,21 @@ describe("$bind returns an object", () => {
       [$docPath("foo", "bar", 0, "age"), 32]
     );
     assert.deepStrictEqual(operation, {
+      $set: { "foo.bar[0].name": "John", "foo.bar[0].age": 32 },
+    });
+  });
+
+  it("with functions which retarget UpdateOperation", () => {
+    type SubObject = { bar: { name: string; age: number }[] };
+    type TargetObject = { foo: SubObject };
+    const { $set, $docPath } = $bind<SubObject>();
+    const { $retarget, $docPath: $mainDocPath } = $bind<TargetObject>();
+    const subOperation = $set(
+      [$docPath("bar", 0, "name"), "John"],
+      [$docPath("bar", 0, "age"), 32]
+    );
+    const retargetedOperation = $retarget($mainDocPath("foo"), subOperation);
+    assert.deepStrictEqual(retargetedOperation, {
       $set: { "foo.bar[0].name": "John", "foo.bar[0].age": 32 },
     });
   });
