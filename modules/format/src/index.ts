@@ -1,5 +1,5 @@
 export {
-  getNestedValue as $getNestedValue,
+  getNestedValue,
   $path,
   BoundDocumentPath,
   BoundDocumentPathCreator,
@@ -42,7 +42,6 @@ export {
   DotNotationString,
   convertToDotNotationString,
   createDocumentPath,
-  getNestedValue,
   hasOwnNestedProperty,
   parseDocumentPath,
 } from "./common/document-path";

@@ -86,7 +86,7 @@ function unescapePathDelimiter(attr: string | number): string | number {
  * @public
  * Get the value in the object at the DocumentPath.
  */
-export function getNestedValue(
+export function getNestedValueWithoutType(
   obj: Object,
   docPath: DocumentPath,
   noNullAccess?: boolean

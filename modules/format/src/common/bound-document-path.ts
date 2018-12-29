@@ -1,4 +1,4 @@
-import { createDocumentPath } from "./document-path";
+import { createDocumentPath, getNestedValueWithoutType } from "./document-path";
 
 export type BoundDocumentPath1<
   T extends Object,
@@ -346,30 +346,29 @@ type NullableByBoolean<T, B extends boolean> = B extends true
   ? T
   : T | null | undefined;
 
-export declare function getNestedValue<
-  T extends Object,
-  B extends boolean,
-  K1,
-  K2,
-  K3,
-  K4,
-  K5,
-  K6,
-  K7,
-  K8,
-  K9,
-  K10
->(
-  obj: T,
-  path: BoundDocumentPath<T, K1, K2, K3, K4, K5, K6, K7, K8, K9, K10>,
-  noNullAccess?: B
-): NullableByBoolean<
-  NestedValue<T, K1, K2, K3, K4, K5, K6, K7, K8, K9, K10>,
-  B
->;
+interface NestedValueGetter {
+  <
+    T extends Object,
+    B extends boolean,
+    K1,
+    K2,
+    K3,
+    K4,
+    K5,
+    K6,
+    K7,
+    K8,
+    K9,
+    K10
+  >(
+    obj: T,
+    path: BoundDocumentPath<T, K1, K2, K3, K4, K5, K6, K7, K8, K9, K10>,
+    noNullAccess?: B
+  ): NullableByBoolean<
+    NestedValue<T, K1, K2, K3, K4, K5, K6, K7, K8, K9, K10>,
+    B
+  >;
+  (obj: Object, path: string, noNullAccess?: boolean): any;
+}
 
-export declare function getNestedValue(
-  obj: Object,
-  path: string,
-  noNullAccess?: boolean
-): any;
+export const getNestedValue: NestedValueGetter = getNestedValueWithoutType;

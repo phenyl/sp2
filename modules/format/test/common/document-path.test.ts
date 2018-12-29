@@ -2,7 +2,7 @@
 import {
   convertToDotNotationString,
   createDocumentPath,
-  getNestedValue,
+  getNestedValueWithoutType,
   hasOwnNestedProperty,
   parseDocumentPath,
 } from "../../src/common/document-path";
@@ -62,30 +62,34 @@ describe("createDocumentPath", () => {
   });
 });
 
-describe("getNestedValue", () => {
+describe("getNestedValueWithoutType", () => {
   const obj = {
     foo: { bar: [{}, {}, { baz1: false, baz2: null }] },
     foo2: undefined,
   };
 
   it("returns a nested value", () => {
-    assert(getNestedValue(obj, "foo") === obj.foo);
-    assert(getNestedValue(obj, "foo.bar") === obj.foo.bar);
-    assert(getNestedValue(obj, "foo.bar[0]") === obj.foo.bar[0]);
-    assert(getNestedValue(obj, "foo.bar[1]") === obj.foo.bar[1]);
-    assert(getNestedValue(obj, "foo.bar[2]") === obj.foo.bar[2]);
-    assert(getNestedValue(obj, "foo.bar[2].baz1") === obj.foo.bar[2].baz1);
-    assert(getNestedValue(obj, "foo.bar[2].baz2") === obj.foo.bar[2].baz2);
-    assert(getNestedValue(obj, "foo2") === obj.foo2);
+    assert(getNestedValueWithoutType(obj, "foo") === obj.foo);
+    assert(getNestedValueWithoutType(obj, "foo.bar") === obj.foo.bar);
+    assert(getNestedValueWithoutType(obj, "foo.bar[0]") === obj.foo.bar[0]);
+    assert(getNestedValueWithoutType(obj, "foo.bar[1]") === obj.foo.bar[1]);
+    assert(getNestedValueWithoutType(obj, "foo.bar[2]") === obj.foo.bar[2]);
+    assert(
+      getNestedValueWithoutType(obj, "foo.bar[2].baz1") === obj.foo.bar[2].baz1
+    );
+    assert(
+      getNestedValueWithoutType(obj, "foo.bar[2].baz2") === obj.foo.bar[2].baz2
+    );
+    assert(getNestedValueWithoutType(obj, "foo2") === obj.foo2);
   });
 
   it("returns undefined when nested value is not found.", () => {
-    assert(getNestedValue(obj, "a.b.c.d.e") === undefined);
+    assert(getNestedValueWithoutType(obj, "a.b.c.d.e") === undefined);
   });
 
   it("throws error when the 3rd argument is true and nested value is not found.", () => {
     assert.throws(
-      () => getNestedValue(obj, "a.b.c.d.e", true),
+      () => getNestedValueWithoutType(obj, "a.b.c.d.e", true),
       /Cannot get value/
     );
   });
