@@ -448,15 +448,17 @@ export default class Updater {
           ? getNestedValue(newObj, pathToLast)
           : newObj;
 
-        let copiedLastObj: Array<any> | Object;
+        let copiedLastObj: any[] | Object;
         if (Array.isArray(lastObj)) {
           copiedLastObj = lastObj.slice();
           // @ts-ignore non-null access.
           copiedLastObj[lastAttr] = null;
-        } else {
+        } else if (lastObj != null) {
           copiedLastObj = Object.assign({}, lastObj);
           // @ts-ignore non-null access.
           delete copiedLastObj[lastAttr];
+        } else {
+          return obj;
         }
 
         return pathToLast
