@@ -340,7 +340,7 @@ export type NestedValue<
         : T[K1][K2][K3]
       : T[K1][K2]
     : T[K1]
-  : never;
+  : any;
 
 type NullableByBoolean<T, B extends boolean> = B extends true
   ? T

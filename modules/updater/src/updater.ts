@@ -187,7 +187,7 @@ export default class Updater {
     >(
       operand,
       (valuesToSet, docPath, value) => {
-        const currentVal = getNestedValue(obj, docPath);
+        const currentVal = getNestedValue(obj, docPath) || 0;
         return { [docPath]: currentVal + value, ...valuesToSet };
       },
       {}
@@ -209,7 +209,7 @@ export default class Updater {
       operand,
       (valuesToSet, docPath, value) => {
         const currentVal = getNestedValue(obj, docPath);
-        if (value < currentVal) {
+        if (currentVal == null || value < currentVal) {
           return { [docPath]: value, ...valuesToSet };
         }
         return valuesToSet;
@@ -233,7 +233,7 @@ export default class Updater {
       operand,
       (valuesToSet, docPath, value) => {
         const currentVal = getNestedValue(obj, docPath);
-        if (value > currentVal) {
+        if (currentVal == null || value > currentVal) {
           return { [docPath]: value, ...valuesToSet };
         }
         return valuesToSet;
@@ -256,7 +256,7 @@ export default class Updater {
     >(
       operand,
       (valuesToSet, docPath, value) => {
-        const currentVal = getNestedValue(obj, docPath);
+        const currentVal = getNestedValue(obj, docPath) || 0;
         return { [docPath]: currentVal * value, ...valuesToSet };
       },
       {}
@@ -491,7 +491,11 @@ export default class Updater {
           );
         }
 
-        if (!lastObj.hasOwnProperty(lastAttr)) {
+        if (
+          lastObj == null ||
+          lastAttr == null ||
+          !lastObj.hasOwnProperty(lastAttr)
+        ) {
           return newObj;
         }
 
@@ -525,15 +529,32 @@ export default class Updater {
         if (isPrimitive(currentValue)) {
           return valuesToSet;
         }
-        const Constructor: new (obj: Object) => unknown = _Constructor
+        const Constructor: (new (obj: Object) => unknown) | null = _Constructor
           ? _Constructor
-          : getNestedValue(originalObj, docPath).constructor;
-        return { [docPath]: new Constructor(currentValue), ...valuesToSet };
+          : getNestedConstructor(originalObj, docPath);
+        if (Constructor == null) {
+          return valuesToSet;
+        }
+        return {
+          [docPath]: new Constructor(currentValue || {}),
+          ...valuesToSet,
+        };
       },
       {}
     );
     return this.$set(targetObj, setOperand);
   }
+}
+
+function getNestedConstructor(
+  originalObj: Object,
+  docPath: string
+): (new (obj: Object) => unknown) | null {
+  const nestedValue = getNestedValue(originalObj, docPath);
+  if (nestedValue == null || typeof nestedValue !== "object") {
+    return null;
+  }
+  return nestedValue.constructor;
 }
 
 function prepareArrayFromOperand<T extends Object>(obj: T, docPath: string) {
