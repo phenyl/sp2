@@ -20,15 +20,15 @@ export function $op<T>(): {
 type BoundUpdateOperation<T, OP> = (OP extends NonBreakingOperator
   ? NonBreakingUpdateOperation
   : GeneralUpdateOperation) & {
-  __META__: { target: T };
+  $__META__: { target: T };
 };
 
 export type BoundGeneralUpdateOperation<T> = GeneralUpdateOperation & {
-  __META__: { target: T };
+  $__META__: { target: T };
 };
 
 export type BoundNonBreakingUpdateOperation<T> = NonBreakingUpdateOperation & {
-  __META__: { target: T };
+  $__META__: { target: T };
 };
 
 type BoundUpdateOperandItemValue<V, ItemVal> = {
