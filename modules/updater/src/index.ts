@@ -9,7 +9,7 @@ export {
   $bind,
   $path,
   $retarget,
-  $update,
+  $op,
   DocumentPath,
   GeneralRegularUpdateOperation,
   GeneralUpdateOperation,

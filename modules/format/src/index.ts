@@ -5,7 +5,7 @@ export {
   BoundDocumentPathCreator,
 } from "./common/bound-document-path";
 export {
-  $update,
+  $op,
   BoundGeneralUpdateOperation,
   BoundNonBreakingUpdateOperation,
   UpdateOperationCreator,

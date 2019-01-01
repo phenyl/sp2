@@ -10,7 +10,7 @@ import {
 
 import { updateOpearationCreator } from "./create-update-operation";
 
-export function $update<T>(): {
+export function $op<T>(): {
   [OP in UpdateOperator]: UpdateOperationCreator<OP, T>
 } {
   // @ts-ignore surpress for typing.
