@@ -8,7 +8,7 @@ import { mergeUpdateOperations } from "./merge-update-operations";
 import { retargetOperation } from "./retarget-operation";
 import { updateOpearationCreator } from "./create-update-operation";
 
-const updateOperationCreatorAndDocumentPathCreatorAndRetargetFunction = Object.assign(
+const updateOperationCreatorAndDocumentPathCreatorAndRetargetFunctionAndMergeFunction = Object.assign(
   {},
   updateOpearationCreator,
   {
@@ -28,5 +28,5 @@ export function $bind<T>(): {
   $retarget: BoundRetarget<T>;
 } {
   // @ts-ignore surpress for typing.
-  return updateOperationCreatorAndDocumentPathCreatorAndRetargetFunction;
+  return updateOperationCreatorAndDocumentPathCreatorAndRetargetFunctionAndMergeFunction;
 }
