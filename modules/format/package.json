@@ -1,6 +1,6 @@
 {
   "name": "@sp2/format",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "@sp2/format provides fundamental types and functions used in @sp2/updater and @sp2/retriever.",
   "bugs": "https://github.com/phenyl-js/sp2/issues",
   "repository": "phenyl-js/sp2",
