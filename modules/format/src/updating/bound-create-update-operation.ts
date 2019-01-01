@@ -17,9 +17,17 @@ export function $update<T>(): {
   return updateOpearationCreator;
 }
 
-export type BoundUpdateOperation<T, OP> = (OP extends NonBreakingOperator
+type BoundUpdateOperation<T, OP> = (OP extends NonBreakingOperator
   ? NonBreakingUpdateOperation
   : GeneralUpdateOperation) & {
+  __META__: { target: T };
+};
+
+export type BoundGeneralUpdateOperation<T> = GeneralUpdateOperation & {
+  __META__: { target: T };
+};
+
+export type BoundNonBreakingUpdateOperation<T> = NonBreakingUpdateOperation & {
   __META__: { target: T };
 };
 

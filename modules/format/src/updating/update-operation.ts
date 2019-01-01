@@ -75,11 +75,22 @@ export type RegularUpdateOperation<OP extends UpdateOperator> = Pick<
  * `NonBreakingOperator` keeps original type of objects after being applied.
  * `BreakingOperator` breaks original type of objects.
  */
-export type NonBreakingUpdateOperation = Pick<
-  UpdateOperationMap,
-  NonBreakingOperator
+export type NonBreakingUpdateOperation = Partial<
+  Pick<UpdateOperationMap, NonBreakingOperator>
 > &
-  { [OP in BreakingOperator]: never };
+  { [OP in BreakingOperator]?: never };
+
+/**
+ * `NonBreakingRegularUpdateOperation` is subtype of `GeneralRegularUpdateOperation` consisting of `NonBreakingOperator`s.
+ *
+ * There are two types of `UpdateOperator`s.
+ * `NonBreakingOperator` keeps original type of objects after being applied.
+ * `BreakingOperator` breaks original type of objects.
+ */
+export type NonBreakingRegularUpdateOperation = Partial<
+  Pick<RegularUpdateOperationMap, NonBreakingOperator>
+> &
+  { [OP in BreakingOperator]?: never };
 
 /**
  * `$set`, `$inc`, `$push`, `$unset` and other string types expressing type of operation.
@@ -170,6 +181,7 @@ export type RegularUpdateValue<
 export type BroaderUpdateValueMap = {
   $addToSet: any;
   $push: any;
+  $unset: string; // TypeScript requires cast to "" when "" is given.
 };
 
 /**

@@ -25,4 +25,20 @@ describe("$retarget returns a function", () => {
       },
     });
   });
+
+  it("returns a function retargetting the given breaking UpdateOperation to the given docPath", () => {
+    type Name = { first: string; last: string };
+    type Person = { name: Name };
+    const { $unset } = $update<Name>();
+    const retargetedOperation = $retarget<Person>()(
+      $path<Person>()("name"),
+      $unset($path<Name>()("first"), "")
+    );
+
+    assert.deepStrictEqual(retargetedOperation, {
+      $unset: {
+        "name.first": "",
+      },
+    });
+  });
 });

@@ -6,7 +6,7 @@ export {
 } from "./common/bound-document-path";
 export {
   $update,
-  BoundUpdateOperation,
+  BoundGeneralUpdateOperation,
   UpdateOperationCreator,
 } from "./updating/bound-create-update-operation";
 export { $retarget, BoundRetarget } from "./updating/bound-retarget-operation";

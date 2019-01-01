@@ -1,5 +1,7 @@
 import {
   GeneralRegularUpdateOperation,
+  NonBreakingRegularUpdateOperation,
+  NonBreakingUpdateOperation,
   UpdateOperand,
   UpdateOperationOrSetOperand,
   UpdateOperator,
@@ -13,7 +15,17 @@ import { normalizeUpdateOperation } from "./normalize-update-operation";
  */
 export function retargetOperation(
   docPath: DocumentPath,
+  _operation: NonBreakingUpdateOperation | UpdateOperand<"$set">
+): NonBreakingRegularUpdateOperation;
+
+export function retargetOperation(
+  docPath: DocumentPath,
   _operation: UpdateOperationOrSetOperand
+): GeneralRegularUpdateOperation;
+
+export function retargetOperation(
+  docPath: DocumentPath,
+  _operation: Object
 ): GeneralRegularUpdateOperation {
   const operation = normalizeUpdateOperation(_operation);
   const newOperation: GeneralRegularUpdateOperation = {};
@@ -37,7 +49,17 @@ export function retargetOperation(
 
 export function retargetAndRestore(
   docPath: DocumentPath,
+  _operation: NonBreakingUpdateOperation
+): NonBreakingRegularUpdateOperation;
+
+export function retargetAndRestore(
+  docPath: DocumentPath,
   _operation: UpdateOperationOrSetOperand
+): GeneralRegularUpdateOperation;
+
+export function retargetAndRestore(
+  docPath: DocumentPath,
+  _operation: Object
 ): GeneralRegularUpdateOperation {
   const operation = retargetOperation(docPath, _operation);
 
