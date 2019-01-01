@@ -1,6 +1,6 @@
 import {
   DocumentPath,
-  GeneralUpdateOperation,
+  GeneralRegularUpdateOperation,
   NonBreakingUpdateOperationOrSetOperand,
   QueryCondition,
   RegularUpdateOperand,
@@ -106,7 +106,10 @@ export function updatePropAndRestore<T extends Object>(
 /**
  * Update a given object by one normalized operation.
  */
-function updateByOperation(obj: Object, uOp: GeneralUpdateOperation): Object {
+function updateByOperation(
+  obj: Object,
+  uOp: GeneralRegularUpdateOperation
+): Object {
   let updatedObj = reduceUpdateOperation(
     uOp,
     (acc, operator, operand) => {
@@ -562,9 +565,10 @@ class Updater {
         if (isPrimitive(currentValue)) {
           return valuesToSet;
         }
-        const Constructor: (new (obj: Object) => unknown) | null = _Constructor
-          ? _Constructor
-          : getNestedConstructor(originalObj, docPath);
+        const Constructor: (new (obj: Object) => unknown) | null =
+          typeof _Constructor === "function"
+            ? _Constructor
+            : getNestedConstructor(originalObj, docPath);
         if (Constructor == null) {
           return valuesToSet;
         }

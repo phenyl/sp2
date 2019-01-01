@@ -147,7 +147,7 @@ export type RegularUpdateOperand<OP extends UpdateOperator> = {
  * Values of the items required in each UpdateOperation.
  * "Regular" means canonical format used for internal processes.
  */
-export type RegularUpdateValueMap = {
+type RegularUpdateValueMap = {
   $set: any;
   $inc: number;
   $min: number | string;
@@ -177,11 +177,15 @@ export type RegularUpdateValue<
 
 /**
  * Extended definition of the items in UpdateOperation for library users to write.
+ * Some of the types are defined to avoid compiling error due to TypeScript's broader cast.
  */
-export type BroaderUpdateValueMap = {
+type BroaderUpdateValueMap = {
+  $pop: number;
   $addToSet: any;
   $push: any;
-  $unset: string; // TypeScript requires cast to "" when "" is given.
+  $currentDate: true | { $type: string };
+  $unset: string;
+  $restore: string | ({ new (plain: Object): Object });
 };
 
 /**
@@ -205,7 +209,7 @@ export type UpdateValue<
  *   ...
  * }
  */
-export type RegularUpdateOperationMap = {
+type RegularUpdateOperationMap = {
   [K in keyof RegularUpdateValueMap]: RegularUpdateOperand<K>
 };
 
@@ -218,7 +222,7 @@ export type RegularUpdateOperationMap = {
  *   ...
  * }
  */
-export type UpdateOperationMap = {
+type UpdateOperationMap = {
   [K in keyof RegularUpdateValueMap]: UpdateOperand<K>
 };
 

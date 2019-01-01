@@ -236,7 +236,7 @@ describe("update() can immutably update objects using", () => {
   describe("$pop operator,", () => {
     it("pop values when 1 is given", () => {
       const obj = { gameCompanies: { hardware: ["Sony", "Microsoft"] } };
-      const operation = { $pop: { "gameCompanies.hardware": 1 } };
+      const operation = { $pop: { "gameCompanies.hardware": 1 as 1 } };
       const updatedObject = update(obj, operation);
       assert.deepStrictEqual(updatedObject, {
         gameCompanies: { hardware: ["Sony"] },

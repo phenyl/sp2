@@ -4,8 +4,8 @@ import {
   NonBreakingOperator,
   NonBreakingUpdateOperation,
   RegularPushUpdateValue,
+  RegularUpdateValue,
   UpdateOperator,
-  UpdateValue,
 } from "./update-operation";
 
 import { updateOpearationCreator } from "./create-update-operation";
@@ -50,7 +50,7 @@ type BoundUpdateOperandItemValue<V, ItemVal> = {
 
 type ValueOf<OP extends UpdateOperator, V> = BoundUpdateOperandItemValue<
   V,
-  UpdateValue<OP>
+  RegularUpdateValue<OP>
 >[OP];
 
 // prettier-ignore
