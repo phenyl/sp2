@@ -1,9 +1,11 @@
 import { BoundDocumentPath, NestedValue } from "../common/bound-document-path";
 import {
   GeneralUpdateOperation,
-  RegularPushOperandItemValue,
-  UpdateOperandItemValue,
+  NonBreakingOperator,
+  NonBreakingUpdateOperation,
+  RegularPushUpdateValue,
   UpdateOperator,
+  UpdateValue,
 } from "./update-operation";
 
 import { updateOpearationCreator } from "./create-update-operation";
@@ -15,7 +17,9 @@ export function $update<T>(): {
   return updateOpearationCreator;
 }
 
-export type BoundUpdateOperation<T> = GeneralUpdateOperation & {
+export type BoundUpdateOperation<T, OP> = (OP extends NonBreakingOperator
+  ? NonBreakingUpdateOperation
+  : GeneralUpdateOperation) & {
   __META__: { target: T };
 };
 
@@ -28,7 +32,7 @@ type BoundUpdateOperandItemValue<V, ItemVal> = {
   $addToSet: V extends (infer U)[] ? U | { $each: U[] } : never;
   $pop: V extends any[] ? ItemVal : never;
   $pull: V extends any[] ? ItemVal : never;
-  $push: V extends (infer U)[] ? (U | RegularPushOperandItemValue<U>) : never;
+  $push: V extends (infer U)[] ? (U | RegularPushUpdateValue<U>) : never;
   $currentDate: V extends (string | Date | number) ? ItemVal : never;
   $bit: V extends number ? ItemVal : never;
   $unset: ItemVal;
@@ -38,7 +42,7 @@ type BoundUpdateOperandItemValue<V, ItemVal> = {
 
 type ValueOf<OP extends UpdateOperator, V> = BoundUpdateOperandItemValue<
   V,
-  UpdateOperandItemValue<OP>
+  UpdateValue<OP>
 >[OP];
 
 // prettier-ignore
@@ -52,7 +56,7 @@ export interface UpdateOperationCreator<OP extends UpdateOperator, T> {
       OP,
       NestedValue<T, KA1, KA2, KA3, KA4, KA5, KA6, KA7, KA8, KA9, KA10>
     >
-  ): BoundUpdateOperation<T>;
+  ): BoundUpdateOperation<T, OP>;
   <
     KA1, KA2, KA3, KA4, KA5, KA6, KA7, KA8, KA9, KA10,
     KB1, KB2, KB3, KB4, KB5, KB6, KB7, KB8, KB9, KB10,
@@ -103,5 +107,5 @@ export interface UpdateOperationCreator<OP extends UpdateOperator, T> {
         NestedValue<T, KF1, KF2, KF3, KF4, KF5, KF6, KF7, KF8, KF9, KF10>
       >
     ]
-  ): BoundUpdateOperation<T>;
+  ): BoundUpdateOperation<T, OP>;
 }

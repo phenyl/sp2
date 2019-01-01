@@ -1,8 +1,10 @@
 import {
   DocumentPath,
   GeneralUpdateOperation,
+  NonBreakingUpdateOperation,
   QueryCondition,
   RegularUpdateOperand,
+  UpdateOperand,
   UpdateOperationOrSetOperand,
   UpdateOperator,
   createDocumentPath,
@@ -24,14 +26,26 @@ import { getObjectsToBeAssigned } from "./get-objects-to-be-assigned";
 /**
  * Get a new object (different address from the input) updated from a given object by operations.
  */
-export function update(
+export interface UpdateFunction {
+  <Targ extends Object>(
+    obj: Targ,
+    ...uOps: (NonBreakingUpdateOperation | UpdateOperand<"$set">)[]
+  ): Targ;
+  <Treturn extends Object, Targ extends Object = Treturn>(
+    obj: Targ,
+    ...uOps: (NonBreakingUpdateOperation | UpdateOperand<"$set">)[]
+  ): Treturn;
+  (obj: Object, ...uOps: GeneralUpdateOperation[]): Object;
+}
+
+export const update: UpdateFunction = (
   obj: Object,
   ...uOps: UpdateOperationOrSetOperand[]
-): Object {
+) => {
   return uOps.reduce((ret, operation) => {
     return updateByOperation(ret, normalizeUpdateOperation(operation));
   }, obj);
-}
+};
 
 /**
  * Get a new object (different address from the input) updated from a given object's property by operations.
@@ -157,7 +171,7 @@ function setValue<T extends Object>(
 /**
  *
  */
-export default class Updater {
+class Updater {
   /**
    *
    */

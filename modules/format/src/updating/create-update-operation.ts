@@ -1,16 +1,13 @@
 import {
   UpdateOperand,
-  UpdateOperandItemValue,
   UpdateOperation,
   UpdateOperator,
+  UpdateValue,
 } from "./update-operation";
 
 import { DocumentPath } from "../common/document-path";
 
-type KeyValuePair<OP extends UpdateOperator> = [
-  DocumentPath,
-  UpdateOperandItemValue<OP>
-];
+type KeyValuePair<OP extends UpdateOperator> = [DocumentPath, UpdateValue<OP>];
 
 export function createUpdateOperation<OP extends UpdateOperator>(
   operator: OP,
@@ -20,7 +17,7 @@ export function createUpdateOperation<OP extends UpdateOperator>(
 export function createUpdateOperation<OP extends UpdateOperator>(
   operator: OP,
   key: DocumentPath,
-  value: UpdateOperandItemValue<OP>
+  value: UpdateValue<OP>
 ): UpdateOperation<OP>;
 
 export function createUpdateOperation<OP extends UpdateOperator>(

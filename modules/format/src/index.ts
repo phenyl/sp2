@@ -47,8 +47,10 @@ export {
 } from "./common/document-path";
 export { $bind } from "./updating/bind";
 export {
+  BreakingOperator,
   GeneralRegularUpdateOperation,
   GeneralUpdateOperation,
+  NonBreakingUpdateOperation,
   RegularUpdateOperand,
   RegularUpdateOperation,
   RenameOperand,
