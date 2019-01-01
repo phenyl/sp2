@@ -20,6 +20,11 @@ describe("$bind returns an object", () => {
     assert(typeof $retarget === "function");
   });
 
+  it("with retarget function", () => {
+    const { $merge } = $bind();
+    assert(typeof $merge === "function");
+  });
+
   it("containing setter functions($set) and docPathGenerator($docPath) \
       which create UpdateOperation toward target object passed via type parameter", () => {
     type TargetObject = { foo: { bar: { name: string }[] } };
@@ -42,7 +47,7 @@ describe("$bind returns an object", () => {
     });
   });
 
-  it("with functions which retarget UpdateOperation", () => {
+  it("with function which retargets UpdateOperation", () => {
     type SubObject = { bar: { name: string; age: number }[] };
     type TargetObject = { foo: SubObject };
     const { $set, $docPath } = $bind<SubObject>();
@@ -54,6 +59,19 @@ describe("$bind returns an object", () => {
     const retargetedOperation = $retarget($mainDocPath("foo"), subOperation);
     assert.deepStrictEqual(retargetedOperation, {
       $set: { "foo.bar[0].name": "John", "foo.bar[0].age": 32 },
+    });
+  });
+
+  it("with function which merges UpdateOperation", () => {
+    type TargetObject = { foo: { name: string; age: number } };
+    const { $set, $inc, $docPath, $merge } = $bind<TargetObject>();
+    const retargetedOperation = $merge(
+      $set($docPath("foo", "name"), "John"),
+      $inc($docPath("foo", "age"), 1)
+    );
+    assert.deepStrictEqual(retargetedOperation, {
+      $set: { "foo.name": "John" },
+      $inc: { "foo.age": 1 },
     });
   });
 });

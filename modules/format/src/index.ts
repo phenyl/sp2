@@ -9,6 +9,7 @@ export {
   BoundGeneralUpdateOperation,
   UpdateOperationCreator,
 } from "./updating/bound-create-update-operation";
+export { $merge } from "./updating/bound-merge-update-operations";
 export { $retarget, BoundRetarget } from "./updating/bound-retarget-operation";
 export {
   AndFindOperation,
