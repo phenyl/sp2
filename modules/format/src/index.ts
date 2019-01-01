@@ -7,6 +7,7 @@ export {
 export {
   $update,
   BoundGeneralUpdateOperation,
+  BoundNonBreakingUpdateOperation,
   UpdateOperationCreator,
 } from "./updating/bound-create-update-operation";
 export { $merge } from "./updating/bound-merge-update-operations";

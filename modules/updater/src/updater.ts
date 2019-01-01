@@ -22,14 +22,11 @@ import { checkCondition, retrieve } from "@sp2/retriever";
 import deepEqual from "fast-deep-equal";
 import { getObjectsToBeAssigned } from "./get-objects-to-be-assigned";
 
-/**
- * Get a new object (different address from the input) updated from a given object by operations.
- */
 export interface UpdateFunction {
-  <Targ extends Object>(
-    obj: Targ,
+  <T extends Object>(
+    obj: T,
     ...uOps: NonBreakingUpdateOperationOrSetOperand[]
-  ): Targ;
+  ): T;
   <Treturn extends Object, Targ extends Object = Treturn>(
     obj: Targ,
     ...uOps: NonBreakingUpdateOperationOrSetOperand[]
@@ -37,6 +34,9 @@ export interface UpdateFunction {
   (obj: Object, ...uOps: UpdateOperationOrSetOperand[]): Object;
 }
 
+/**
+ * Get a new object (different address from the input) updated from a given object by operations.
+ */
 export const update: UpdateFunction = (
   obj: Object,
   ...uOps: UpdateOperationOrSetOperand[]
@@ -46,17 +46,35 @@ export const update: UpdateFunction = (
   }, obj);
 };
 
+export interface UpdatePropFunction {
+  <Targ extends Object>(
+    obj: Targ,
+    docPath: DocumentPath,
+    uOp: NonBreakingUpdateOperationOrSetOperand
+  ): Targ;
+  <Treturn extends Object, Targ extends Object = Treturn>(
+    obj: Targ,
+    docPath: DocumentPath,
+    uOp: NonBreakingUpdateOperationOrSetOperand
+  ): Treturn;
+  (
+    obj: Object,
+    docPath: DocumentPath,
+    uOp: UpdateOperationOrSetOperand
+  ): Object;
+}
+
 /**
  * Get a new object (different address from the input) updated from a given object's property by operations.
  */
-export function updateProp(
+export const updateProp: UpdatePropFunction = (
   obj: Object,
   docPath: DocumentPath,
   uOp: UpdateOperationOrSetOperand
-): Object {
+): Object => {
   const modifiedOps = retargetOperation(docPath, uOp);
   return update(obj, modifiedOps);
-}
+};
 
 /**
  * Get a new instance (different address from the input) updated from a given instance by operations.
