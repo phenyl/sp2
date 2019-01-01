@@ -13,8 +13,9 @@ const updateOperationCreatorAndDocumentPathCreatorAndRetargetFunction = Object.a
   updateOpearationCreator,
   {
     $docPath: createDocumentPath,
-    $retarget: retargetOperation,
     $merge: mergeUpdateOperations,
+    $path: createDocumentPath,
+    $retarget: retargetOperation,
   }
 );
 
@@ -22,8 +23,9 @@ export function $bind<T>(): {
   [OP in UpdateOperator]: UpdateOperationCreator<OP, T>
 } & {
   $docPath: BoundDocumentPathCreator<T>;
-  $retarget: BoundRetarget<T>;
   $merge: BoundMergeOperations<T>;
+  $path: BoundDocumentPathCreator<T>;
+  $retarget: BoundRetarget<T>;
 } {
   // @ts-ignore surpress for typing.
   return updateOperationCreatorAndDocumentPathCreatorAndRetargetFunction;
