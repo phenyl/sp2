@@ -1,7 +1,7 @@
 import {
   GeneralUpdateOperation,
   RegularUpdateOperand,
-  RegularUpdateOperandItemValue,
+  RegularUpdateValue,
   UpdateOperator,
 } from "./update-operation";
 
@@ -11,7 +11,7 @@ import { normalizeUpdateOperation } from "./normalize-update-operation";
 export type UpdateOperandReducer<T, OP extends UpdateOperator> = (
   acc: T,
   docPath: string,
-  value: RegularUpdateOperandItemValue<OP>,
+  value: RegularUpdateValue<OP>,
   index: number
 ) => T;
 
@@ -29,7 +29,7 @@ export function reduceUpdateOperand<T, OP extends UpdateOperator>(
 ): T {
   return Object.entries(operand).reduce((acc, val, i) => {
     const docPath: DocumentPath = val[0];
-    const value: RegularUpdateOperandItemValue<OP> = val[1];
+    const value: RegularUpdateValue<OP> = val[1];
     return fn(acc, docPath, value, i);
   }, initialValue);
 }

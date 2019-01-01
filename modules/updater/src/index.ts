@@ -6,7 +6,10 @@ export {
 } from "./updater";
 
 export {
-  $update,
+  $bind,
+  $path,
+  $retarget,
+  $op,
   DocumentPath,
   GeneralRegularUpdateOperation,
   GeneralUpdateOperation,

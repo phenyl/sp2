@@ -1,6 +1,7 @@
 import {
   DocumentPath,
-  GeneralUpdateOperation,
+  GeneralRegularUpdateOperation,
+  NonBreakingUpdateOperationOrSetOperand,
   QueryCondition,
   RegularUpdateOperand,
   UpdateOperationOrSetOperand,
@@ -21,29 +22,59 @@ import { checkCondition, retrieve } from "@sp2/retriever";
 import deepEqual from "fast-deep-equal";
 import { getObjectsToBeAssigned } from "./get-objects-to-be-assigned";
 
+export interface UpdateFunction {
+  <T extends Object>(
+    obj: T,
+    ...uOps: NonBreakingUpdateOperationOrSetOperand[]
+  ): T;
+  <Treturn extends Object, Targ extends Object = Treturn>(
+    obj: Targ,
+    ...uOps: NonBreakingUpdateOperationOrSetOperand[]
+  ): Treturn;
+  (obj: Object, ...uOps: UpdateOperationOrSetOperand[]): Object;
+}
+
 /**
  * Get a new object (different address from the input) updated from a given object by operations.
  */
-export function update(
+export const update: UpdateFunction = (
   obj: Object,
   ...uOps: UpdateOperationOrSetOperand[]
-): Object {
+) => {
   return uOps.reduce((ret, operation) => {
     return updateByOperation(ret, normalizeUpdateOperation(operation));
   }, obj);
+};
+
+export interface UpdatePropFunction {
+  <Targ extends Object>(
+    obj: Targ,
+    docPath: DocumentPath,
+    uOp: NonBreakingUpdateOperationOrSetOperand
+  ): Targ;
+  <Treturn extends Object, Targ extends Object = Treturn>(
+    obj: Targ,
+    docPath: DocumentPath,
+    uOp: NonBreakingUpdateOperationOrSetOperand
+  ): Treturn;
+  (
+    obj: Object,
+    docPath: DocumentPath,
+    uOp: UpdateOperationOrSetOperand
+  ): Object;
 }
 
 /**
  * Get a new object (different address from the input) updated from a given object's property by operations.
  */
-export function updateProp(
+export const updateProp: UpdatePropFunction = (
   obj: Object,
   docPath: DocumentPath,
   uOp: UpdateOperationOrSetOperand
-): Object {
+): Object => {
   const modifiedOps = retargetOperation(docPath, uOp);
   return update(obj, modifiedOps);
-}
+};
 
 /**
  * Get a new instance (different address from the input) updated from a given instance by operations.
@@ -75,7 +106,10 @@ export function updatePropAndRestore<T extends Object>(
 /**
  * Update a given object by one normalized operation.
  */
-function updateByOperation(obj: Object, uOp: GeneralUpdateOperation): Object {
+function updateByOperation(
+  obj: Object,
+  uOp: GeneralRegularUpdateOperation
+): Object {
   let updatedObj = reduceUpdateOperation(
     uOp,
     (acc, operator, operand) => {
@@ -157,7 +191,7 @@ function setValue<T extends Object>(
 /**
  *
  */
-export default class Updater {
+class Updater {
   /**
    *
    */
@@ -187,7 +221,7 @@ export default class Updater {
     >(
       operand,
       (valuesToSet, docPath, value) => {
-        const currentVal = getNestedValue(obj, docPath);
+        const currentVal = getNestedValue(obj, docPath) || 0;
         return { [docPath]: currentVal + value, ...valuesToSet };
       },
       {}
@@ -209,7 +243,7 @@ export default class Updater {
       operand,
       (valuesToSet, docPath, value) => {
         const currentVal = getNestedValue(obj, docPath);
-        if (value < currentVal) {
+        if (currentVal == null || value < currentVal) {
           return { [docPath]: value, ...valuesToSet };
         }
         return valuesToSet;
@@ -233,7 +267,7 @@ export default class Updater {
       operand,
       (valuesToSet, docPath, value) => {
         const currentVal = getNestedValue(obj, docPath);
-        if (value > currentVal) {
+        if (currentVal == null || value > currentVal) {
           return { [docPath]: value, ...valuesToSet };
         }
         return valuesToSet;
@@ -256,7 +290,7 @@ export default class Updater {
     >(
       operand,
       (valuesToSet, docPath, value) => {
-        const currentVal = getNestedValue(obj, docPath);
+        const currentVal = getNestedValue(obj, docPath) || 0;
         return { [docPath]: currentVal * value, ...valuesToSet };
       },
       {}
@@ -448,15 +482,17 @@ export default class Updater {
           ? getNestedValue(newObj, pathToLast)
           : newObj;
 
-        let copiedLastObj: Array<any> | Object;
+        let copiedLastObj: any[] | Object;
         if (Array.isArray(lastObj)) {
           copiedLastObj = lastObj.slice();
           // @ts-ignore non-null access.
           copiedLastObj[lastAttr] = null;
-        } else {
+        } else if (lastObj != null) {
           copiedLastObj = Object.assign({}, lastObj);
           // @ts-ignore non-null access.
           delete copiedLastObj[lastAttr];
+        } else {
+          return obj;
         }
 
         return pathToLast
@@ -491,7 +527,11 @@ export default class Updater {
           );
         }
 
-        if (!lastObj.hasOwnProperty(lastAttr)) {
+        if (
+          lastObj == null ||
+          lastAttr == null ||
+          !lastObj.hasOwnProperty(lastAttr)
+        ) {
           return newObj;
         }
 
@@ -525,15 +565,33 @@ export default class Updater {
         if (isPrimitive(currentValue)) {
           return valuesToSet;
         }
-        const Constructor: new (obj: Object) => unknown = _Constructor
-          ? _Constructor
-          : getNestedValue(originalObj, docPath).constructor;
-        return { [docPath]: new Constructor(currentValue), ...valuesToSet };
+        const Constructor: (new (obj: Object) => unknown) | null =
+          typeof _Constructor === "function"
+            ? _Constructor
+            : getNestedConstructor(originalObj, docPath);
+        if (Constructor == null) {
+          return valuesToSet;
+        }
+        return {
+          [docPath]: new Constructor(currentValue || {}),
+          ...valuesToSet,
+        };
       },
       {}
     );
     return this.$set(targetObj, setOperand);
   }
+}
+
+function getNestedConstructor(
+  originalObj: Object,
+  docPath: string
+): (new (obj: Object) => unknown) | null {
+  const nestedValue = getNestedValue(originalObj, docPath);
+  if (nestedValue == null || typeof nestedValue !== "object") {
+    return null;
+  }
+  return nestedValue.constructor;
 }
 
 function prepareArrayFromOperand<T extends Object>(obj: T, docPath: string) {

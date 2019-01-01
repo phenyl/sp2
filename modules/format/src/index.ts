@@ -1,14 +1,17 @@
 export {
-  getNestedValue as $getNestedValue,
+  getNestedValue,
   $path,
   BoundDocumentPath,
   BoundDocumentPathCreator,
 } from "./common/bound-document-path";
 export {
-  $update,
-  BoundUpdateOperation,
+  $op,
+  BoundGeneralUpdateOperation,
+  BoundNonBreakingUpdateOperation,
   UpdateOperationCreator,
 } from "./updating/bound-create-update-operation";
+export { $merge } from "./updating/bound-merge-update-operations";
+export { $retarget, BoundRetarget } from "./updating/bound-retarget-operation";
 export {
   AndFindOperation,
   FindOperation,
@@ -41,14 +44,16 @@ export {
   DotNotationString,
   convertToDotNotationString,
   createDocumentPath,
-  getNestedValue,
   hasOwnNestedProperty,
   parseDocumentPath,
 } from "./common/document-path";
 export { $bind } from "./updating/bind";
 export {
+  BreakingOperator,
   GeneralRegularUpdateOperation,
   GeneralUpdateOperation,
+  NonBreakingUpdateOperationOrSetOperand,
+  NonBreakingUpdateOperation,
   RegularUpdateOperand,
   RegularUpdateOperation,
   RenameOperand,

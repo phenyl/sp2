@@ -7,7 +7,8 @@ describe("mergeUpdateOperations", () => {
     const op1 = { "name.first": "John" };
     const op2 = { $set: { age: 32 } };
     const op3 = { $push: { hobby: "tennis" } };
-    const mergedOperation = mergeUpdateOperations(op1, op2, op3);
+    const op4 = { $unset: { "name.middle": "" } };
+    const mergedOperation = mergeUpdateOperations(op1, op2, op3, op4);
     assert.deepStrictEqual(mergedOperation, {
       $set: {
         "name.first": "John",
@@ -15,6 +16,9 @@ describe("mergeUpdateOperations", () => {
       },
       $push: {
         hobby: { $each: ["tennis"] },
+      },
+      $unset: {
+        "name.middle": "",
       },
     });
   });
