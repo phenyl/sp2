@@ -51,6 +51,7 @@ export {
   BreakingOperator,
   GeneralRegularUpdateOperation,
   GeneralUpdateOperation,
+  NonBreakingUpdateOperationOrSetOperand,
   NonBreakingUpdateOperation,
   RegularUpdateOperand,
   RegularUpdateOperation,

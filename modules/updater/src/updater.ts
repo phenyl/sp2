@@ -1,10 +1,9 @@
 import {
   DocumentPath,
   GeneralUpdateOperation,
-  NonBreakingUpdateOperation,
+  NonBreakingUpdateOperationOrSetOperand,
   QueryCondition,
   RegularUpdateOperand,
-  UpdateOperand,
   UpdateOperationOrSetOperand,
   UpdateOperator,
   createDocumentPath,
@@ -29,13 +28,13 @@ import { getObjectsToBeAssigned } from "./get-objects-to-be-assigned";
 export interface UpdateFunction {
   <Targ extends Object>(
     obj: Targ,
-    ...uOps: (NonBreakingUpdateOperation | UpdateOperand<"$set">)[]
+    ...uOps: NonBreakingUpdateOperationOrSetOperand[]
   ): Targ;
   <Treturn extends Object, Targ extends Object = Treturn>(
     obj: Targ,
-    ...uOps: (NonBreakingUpdateOperation | UpdateOperand<"$set">)[]
+    ...uOps: NonBreakingUpdateOperationOrSetOperand[]
   ): Treturn;
-  (obj: Object, ...uOps: GeneralUpdateOperation[]): Object;
+  (obj: Object, ...uOps: UpdateOperationOrSetOperand[]): Object;
 }
 
 export const update: UpdateFunction = (

@@ -1,9 +1,8 @@
 import {
   GeneralRegularUpdateOperation,
-  GeneralUpdateOperation,
   NonBreakingRegularUpdateOperation,
-  NonBreakingUpdateOperation,
-  UpdateOperand,
+  NonBreakingUpdateOperationOrSetOperand,
+  UpdateOperationOrSetOperand,
 } from "./update-operation";
 
 import deepMerge from "deepmerge";
@@ -14,11 +13,11 @@ import { normalizeUpdateOperation } from "./normalize-update-operation";
  * TODO: Currently there are some cases are not merged well (See test cases.)
  */
 export function mergeUpdateOperations(
-  ...operationList: (NonBreakingUpdateOperation | UpdateOperand<"$set">)[]
+  ...operationList: NonBreakingUpdateOperationOrSetOperand[]
 ): NonBreakingRegularUpdateOperation;
 
 export function mergeUpdateOperations(
-  ...operationList: (GeneralUpdateOperation | UpdateOperand<"$set">)[]
+  ...operationList: UpdateOperationOrSetOperand[]
 ): GeneralRegularUpdateOperation;
 
 export function mergeUpdateOperations(

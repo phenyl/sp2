@@ -291,9 +291,13 @@ export const allUpdateOperators: UpdateOperator[] = Object.keys(
   allUpdateOperatorMap
 );
 
+export type NonBreakingUpdateOperationOrSetOperand =
+  | NonBreakingUpdateOperation
+  | UpdateOperand<"$set">;
+
 export type UpdateOperationOrSetOperand =
-  | UpdateOperand<"$set">
-  | GeneralUpdateOperation;
+  | GeneralUpdateOperation
+  | UpdateOperand<"$set">;
 
 type NonFunctionPropNames<T> = {
   [K in keyof T]: T[K] extends Function ? never : K
