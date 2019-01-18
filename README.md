@@ -4,11 +4,11 @@
 `sp2` is a set of JavaScript modules using syntax for **State-operating Procedures with Portability**.
 Portability means that procedures are expressed by JSON data. This makes procedures portable and applicable over different environments.
 
-This concept of "portable operation" is inspired by MongoDB. In fact, we uses almost the same syntaxes as MongoDB's operations.
+This concept of "portable operation" is inspired by MongoDB. In fact, sp2 uses similar syntaxes as MongoDB's operations in its modules.
 
 ## @sp2/updater
 
-`@sp2/updater` is a immutable updater of POJO using MongoDB's operator, easier access to nested values.
+`@sp2/updater` is an immutable updater of POJO using MongoDB's operator, with easier access to nested values.
 
 ```js
 import { update } from "@sp2/updater";
@@ -32,10 +32,10 @@ See more usages [here]().
 
 ## @sp2/retriever
 
-`@sp2/retriever` retrieves objects in array by MongoDB-like Operations.
+`@sp2/retriever` retrieves objects in an array using MongoDB-like Operations.
 
 ```js
-import { retrieve } from "@sp2/retriever;";
+import { retrieve } from "@sp2/retriever";
 
 const objs = [{ name: "John" }, { name: "Naomi" }, { name: "Shin" }];
 
