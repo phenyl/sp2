@@ -33,7 +33,8 @@ assert(updatedPerson.name.last === "Doe"); // unchanged.
 ```
 
 ### More powerful types with TypeScript
-First, define update operation with type of target object.
+With TypeScript, `@sp2/updater` can infer the types of nested properties and values.
+To do so, prepare a type and operation-creating functions using `$bind<T>()` like the following example.
 
 ```ts
 import { $bind, update } from "@sp2/updater";
@@ -49,10 +50,11 @@ const { $set, $path } = $bind<Person>(); // Inject the type and generate operati
 const operation = $set($path("name", "first"), "John");
 ```
 
-We are able to get the property names of the target object type during writing codes.
+`@sp2/updater` provides property names of the target object type during writing codes.
 ![demo01](https://user-images.githubusercontent.com/196333/51425391-e6e6e900-1c1e-11e9-8a23-bc3557f00ade.gif)
 
-Then, update the operation.
+Then, just put the `operation` to `update()` function.
+
 ```ts
 const operation = $set($path("name", "first"), "John");
 
