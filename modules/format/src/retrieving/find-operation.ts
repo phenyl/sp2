@@ -41,3 +41,18 @@ export type FindOperation =
   | AndFindOperation
   | NorFindOperation
   | OrFindOperation;
+
+/**
+ * FindOperation or QueryCondition or EqCondition.
+ * Used in $pull operator in UpdateOperation and $elemMatch operator in FindOperation.
+ *
+ * See the same usage of $pull in mongodb
+ * https://docs.mongodb.com/manual/reference/operator/update/pull/
+ *
+ * See the same usage of $elemMatch in mongodb
+ * https://docs.mongodb.com/manual/reference/operator/query/elemMatch/
+ */
+export type ComplexFindOperation =
+  | SimpleFindOperation
+  | QueryCondition
+  | EqCondition;

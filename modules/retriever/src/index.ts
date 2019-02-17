@@ -1,4 +1,8 @@
-export { checkCondition, retrieve } from "./retriever";
+export {
+  checkCondition,
+  retrieve,
+  classifyByComplexFindOperation,
+} from "./retriever";
 
 export {
   AndFindOperation,

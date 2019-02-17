@@ -2,14 +2,11 @@ import {
   DocumentPath,
   GeneralRegularUpdateOperation,
   NonBreakingUpdateOperationOrSetOperand,
-  QueryCondition,
   RegularUpdateOperand,
   UpdateOperationOrSetOperand,
   UpdateOperator,
   createDocumentPath,
   getNestedValue,
-  isQueryCondition,
-  normalizeQueryCondition,
   normalizeUpdateOperation,
   parseDocumentPath,
   reduceUpdateOperand,
@@ -17,8 +14,8 @@ import {
   retargetOperation,
   sortByNotation,
 } from "@sp2/format";
-import { checkCondition, retrieve } from "@sp2/retriever";
 
+import { classifyByComplexFindOperation } from "@sp2/retriever";
 import deepEqual from "fast-deep-equal";
 import { getObjectsToBeAssigned } from "./get-objects-to-be-assigned";
 
@@ -355,23 +352,13 @@ class Updater {
       "$pull"
     >(
       operand,
-      (valuesToSet, docPath, cond) => {
+      (valuesToSet, docPath, complexFindOperation) => {
         let arr = prepareArrayFromOperand(obj, docPath);
-        let condition: QueryCondition;
-
-        // case 1. cond is just a value ( => convert to { $eq: cond } )
-        // case 2. cond is QueryCondition
-        if (typeof cond !== "object" || isQueryCondition(cond)) {
-          condition = normalizeQueryCondition(cond);
-          const filtered = arr.filter(
-            val => checkCondition(val, condition) === false
-          );
-          return { [docPath]: filtered, ...valuesToSet };
-        }
-        // case 3. cond is SimpleFindOperation ($nor means using unmateched ones)
-        // @ts-ignore cond is SimpleFindOperation
-        const filtered = retrieve(arr, { $nor: [cond] });
-        return { [docPath]: filtered, ...valuesToSet };
+        const classified = classifyByComplexFindOperation(
+          arr,
+          complexFindOperation
+        );
+        return { [docPath]: classified.ng, ...valuesToSet };
       },
       {}
     );

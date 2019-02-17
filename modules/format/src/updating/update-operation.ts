@@ -1,6 +1,4 @@
-import { EqCondition, QueryCondition } from "../retrieving/query-condition";
-
-import { SimpleFindOperation } from "../retrieving/find-operation";
+import { ComplexFindOperation } from "../retrieving/find-operation";
 import { SortNotation } from "../common/sort-by-notation";
 
 /**
@@ -155,7 +153,7 @@ type RegularUpdateValueMap = {
   $mul: number;
   $addToSet: { $each: any[] };
   $pop: 1 | -1;
-  $pull: QueryCondition | EqCondition | SimpleFindOperation;
+  $pull: ComplexFindOperation;
   $push: RegularPushUpdateValue<any>;
   $currentDate: true | { $type: "timestamp" | "date" };
   $bit: { and?: number; or?: number; xor?: number };

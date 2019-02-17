@@ -14,6 +14,7 @@ export { $merge } from "./updating/bound-merge-update-operations";
 export { $retarget, BoundRetarget } from "./updating/bound-retarget-operation";
 export {
   AndFindOperation,
+  ComplexFindOperation,
   FindOperation,
   NorFindOperation,
   OrFindOperation,

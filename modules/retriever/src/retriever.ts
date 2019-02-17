@@ -1,13 +1,16 @@
 import {
   ComparisonQueryOperator,
+  ComplexFindOperation,
   FindOperation,
   QueryCondition,
+  SimpleFindOperation,
   getBSONTypeNumber,
   getBSONTypeString,
   getNestedValue,
   isAndFindOperation,
   isNorFindOperation,
   isOrFindOperation,
+  isQueryCondition,
   normalizeQueryCondition,
 } from "@sp2/format";
 
@@ -33,6 +36,45 @@ export function retrieve<T extends Object>(
  */
 export function checkCondition(value: any, condition: QueryCondition): boolean {
   return Retriever.checkCondition(value, condition);
+}
+
+/**
+ * Classify values into OK or NG by given ComplexFindOperation.
+ * Used internally at @sp2/updater and not for library users.
+ *
+ * `ComplexFindOperation` is one of these three types.
+ *
+ * 1. `SimpleFindOperation` (Object)
+ * 2. `QueryCondition` (e.g. `{ $eq: "foo" }` )
+ * 3. `JSONValue` (number|string|boolean|Array)
+ */
+export function classifyByComplexFindOperation<T>(
+  values: T[],
+  cond: ComplexFindOperation
+): Classified<T> {
+  let condition: QueryCondition;
+  // case 1. cond is just a value ( => convert to { $eq: cond } )
+  // case 2. cond is QueryCondition
+  if (
+    typeof cond !== "object" ||
+    Array.isArray(cond) ||
+    isQueryCondition(cond)
+  ) {
+    condition = normalizeQueryCondition(cond);
+    return values.reduce(
+      (classified, val) => {
+        if (checkCondition(val, condition)) {
+          classified.ok.push(val);
+        } else {
+          classified.ng.push(val);
+        }
+        return classified;
+      },
+      { ok: [], ng: [] } as Classified<T>
+    );
+  }
+  // case 3. cond is SimpleFindOperation ($nor means using unmateched ones)
+  return Retriever.classify(values, cond);
 }
 
 /**
@@ -76,8 +118,13 @@ class Retriever {
         { ok: <T[]>[], ng: values }
       );
     }
+    return this.classifySimpleFindOperation(values, where);
+  }
 
-    // SimpleFindOperation
+  static classifySimpleFindOperation<T>(
+    values: T[],
+    where: SimpleFindOperation
+  ): Classified<T> {
     const documentPaths = Object.keys(where);
     return values.reduce(
       (classified, value) => {
@@ -113,11 +160,10 @@ class Retriever {
 
         case "$in":
         case "$nin":
-          return this.compareIn(operator, leftOperand, condition[operator]);
+          return this.compareIn(operator, leftOperand, condition[operator]!);
 
         case "$not":
-          if (condition.$not == null) throw new Error("$not is not found");
-          return this.checkCondition(leftOperand, condition.$not) === false;
+          return this.checkCondition(leftOperand, condition.$not!) === false;
 
         case "$exists":
           return (leftOperand != null) === condition.$exists;
@@ -128,17 +174,15 @@ class Retriever {
             : getBSONTypeString(leftOperand) === condition.$type;
 
         case "$mod": {
-          if (condition.$mod == null) throw new Error("$mod is not found");
-          const [divisor, remainder] = condition.$mod;
+          const [divisor, remainder] = condition.$mod!;
           return leftOperand % divisor === remainder;
         }
 
         case "$regex": {
-          if (condition.$regex == null) throw new Error("$regex is not found");
           const regex =
             typeof condition.$regex === "string"
-              ? new RegExp(condition.$regex, condition.$options || undefined) // "null" is not allowed but undefined.
-              : condition.$regex;
+              ? new RegExp(condition.$regex, condition.$options)
+              : condition.$regex!;
           return regex.test(leftOperand);
         }
         case "$text":
@@ -151,18 +195,16 @@ class Retriever {
             `Operator "${operator}" is currently unimplemented in @sp2/retriever.`
           );
         case "$all":
-          if (condition.$all == null) throw new Error("$all is not found");
           if (!Array.isArray(leftOperand)) return false;
-          return condition.$all.every(val =>
+          return condition.$all!.every(val =>
             leftOperand.some(elem => deepEqual(elem, val))
           );
 
         case "$elemMatch":
-          if (condition.$elemMatch == null)
-            throw new Error("$elemMatch is not found");
           if (!Array.isArray(leftOperand)) return false;
-          return leftOperand.every(elem =>
-            this.checkCondition(elem, condition.$elemMatch!)
+          return (
+            classifyByComplexFindOperation(leftOperand, condition.$elemMatch!)
+              .ok.length > 0
           );
 
         case "$size":
@@ -193,13 +235,11 @@ class Retriever {
    * return true if the array field contains at least one matched element
    * @see https://docs.mongodb.com/manual/tutorial/query-arrays/#query-an-array-for-an-element
    */
-  static compareIn(
+  private static compareIn(
     operator: "$in" | "$nin",
     target: any,
-    condValues: any
+    condValues: any[]
   ): boolean {
-    if (!Array.isArray(condValues))
-      throw new Error(`${operator} needs an array`);
     if (!Array.isArray(target)) {
       return COMPARE_FUNC[operator](target, condValues);
     }
