@@ -45,7 +45,6 @@ export function reduceUpdateOperation<T, OP extends UpdateOperator>(
     const operator: UpdateOperator = val[0];
     // @ts-ignore operator is UpdateOperator
     const operand: RegularUpdateOperand<typeof operator> = val[1];
-    if (!uOp[operator] == null) return acc;
     // @ts-ignore compatible
     return fn(acc, operator, operand, i);
   }, initialValue);

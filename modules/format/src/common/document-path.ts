@@ -74,12 +74,12 @@ export function convertToDotNotationString(
   return docPath.replace(/\[(\d{1,})\]/g, ".$1") as DotNotationString;
 }
 
-function escapePathDelimiter(attr: string | number): string | number {
-  return typeof attr === "number" ? attr : attr.replace(/\./g, "\\.");
+function escapePathDelimiter(attr: string): string {
+  return attr.replace(/\./g, "\\.");
 }
 
-function unescapePathDelimiter(attr: string | number): string | number {
-  return typeof attr === "number" ? attr : attr.replace(/\\\./, ".");
+function unescapePathDelimiter(attr: string): string {
+  return attr.replace(/\\\./, ".");
 }
 
 /**

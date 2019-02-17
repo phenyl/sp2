@@ -48,49 +48,61 @@ describe("mergeUpdateOperations", () => {
   });
 
   it("sums up $inc operands", () => {
-    const op1 = { $inc: { age: 1 } };
-    const op2 = { $inc: { age: 2 } };
-    const op3 = { $inc: { age: 5 } };
+    const op1 = { $inc: { age: 1, foo: 3 } };
+    const op2 = { $inc: { age: 2, bar: 6 } };
+    const op3 = { $inc: { age: 5, baz: -2 } };
     const mergedOperation = mergeUpdateOperations(op1, op2, op3);
     assert.deepStrictEqual(mergedOperation, {
       $inc: {
         age: 1 + 2 + 5,
+        foo: 3,
+        bar: 6,
+        baz: -2,
       },
     });
   });
 
   it("chooses the minimum one in all $min operands", () => {
-    const op1 = { $min: { price: 1000 } };
-    const op2 = { $min: { price: 1200 } };
-    const op3 = { $min: { price: 1800 } };
+    const op1 = { $min: { price: 1000, foo: 3 } };
+    const op2 = { $min: { price: 1200, bar: 6 } };
+    const op3 = { $min: { price: 1800, baz: -2 } };
     const mergedOperation = mergeUpdateOperations(op1, op2, op3);
     assert.deepStrictEqual(mergedOperation, {
       $min: {
         price: 1000,
+        foo: 3,
+        bar: 6,
+        baz: -2,
       },
     });
   });
 
   it("sums up $max operands", () => {
-    const op1 = { $max: { price: 1300 } };
-    const op2 = { $max: { price: 700 } };
-    const op3 = { $max: { price: 1200 } };
+    const op1 = { $max: { price: 1300, foo: 3 } };
+    const op2 = { $max: { price: 700, bar: 6 } };
+    const op3 = { $max: { price: 1200, baz: -2 } };
     const mergedOperation = mergeUpdateOperations(op1, op2, op3);
     assert.deepStrictEqual(mergedOperation, {
       $max: {
         price: 1300,
+        foo: 3,
+        bar: 6,
+        baz: -2,
       },
     });
   });
 
   it("multiplies $mul operands", () => {
-    const op1 = { $mul: { point: 3 } };
-    const op2 = { $mul: { point: 2 } };
-    const op3 = { $mul: { point: 7 } };
+    const op1 = { $mul: { point: 3, foo: 3 } };
+    const op2 = { $mul: { point: 2, bar: 6 } };
+    const op3 = { $mul: { point: 7, baz: -2 } };
     const mergedOperation = mergeUpdateOperations(op1, op2, op3);
     assert.deepStrictEqual(mergedOperation, {
       $mul: {
         point: 3 * 2 * 7,
+        foo: 3,
+        bar: 6,
+        baz: -2,
       },
     });
   });

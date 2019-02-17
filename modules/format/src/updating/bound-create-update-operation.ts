@@ -18,10 +18,57 @@ import {
   NonBreakingUpdateOperation,
   RegularPushUpdateValue,
   RegularUpdateValue,
+  UpdateOperation,
   UpdateOperator,
 } from "./update-operation";
 
-import { updateOpearationCreator } from "./create-update-operation";
+import { createUpdateOperation } from "./create-update-operation";
+
+export const updateOpearationCreator = {
+  $set: (...params: any[]): UpdateOperation<"$set"> =>
+    createUpdateOperation("$set", ...params),
+
+  $inc: (...params: any[]): UpdateOperation<"$inc"> =>
+    createUpdateOperation("$inc", ...params),
+
+  $min: (...params: any[]): UpdateOperation<"$min"> =>
+    createUpdateOperation("$min", ...params),
+
+  $max: (...params: any[]): UpdateOperation<"$max"> =>
+    createUpdateOperation("$max", ...params),
+
+  $mul: (...params: any[]): UpdateOperation<"$mul"> =>
+    createUpdateOperation("$mul", ...params),
+
+  $addToSet: (...params: any[]): UpdateOperation<"$addToSet"> =>
+    createUpdateOperation("$addToSet", ...params),
+
+  $pop: (...params: any[]): UpdateOperation<"$pop"> =>
+    createUpdateOperation("$pop", ...params),
+
+  $pull: (...params: any[]): UpdateOperation<"$pull"> =>
+    createUpdateOperation("$pull", ...params),
+
+  $push: (...params: any[]): UpdateOperation<"$push"> =>
+    createUpdateOperation("$push", ...params),
+
+  $currentDate: (...params: any[]): UpdateOperation<"$currentDate"> =>
+    createUpdateOperation("$currentDate", ...params),
+
+  $bit: (...params: any[]): UpdateOperation<"$bit"> =>
+    createUpdateOperation("$bit", ...params),
+
+  $unset: (...params: any[]): UpdateOperation<"$unset"> =>
+    createUpdateOperation("$unset", ...params),
+
+  $restore: (...params: any[]): UpdateOperation<"$restore"> =>
+    createUpdateOperation("$restore", ...params),
+
+  $rename: (...params: any[]): UpdateOperation<"$rename"> =>
+    createUpdateOperation("$rename", ...params),
+};
+
+Object.freeze(updateOpearationCreator);
 
 export function $op<T>(): {
   [OP in UpdateOperator]: UpdateOperationCreator<OP, T>

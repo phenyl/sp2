@@ -128,6 +128,7 @@ describe("visitFindOperation", () => {
       // @ts-ignore
       assert(result.$nor == null);
     });
+
     it("visits only '$nor' property when '$nor' and '$or' exist", () => {
       const visited: SimpleFindOperation[] = [];
       const findOperation: FindOperation = {
@@ -151,6 +152,7 @@ describe("visitFindOperation", () => {
       assert(result.$or == null);
     });
   });
+
   describe("when queryCondition handler is passed", () => {
     it("visits all the QueryConditions through AndFindOperation", () => {
       const visited: QueryCondition[] = [];
@@ -167,6 +169,26 @@ describe("visitFindOperation", () => {
           return queryCondition;
         },
       });
+      assert(visited.length === 4);
+    });
+
+    it("visits `$not` QueryConditions in all the QueryConditions", () => {
+      const visited: QueryCondition[] = [];
+      const findOperation: AndFindOperation = {
+        $and: [
+          {
+            "name.first": { $not: { $regex: /^J/ } },
+          },
+          { age: { $not: { $gt: 60 } } },
+        ],
+      };
+      visitFindOperation(findOperation, {
+        queryCondition: (queryCondition: QueryCondition) => {
+          visited.push(queryCondition);
+          return queryCondition;
+        },
+      });
+      // 4 = 2 (queryCondition containing `$not`) + 2 (queryCondition in `$not`)
       assert(visited.length === 4);
     });
   });

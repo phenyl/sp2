@@ -6,7 +6,7 @@ import { UpdateOperator } from "./update-operation";
 import { createDocumentPath } from "../common/document-path";
 import { mergeUpdateOperations } from "./merge-update-operations";
 import { retargetOperation } from "./retarget-operation";
-import { updateOpearationCreator } from "./create-update-operation";
+import { updateOpearationCreator } from "./bound-create-update-operation";
 
 const updateOperationCreatorAndDocumentPathCreatorAndRetargetFunctionAndMergeFunction = Object.assign(
   {},

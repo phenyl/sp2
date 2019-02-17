@@ -11,7 +11,7 @@ describe("findOperationToJSON", () => {
     const findOperation = {
       $or: [
         {
-          "foo.bar": { $regex: /(Diamond|Clover|Spade|Heart)([2-9JQKA]|10)+/g },
+          "foo.bar": { $regex: /(Diamond|Clover|Spade|Heart)([2-9JQKA]|10)+/ },
         },
         { "foo.bar": { $eq: "JOKER" } },
       ],
@@ -23,7 +23,6 @@ describe("findOperationToJSON", () => {
         {
           "foo.bar": {
             $regex: "(Diamond|Clover|Spade|Heart)([2-9JQKA]|10)+",
-            $options: "g",
           },
         },
         { "foo.bar": { $eq: "JOKER" } },

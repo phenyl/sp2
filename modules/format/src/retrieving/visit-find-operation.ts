@@ -59,7 +59,7 @@ function visitSimpleFindOperation(
   const documentPaths = Object.keys(where);
   const modified: SimpleFindOperation = {};
   for (const documentPath of documentPaths) {
-    const queryCondition = normalizeQueryCondition(where[documentPath] || {});
+    const queryCondition = normalizeQueryCondition(where[documentPath]);
     modified[documentPath] = queryConditionVisitor(queryCondition);
 
     if (queryCondition.$not) {

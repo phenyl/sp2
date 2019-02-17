@@ -67,6 +67,12 @@ describe("toUpdateOperation", () => {
     });
   });
 
+  it("doesn't convert key-value object when it is an empty object", () => {
+    const operation = {};
+    const normalizedOperation = toUpdateOperation(operation);
+    assert.deepStrictEqual(normalizedOperation, {});
+  });
+
   it("doesn't convert key-value object when its first key starts with '$'", () => {
     const operation = { "$name.first": "John" };
     const normalizedOperation = toUpdateOperation(operation);
