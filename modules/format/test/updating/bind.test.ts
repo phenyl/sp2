@@ -45,14 +45,30 @@ describe("$bind returns an object", () => {
     });
   });
 
+  it("containing setter functions($set) and docPathGenerator($docPath) \
+      which create UpdateOperation toward target object containing type parameter T", () => {
+    type TargetObject<T> = { foo: T };
+
+    function bar<T>(value: T) {
+      const { $set, $docPath } = $bind<TargetObject<T>>();
+      const path = $docPath("foo");
+      const operation = $set(path, value);
+      assert.deepStrictEqual(operation, {
+        $set: { foo: value },
+      });
+    }
+    bar("foo");
+    bar(100);
+  });
+
   it("with functions which create UpdateOperation with multiple docPaths", () => {
     type TargetObject = { foo: { bar: { name: string; age: number }[] } };
-    const { $set, $path } = $bind<TargetObject>();
-    const operation = $set(
-      [$path("foo", "bar", 0, "name"), "John"],
-      [$path("foo", "bar", 0, "age"), 32]
-    );
-    assert.deepStrictEqual(operation, {
+    const { $set, $path, $merge } = $bind<TargetObject>();
+    const operations = [
+      $set($path("foo", "bar", 0, "name"), "John"),
+      $set($path("foo", "bar", 0, "age"), 32),
+    ];
+    assert.deepStrictEqual($merge(...operations), {
       $set: { "foo.bar[0].name": "John", "foo.bar[0].age": 32 },
     });
   });
@@ -60,13 +76,16 @@ describe("$bind returns an object", () => {
   it("with function which retargets UpdateOperation", () => {
     type SubObject = { bar: { name: string; age: number }[] };
     type TargetObject = { foo: SubObject };
-    const { $set, $docPath } = $bind<SubObject>();
+    const { $set, $docPath, $merge } = $bind<SubObject>();
     const { $retarget, $docPath: $mainDocPath } = $bind<TargetObject>();
-    const subOperation = $set(
-      [$docPath("bar", 0, "name"), "John"],
-      [$docPath("bar", 0, "age"), 32]
+    const subOperations = [
+      $set($docPath("bar", 0, "name"), "John"),
+      $set($docPath("bar", 0, "age"), 32),
+    ];
+    const retargetedOperation = $retarget(
+      $mainDocPath("foo"),
+      $merge(...subOperations)
     );
-    const retargetedOperation = $retarget($mainDocPath("foo"), subOperation);
     assert.deepStrictEqual(retargetedOperation, {
       $set: { "foo.bar[0].name": "John", "foo.bar[0].age": 32 },
     });

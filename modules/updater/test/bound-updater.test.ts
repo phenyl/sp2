@@ -10,10 +10,10 @@ describe("$update() can immutably update objects using", () => {
       const obj = { name: { first: "Shin", last: "Doe" } };
 
       type Person = { name: { first: string; last: string }; age: number };
-      const { $set, $docPath } = $bind<Person>();
-      const operation = $set(
-        [$docPath("name", "first"), "John"],
-        [$docPath("age"), 32]
+      const { $set, $docPath, $merge } = $bind<Person>();
+      const operation = $merge(
+        $set($docPath("name", "first"), "John"),
+        $set($docPath("age"), 32)
       );
 
       const updatedObject = $update(obj, operation);

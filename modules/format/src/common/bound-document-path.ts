@@ -1,6 +1,6 @@
 import { createDocumentPath, getNestedValueWithoutType } from "./document-path";
 
-export type BoundDocumentPath1<
+export type BoundDocumentPathOfDepth1<
   T extends Object,
   K1 extends keyof T
 > = string & {
@@ -8,7 +8,7 @@ export type BoundDocumentPath1<
   object: T;
 };
 
-export type BoundDocumentPath2<
+export type BoundDocumentPathOfDepth2<
   T extends Object,
   K1 extends keyof T,
   K2 extends keyof T[K1]
@@ -17,7 +17,7 @@ export type BoundDocumentPath2<
   object: T;
 };
 
-export type BoundDocumentPath3<
+export type BoundDocumentPathOfDepth3<
   T extends Object,
   K1 extends keyof T,
   K2 extends keyof T[K1],
@@ -27,7 +27,7 @@ export type BoundDocumentPath3<
   object: T;
 };
 
-export type BoundDocumentPath4<
+export type BoundDocumentPathOfDepth4<
   T extends Object,
   K1 extends keyof T,
   K2 extends keyof T[K1],
@@ -38,7 +38,7 @@ export type BoundDocumentPath4<
   object: T;
 };
 
-export type BoundDocumentPath5<
+export type BoundDocumentPathOfDepth5<
   T extends Object,
   K1 extends keyof T,
   K2 extends keyof T[K1],
@@ -50,7 +50,7 @@ export type BoundDocumentPath5<
   object: T;
 };
 
-export type BoundDocumentPath6<
+export type BoundDocumentPathOfDepth6<
   T extends Object,
   K1 extends keyof T,
   K2 extends keyof T[K1],
@@ -63,7 +63,7 @@ export type BoundDocumentPath6<
   object: T;
 };
 
-export type BoundDocumentPath7<
+export type BoundDocumentPathOfDepth7<
   T extends Object,
   K1 extends keyof T,
   K2 extends keyof T[K1],
@@ -77,7 +77,7 @@ export type BoundDocumentPath7<
   object: T;
 };
 
-export type BoundDocumentPath8<
+export type BoundDocumentPathOfDepth8<
   T extends Object,
   K1 extends keyof T,
   K2 extends keyof T[K1],
@@ -92,7 +92,7 @@ export type BoundDocumentPath8<
   object: T;
 };
 
-export type BoundDocumentPath9<
+export type BoundDocumentPathOfDepth9<
   T extends Object,
   K1 extends keyof T,
   K2 extends keyof T[K1],
@@ -108,7 +108,7 @@ export type BoundDocumentPath9<
   object: T;
 };
 
-export type BoundDocumentPath10<
+export type BoundDocumentPathOfDepth10<
   T extends Object,
   K1 extends keyof T,
   K2 extends keyof T[K1],
@@ -147,7 +147,7 @@ export type BoundDocumentPath<
               ? K8 extends keyof T[K1][K2][K3][K4][K5][K6][K7]
                 ? K9 extends keyof T[K1][K2][K3][K4][K5][K6][K7][K8]
                   ? K10 extends keyof T[K1][K2][K3][K4][K5][K6][K7][K8][K9]
-                    ? BoundDocumentPath10<
+                    ? BoundDocumentPathOfDepth10<
                         T,
                         K1,
                         K2,
@@ -160,28 +160,39 @@ export type BoundDocumentPath<
                         K9,
                         K10
                       >
-                    : BoundDocumentPath9<T, K1, K2, K3, K4, K5, K6, K7, K8, K9>
-                  : BoundDocumentPath8<T, K1, K2, K3, K4, K5, K6, K7, K8>
-                : BoundDocumentPath7<T, K1, K2, K3, K4, K5, K6, K7>
-              : BoundDocumentPath6<T, K1, K2, K3, K4, K5, K6>
-            : BoundDocumentPath5<T, K1, K2, K3, K4, K5>
-          : BoundDocumentPath4<T, K1, K2, K3, K4>
-        : BoundDocumentPath3<T, K1, K2, K3>
-      : BoundDocumentPath2<T, K1, K2>
-    : BoundDocumentPath1<T, K1>
+                    : BoundDocumentPathOfDepth9<
+                        T,
+                        K1,
+                        K2,
+                        K3,
+                        K4,
+                        K5,
+                        K6,
+                        K7,
+                        K8,
+                        K9
+                      >
+                  : BoundDocumentPathOfDepth8<T, K1, K2, K3, K4, K5, K6, K7, K8>
+                : BoundDocumentPathOfDepth7<T, K1, K2, K3, K4, K5, K6, K7>
+              : BoundDocumentPathOfDepth6<T, K1, K2, K3, K4, K5, K6>
+            : BoundDocumentPathOfDepth5<T, K1, K2, K3, K4, K5>
+          : BoundDocumentPathOfDepth4<T, K1, K2, K3, K4>
+        : BoundDocumentPathOfDepth3<T, K1, K2, K3>
+      : BoundDocumentPathOfDepth2<T, K1, K2>
+    : BoundDocumentPathOfDepth1<T, K1>
   : string;
 
 export interface BoundDocumentPathCreator<T> {
-  <K1 extends keyof T>(k1: K1): BoundDocumentPath1<T, K1>;
+  <K1 extends keyof T>(k1: K1): BoundDocumentPathOfDepth1<T, K1>;
   <K1 extends keyof T, K2 extends keyof T[K1]>(
     k1: K1,
     k2: K2
-  ): BoundDocumentPath2<T, K1, K2>;
+  ): BoundDocumentPathOfDepth2<T, K1, K2>;
   <K1 extends keyof T, K2 extends keyof T[K1], K3 extends keyof T[K1][K2]>(
     k1: K1,
     k2: K2,
     k3: K3
-  ): BoundDocumentPath3<T, K1, K2, K3>;
+  ): BoundDocumentPathOfDepth3<T, K1, K2, K3>;
   <
     K1 extends keyof T,
     K2 extends keyof T[K1],
@@ -192,7 +203,7 @@ export interface BoundDocumentPathCreator<T> {
     k2: K2,
     k3: K3,
     k4: K4
-  ): BoundDocumentPath4<T, K1, K2, K3, K4>;
+  ): BoundDocumentPathOfDepth4<T, K1, K2, K3, K4>;
   <
     K1 extends keyof T,
     K2 extends keyof T[K1],
@@ -205,7 +216,7 @@ export interface BoundDocumentPathCreator<T> {
     k3: K3,
     k4: K4,
     k5: K5
-  ): BoundDocumentPath5<T, K1, K2, K3, K4, K5>;
+  ): BoundDocumentPathOfDepth5<T, K1, K2, K3, K4, K5>;
   <
     K1 extends keyof T,
     K2 extends keyof T[K1],
@@ -220,7 +231,7 @@ export interface BoundDocumentPathCreator<T> {
     k4: K4,
     k5: K5,
     k6: K6
-  ): BoundDocumentPath6<T, K1, K2, K3, K4, K5, K6>;
+  ): BoundDocumentPathOfDepth6<T, K1, K2, K3, K4, K5, K6>;
   <
     K1 extends keyof T,
     K2 extends keyof T[K1],
@@ -237,7 +248,7 @@ export interface BoundDocumentPathCreator<T> {
     k5: K5,
     k6: K6,
     k7: K7
-  ): BoundDocumentPath7<T, K1, K2, K3, K4, K5, K6, K7>;
+  ): BoundDocumentPathOfDepth7<T, K1, K2, K3, K4, K5, K6, K7>;
   <
     K1 extends keyof T,
     K2 extends keyof T[K1],
@@ -256,7 +267,7 @@ export interface BoundDocumentPathCreator<T> {
     k6: K6,
     k7: K7,
     k8: K8
-  ): BoundDocumentPath8<T, K1, K2, K3, K4, K5, K6, K7, K8>;
+  ): BoundDocumentPathOfDepth8<T, K1, K2, K3, K4, K5, K6, K7, K8>;
   <
     K1 extends keyof T,
     K2 extends keyof T[K1],
@@ -277,7 +288,7 @@ export interface BoundDocumentPathCreator<T> {
     k7: K7,
     k8: K8,
     k9: K9
-  ): BoundDocumentPath9<T, K1, K2, K3, K4, K5, K6, K7, K8, K9>;
+  ): BoundDocumentPathOfDepth9<T, K1, K2, K3, K4, K5, K6, K7, K8, K9>;
   <
     K1 extends keyof T,
     K2 extends keyof T[K1],
@@ -300,7 +311,7 @@ export interface BoundDocumentPathCreator<T> {
     k8: K8,
     k9: K9,
     k10: K10
-  ): BoundDocumentPath10<T, K1, K2, K3, K4, K5, K6, K7, K8, K9, K10>;
+  ): BoundDocumentPathOfDepth10<T, K1, K2, K3, K4, K5, K6, K7, K8, K9, K10>;
 }
 
 export function $path<T>(): BoundDocumentPathCreator<T> {
