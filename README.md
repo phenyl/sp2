@@ -1,6 +1,10 @@
-
 # sp2
-[![CircleCI](https://circleci.com/gh/phenyl-js/sp2/tree/master.svg?style=svg)](https://circleci.com/gh/phenyl-js/sp2/tree/master)
+
+[!CircleCI](https://img.shields.io/circleci/project/github/phenyl-js/sp2/master.svg?style=flat)
+[!npm version](https://img.shields.io/npm/v/@sp2/updater.svg?style=flat)
+[!types](https://img.shields.io/npm/types/@sp2/updater.svg?style=flat)
+[![npm downloads](https://img.shields.io/npm/dm/@sp2/updater.svg?style=flat)
+[!license](https://img.shields.io/npm/l/@sp2/updater.svg?style=flat)
 
 `sp2` is a set of JavaScript modules using syntax for **State-operating Procedures with Portability**.
 Portability means that procedures are expressed by JSON data. This makes procedures portable and applicable over different environments.
@@ -12,12 +16,13 @@ This concept of "portable operation" is inspired by MongoDB. In fact, sp2 uses s
 `@sp2/updater` is an immutable updater of POJO using MongoDB's operator, with easier access to nested values.
 
 ### Simple usage
+
 ```js
 import { update } from "@sp2/updater";
 
 const person = {
   name: { first: "Smith", last: "Doe" },
-  age: 32
+  age: 32,
 };
 
 const operation = { $set: { "name.first": "John" } };
@@ -29,10 +34,10 @@ assert(updatedPerson !== person); // obj is unchanged.
 assert(updatedPerson.age === 32); // unchanged.
 assert(updatedPerson.name.first === "John"); // updated.
 assert(updatedPerson.name.last === "Doe"); // unchanged.
-
 ```
 
 ### More powerful types with TypeScript
+
 With TypeScript, `@sp2/updater` can infer the types of nested properties and values.
 To do so, prepare a type and operation-creating functions using `$bind<T>()` like the following example.
 
@@ -68,10 +73,11 @@ assert(updatedPerson.name.last === "Doe"); // unchanged.
 
 `sp2/updater` can infer the return value of `update()` (`Person` type here).
 ```
+
 ![demo02](https://user-images.githubusercontent.com/196333/51425384-c028b280-1c1e-11e9-92b3-c5f24b322b9b.gif)
 
-
 ## @sp2/retriever
+
 `@sp2/retriever` retrieves objects in an array using MongoDB-like Operations.
 
 ```js
