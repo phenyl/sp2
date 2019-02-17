@@ -1,6 +1,6 @@
 {
   "name": "sp2",
-  "version": "1.0.0",
+  "version": "1",
   "private": true,
   "description": "sp2 is a set of JavaScript modules using syntax for State-operating Procedures with Portability.",
   "homepage": "https://github.com/phenyl-js/sp2#readme",
