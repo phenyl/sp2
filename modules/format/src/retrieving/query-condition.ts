@@ -206,9 +206,7 @@ export function getBSONTypeNumber(val: any): BSONTypeNumber {
   return map[getBSONTypeString(val)];
 }
 
-export function isQueryCondition(
-  val: ComplexFindOperation
-): val is QueryCondition {
+export function isQueryCondition(val: any): val is QueryCondition {
   if (val == null) return false;
   if (typeof val !== "object") return false;
   const firstKey = Object.keys(val)[0];
