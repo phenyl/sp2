@@ -308,7 +308,7 @@ class Updater {
     >(
       operand,
       (valuesToSet, docPath, value) => {
-        let arr = prepareArrayFromOperand(obj, docPath);
+        let arr = prepareArrayFromOperand(obj, docPath, "$addToSet");
         const newArr = value.$each.filter(
           (element: any) => !arr.some((arrEl: any) => deepEqual(arrEl, element))
         );
@@ -331,7 +331,7 @@ class Updater {
     >(
       operand,
       (valuesToSet, docPath, value) => {
-        let arr = prepareArrayFromOperand(obj, docPath);
+        let arr = prepareArrayFromOperand(obj, docPath, "$pop");
         value === 1 ? arr.pop() : arr.shift();
         return { [docPath]: arr, ...valuesToSet };
       },
@@ -353,7 +353,7 @@ class Updater {
     >(
       operand,
       (valuesToSet, docPath, complexFindOperation) => {
-        let arr = prepareArrayFromOperand(obj, docPath);
+        let arr = prepareArrayFromOperand(obj, docPath, "$pull");
         const classified = classifyByComplexFindOperation(
           arr,
           complexFindOperation
@@ -378,7 +378,7 @@ class Updater {
     >(
       operand,
       (valuesToSet, docPath, modifier) => {
-        let arr = prepareArrayFromOperand(obj, docPath);
+        let arr = prepareArrayFromOperand(obj, docPath, "$push");
         let position =
           modifier.$position != null ? modifier.$position : arr.length;
         let newArr = arr.slice();
@@ -473,7 +473,7 @@ class Updater {
         if (Array.isArray(lastObj)) {
           copiedLastObj = lastObj.slice();
           // @ts-ignore non-null access.
-          copiedLastObj[lastAttr] = null;
+          copiedLastObj[lastAttr] = undefined;
         } else if (lastObj != null) {
           copiedLastObj = Object.assign({}, lastObj);
           // @ts-ignore non-null access.
@@ -510,7 +510,7 @@ class Updater {
 
         if (Array.isArray(lastObj)) {
           throw Error(
-            `$rename operation cannot be applied to array field: "${pathToLast}".`
+            `$rename operation cannot be applied to element in array: "${docPath}".`
           );
         }
 
@@ -556,11 +556,8 @@ class Updater {
           typeof _Constructor === "function"
             ? _Constructor
             : getNestedConstructor(originalObj, docPath);
-        if (Constructor == null) {
-          return valuesToSet;
-        }
         return {
-          [docPath]: new Constructor(currentValue || {}),
+          [docPath]: new Constructor(currentValue),
           ...valuesToSet,
         };
       },
@@ -573,22 +570,23 @@ class Updater {
 function getNestedConstructor(
   originalObj: Object,
   docPath: string
-): (new (obj: Object) => unknown) | null {
+): new (obj: Object) => unknown {
   const nestedValue = getNestedValue(originalObj, docPath);
-  if (nestedValue == null || typeof nestedValue !== "object") {
-    return null;
-  }
   return nestedValue.constructor;
 }
 
-function prepareArrayFromOperand<T extends Object>(obj: T, docPath: string) {
+function prepareArrayFromOperand<T extends Object>(
+  obj: T,
+  docPath: string,
+  operator: UpdateOperator
+) {
   let arr = getNestedValue(obj, docPath);
   if (arr == null) {
     arr = []; // If the field is absent, empty array is set.
   }
   if (!Array.isArray(arr)) {
     throw new Error(
-      `"operator must be applied to an array. DocumentPath: "${docPath}".`
+      `"${operator}" operator must be applied to an array. DocumentPath: "${docPath}".`
     );
   }
   return arr;

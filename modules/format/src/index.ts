@@ -58,6 +58,7 @@ export {
   RegularUpdateOperand,
   RegularUpdateOperation,
   RenameOperand,
+  Restorable,
   RestoreOperand,
   UpdateOperand,
   UpdateOperation,
