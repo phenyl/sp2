@@ -45,6 +45,22 @@ describe("$bind returns an object", () => {
     });
   });
 
+  it("containing setter functions($set) and docPathGenerator($docPath) \
+      which create UpdateOperation toward target object containing type parameter T", () => {
+    type TargetObject<T> = { foo: T };
+
+    function bar<T>(value: T) {
+      const { $set, $docPath } = $bind<TargetObject<T>>();
+      const path = $docPath("foo");
+      const operation = $set(path, value);
+      assert.deepStrictEqual(operation, {
+        $set: { foo: value },
+      });
+    }
+    bar("foo");
+    bar(100);
+  });
+
   it("with functions which create UpdateOperation with multiple docPaths", () => {
     type TargetObject = { foo: { bar: { name: string; age: number }[] } };
     const { $set, $path, $merge } = $bind<TargetObject>();

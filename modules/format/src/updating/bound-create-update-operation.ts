@@ -1,4 +1,17 @@
-import { BoundDocumentPath, NestedValue } from "../common/bound-document-path";
+import {
+  BoundDocumentPath,
+  BoundDocumentPathOfDepth1,
+  BoundDocumentPathOfDepth10,
+  BoundDocumentPathOfDepth2,
+  BoundDocumentPathOfDepth3,
+  BoundDocumentPathOfDepth4,
+  BoundDocumentPathOfDepth5,
+  BoundDocumentPathOfDepth6,
+  BoundDocumentPathOfDepth7,
+  BoundDocumentPathOfDepth8,
+  BoundDocumentPathOfDepth9,
+  NestedValue,
+} from "../common/bound-document-path";
 import {
   GeneralUpdateOperation,
   NonBreakingOperator,
@@ -53,16 +66,127 @@ type ValueOf<OP extends UpdateOperator, V> = BoundUpdateOperandItemValue<
   RegularUpdateValue<OP>
 >[OP];
 
-// prettier-ignore
 export interface UpdateOperationCreator<OP extends UpdateOperator, T> {
-  <KA1, KA2, KA3, KA4, KA5, KA6, KA7, KA8, KA9, KA10>(
-    docPath: BoundDocumentPath<
+  <K1 extends keyof T>(
+    docPath: BoundDocumentPathOfDepth1<T, K1>,
+    value: ValueOf<OP, T[K1]>
+  ): BoundUpdateOperation<T, OP>;
+
+  <K1 extends keyof T, K2 extends keyof T[K1]>(
+    docPath: BoundDocumentPathOfDepth2<T, K1, K2>,
+    value: ValueOf<OP, T[K1][K2]>
+  ): BoundUpdateOperation<T, OP>;
+
+  <K1 extends keyof T, K2 extends keyof T[K1], K3 extends keyof T[K1][K2]>(
+    docPath: BoundDocumentPathOfDepth3<T, K1, K2, K3>,
+    value: ValueOf<OP, T[K1][K2][K3]>
+  ): BoundUpdateOperation<T, OP>;
+
+  <
+    K1 extends keyof T,
+    K2 extends keyof T[K1],
+    K3 extends keyof T[K1][K2],
+    K4 extends keyof T[K1][K2][K3]
+  >(
+    docPath: BoundDocumentPathOfDepth4<T, K1, K2, K3, K4>,
+    value: ValueOf<OP, T[K1][K2][K3][K4]>
+  ): BoundUpdateOperation<T, OP>;
+
+  <
+    K1 extends keyof T,
+    K2 extends keyof T[K1],
+    K3 extends keyof T[K1][K2],
+    K4 extends keyof T[K1][K2][K3],
+    K5 extends keyof T[K1][K2][K3][K4]
+  >(
+    docPath: BoundDocumentPathOfDepth5<T, K1, K2, K3, K4, K5>,
+    value: ValueOf<OP, T[K1][K2][K3][K4][K5]>
+  ): BoundUpdateOperation<T, OP>;
+
+  <
+    K1 extends keyof T,
+    K2 extends keyof T[K1],
+    K3 extends keyof T[K1][K2],
+    K4 extends keyof T[K1][K2][K3],
+    K5 extends keyof T[K1][K2][K3][K4],
+    K6 extends keyof T[K1][K2][K3][K4][K5]
+  >(
+    docPath: BoundDocumentPathOfDepth6<T, K1, K2, K3, K4, K5, K6>,
+    value: ValueOf<OP, T[K1][K2][K3][K4][K5][K6]>
+  ): BoundUpdateOperation<T, OP>;
+
+  <
+    K1 extends keyof T,
+    K2 extends keyof T[K1],
+    K3 extends keyof T[K1][K2],
+    K4 extends keyof T[K1][K2][K3],
+    K5 extends keyof T[K1][K2][K3][K4],
+    K6 extends keyof T[K1][K2][K3][K4][K5],
+    K7 extends keyof T[K1][K2][K3][K4][K5][K6]
+  >(
+    docPath: BoundDocumentPathOfDepth7<T, K1, K2, K3, K4, K5, K6, K7>,
+    value: ValueOf<OP, T[K1][K2][K3][K4][K5][K6][K7]>
+  ): BoundUpdateOperation<T, OP>;
+
+  <
+    K1 extends keyof T,
+    K2 extends keyof T[K1],
+    K3 extends keyof T[K1][K2],
+    K4 extends keyof T[K1][K2][K3],
+    K5 extends keyof T[K1][K2][K3][K4],
+    K6 extends keyof T[K1][K2][K3][K4][K5],
+    K7 extends keyof T[K1][K2][K3][K4][K5][K6],
+    K8 extends keyof T[K1][K2][K3][K4][K5][K6][K7]
+  >(
+    docPath: BoundDocumentPathOfDepth8<T, K1, K2, K3, K4, K5, K6, K7, K8>,
+    value: ValueOf<OP, T[K1][K2][K3][K4][K5][K6][K7][K8]>
+  ): BoundUpdateOperation<T, OP>;
+
+  <
+    K1 extends keyof T,
+    K2 extends keyof T[K1],
+    K3 extends keyof T[K1][K2],
+    K4 extends keyof T[K1][K2][K3],
+    K5 extends keyof T[K1][K2][K3][K4],
+    K6 extends keyof T[K1][K2][K3][K4][K5],
+    K7 extends keyof T[K1][K2][K3][K4][K5][K6],
+    K8 extends keyof T[K1][K2][K3][K4][K5][K6][K7],
+    K9 extends keyof T[K1][K2][K3][K4][K5][K6][K7][K8]
+  >(
+    docPath: BoundDocumentPathOfDepth9<T, K1, K2, K3, K4, K5, K6, K7, K8, K9>,
+    value: ValueOf<OP, T[K1][K2][K3][K4][K5][K6][K7][K8][K9]>
+  ): BoundUpdateOperation<T, OP>;
+
+  <
+    K1 extends keyof T,
+    K2 extends keyof T[K1],
+    K3 extends keyof T[K1][K2],
+    K4 extends keyof T[K1][K2][K3],
+    K5 extends keyof T[K1][K2][K3][K4],
+    K6 extends keyof T[K1][K2][K3][K4][K5],
+    K7 extends keyof T[K1][K2][K3][K4][K5][K6],
+    K8 extends keyof T[K1][K2][K3][K4][K5][K6][K7],
+    K9 extends keyof T[K1][K2][K3][K4][K5][K6][K7][K8],
+    K10 extends keyof T[K1][K2][K3][K4][K5][K6][K7][K8][K9]
+  >(
+    docPath: BoundDocumentPathOfDepth10<
       T,
-      KA1, KA2, KA3, KA4, KA5, KA6, KA7, KA8, KA9, KA10
+      K1,
+      K2,
+      K3,
+      K4,
+      K5,
+      K6,
+      K7,
+      K8,
+      K9,
+      K10
     >,
-    value: ValueOf<
-      OP,
-      NestedValue<T, KA1, KA2, KA3, KA4, KA5, KA6, KA7, KA8, KA9, KA10>
-    >
+    value: ValueOf<OP, T[K1][K2][K3][K4][K5][K6][K7][K8][K9][K10]>
+  ): BoundUpdateOperation<T, OP>;
+
+  <K1, K2, K3, K4, K5, K6, K7, K8, K9, K10>(
+    docPath: BoundDocumentPath<T, K1, K2, K3, K4, K5, K6, K7, K8, K9, K10>,
+    value: ValueOf<OP, NestedValue<T, K1, K2, K3, K4, K5, K6, K7, K8, K9, K10>>
   ): BoundUpdateOperation<T, OP>;
 }
