@@ -1,7 +1,7 @@
 # sp2
 
 [![CircleCI](https://img.shields.io/circleci/project/github/phenyl-js/sp2/master.svg?style=flat)](https://circleci.com/gh/phenyl-js/sp2/tree/master)
-[![Coverage Status](https://coveralls.io/repos/github/phenyl-js/sp2/badge.svg)](https://coveralls.io/github/phenyl-js/sp2)
+[![Coverage Status](https://coveralls.io/repos/github/phenyl-js/sp2/badge.svg?branch=master)](https://coveralls.io/github/phenyl-js/sp2?branch=master)
 [![npm version](https://img.shields.io/npm/v/@sp2/updater.svg?style=flat)](https://www.npmjs.com/package/@sp2/updater)
 ![types](https://img.shields.io/npm/types/@sp2/updater.svg?style=flat)
 ![npm downloads](https://img.shields.io/npm/dm/@sp2/updater.svg?style=flat)
