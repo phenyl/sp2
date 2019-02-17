@@ -6,7 +6,7 @@
   "homepage": "https://github.com/phenyl-js/sp2#readme",
   "bugs": "https://github.com/phenyl-js/sp2/issues",
   "repository": "phenyl-js/sp2",
-  "license": "Apache License 2.0",
+  "license": "Apache-2.0",
   "author": "Shin Suzuki <shinout310@gmail.com>",
   "scripts": {
     "bootstrap": "lerna bootstrap",
