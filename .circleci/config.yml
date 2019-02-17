@@ -46,7 +46,8 @@ jobs:
           key: v{{ .Environment.CIRCLECI_CACHE_VERSION }}-dependencies-{{ .Branch }}-{{ checksum "deps.txt" }}
       - run: yarn bootstrap
       - run: yarn build
-      - run: yarn ci-test
+      - run: yarn cov-test
+      - run: npx lcov-result-merger 'modules/*/coverage/lcov.info' | npx coveralls
   deploy:
     executor:
       name: default

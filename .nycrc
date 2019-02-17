@@ -9,6 +9,7 @@
       "ts-node/register"
     ],
     "reporter": [
+      "lcov",
       "text",
       "text-summary",
       "html"
