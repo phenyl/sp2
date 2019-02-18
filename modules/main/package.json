@@ -1,0 +1,40 @@
+{
+  "name": "sp2",
+  "version": "1.2.1",
+  "description": "sp2: State-operating Procedures with Portablility. Write mongodb-like operations as data and use anywhere.",
+  "bugs": "https://github.com/phenyl-js/sp2/issues",
+  "repository": "phenyl-js/sp2",
+  "keywords": [
+    "immutable",
+    "mutable",
+    "copy-on-write",
+    "mongodb",
+    "state",
+    "redux",
+    "ddd",
+    "operation"
+  ],
+  "license": "Apache-2.0",
+  "author": "Shin Suzuki <shinout310@gmail.com>",
+  "files": [
+    "index.js",
+    "index.d.ts",
+    "LICENSE",
+    "README.md"
+  ],
+  "main": "./index.js",
+  "types": "./index.d.ts",
+  "scripts": {
+    "build": "upbin tsc --declaration",
+    "clean": "upbin rimraf $(cat ../../.temporary-files)",
+    "type-check": "upbin tsc --noEmit"
+  },
+  "dependencies": {
+    "@sp2/format": "^1.2.1",
+    "@sp2/retriever": "^1.2.1",
+    "@sp2/updater": "^1.2.1"
+  },
+  "devDependencies": {
+    "upbin": "^0.8.1"
+  }
+}
