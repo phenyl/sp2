@@ -1,5 +1,7 @@
-# @sp2/format
+# sp2
+`sp2` is a set of JavaScript modules using syntax for **State-operating Procedures with Portability**.
+Portability means that procedures are expressed by JSON data. This makes procedures portable and applicable over different environments.
 
-This library provides fundamental types and functions used in [@sp2/updater](https://github.com/phenyl-js/sp2/blob/master/modules/updater) and [@sp2/retriever](https://github.com/phenyl-js/sp2/blob/master/modules/retriever).
+This concept of "portable operation" is inspired by MongoDB. In fact, sp2 uses similar syntaxes as MongoDB's operations in its modules.
 
-This is for internal use and in most cases you don't have to directly access to this library.
+See more details [here](https://github.com/phenyl-js/sp2).
