@@ -2,10 +2,10 @@
 
 [![CircleCI](https://img.shields.io/circleci/project/github/phenyl-js/sp2/master.svg?style=flat)](https://circleci.com/gh/phenyl-js/sp2/tree/master)
 [![Coverage Status](https://coveralls.io/repos/github/phenyl-js/sp2/badge.svg?branch=master)](https://coveralls.io/github/phenyl-js/sp2?branch=master)
-[![npm version](https://img.shields.io/npm/v/@sp2/updater.svg?style=flat)](https://www.npmjs.com/package/@sp2/updater)
-![types](https://img.shields.io/npm/types/@sp2/updater.svg?style=flat)
+[![npm version](https://img.shields.io/npm/v/sp2.svg?style=flat)](https://www.npmjs.com/package/sp2)
+![types](https://img.shields.io/npm/types/sp2.svg?style=flat)
 ![npm downloads](https://img.shields.io/npm/dm/@sp2/updater.svg?style=flat)
-![license](https://img.shields.io/npm/l/@sp2/updater.svg?style=flat)
+![license](https://img.shields.io/npm/l/sp2.svg?style=flat)
 
 `sp2` is a set of JavaScript modules using syntax for **State-operating Procedures with Portability**.
 Portability means that procedures are expressed by JSON data. This makes procedures portable and applicable over different environments.
