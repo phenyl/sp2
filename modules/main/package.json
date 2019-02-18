@@ -30,9 +30,9 @@
     "type-check": "upbin tsc --noEmit"
   },
   "dependencies": {
-    "@sp2/format": "^1.2.1",
-    "@sp2/retriever": "^1.2.1",
-    "@sp2/updater": "^1.2.1"
+    "@sp2/format": "~1.2.2",
+    "@sp2/retriever": "~1.2.2",
+    "@sp2/updater": "~1.2.2"
   },
   "devDependencies": {
     "upbin": "^0.8.1"
