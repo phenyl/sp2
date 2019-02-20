@@ -23,10 +23,10 @@
     "watch": "upbin tsc --declaration --watch"
   },
   "dependencies": {
-    "@sp2/format": "~1.2.2"
+    "@sp2/format": "~1.2.2",
+    "fast-deep-equal": "^2.0.1"
   },
   "devDependencies": {
-    "fast-deep-equal": "^2.0.1",
     "upbin": "^0.8.1"
   },
   "publishConfig": {
