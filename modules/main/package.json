@@ -1,7 +1,7 @@
 {
   "name": "sp2",
   "version": "1.2.3",
-  "description": "sp2: State-operating Procedures with Portablility. Write mongodb-like operations as data and use anywhere.",
+  "description": "Immutable updater of objects using JSON operation.",
   "bugs": "https://github.com/phenyl-js/sp2/issues",
   "repository": "phenyl-js/sp2",
   "keywords": [

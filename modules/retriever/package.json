@@ -1,7 +1,7 @@
 {
   "name": "@sp2/retriever",
   "version": "1.2.3",
-  "description": "@sp2/retriever retrieves objects in array by MongoDB-like operations.",
+  "description": "@sp2/retriever retrieves objects in array by MongoDB-like find operations.",
   "bugs": "https://github.com/phenyl-js/sp2/issues",
   "repository": "phenyl-js/sp2",
   "license": "Apache-2.0",
