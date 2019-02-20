@@ -22,9 +22,6 @@
     "type-check": "upbin tsc --noEmit",
     "watch": "upbin tsc --declaration --watch"
   },
-  "dependencies": {
-    "deepmerge": "^2.2.1"
-  },
   "devDependencies": {
     "upbin": "^0.8.1"
   },
