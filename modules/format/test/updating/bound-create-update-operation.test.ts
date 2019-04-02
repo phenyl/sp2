@@ -22,8 +22,28 @@ describe("$op", () => {
       });
     });
 
+    it("contains $set function accepting accesses to optional props", () => {
+      type TargetObject = { foo?: { bar?: { name?: string }[] } };
+      const { $set } = $op<TargetObject>();
+      const $docPath = $path<TargetObject>();
+      const operation = $set($docPath("foo", "bar", 0, "name"), "John");
+      assert.deepStrictEqual(operation, {
+        $set: { "foo.bar[0].name": "John" },
+      });
+    });
+
     it("contains $inc function", () => {
       type TargetObject = { foo: { bar: { age: number } } };
+      const { $inc } = $op<TargetObject>();
+      const $docPath = $path<TargetObject>();
+      const operation = $inc($docPath("foo", "bar", "age"), 1);
+      assert.deepStrictEqual(operation, {
+        $inc: { "foo.bar.age": 1 },
+      });
+    });
+
+    it("contains $inc function accepting accesses to optional props", () => {
+      type TargetObject = { foo?: { bar?: { age?: number } } };
       const { $inc } = $op<TargetObject>();
       const $docPath = $path<TargetObject>();
       const operation = $inc($docPath("foo", "bar", "age"), 1);
@@ -112,6 +132,16 @@ describe("$op", () => {
       });
     });
 
+    it("contains $push function accepting accesses to optional props", () => {
+      type TargetObject = { foo?: { bar?: { age?: number }[] } };
+      const { $push } = $op<TargetObject>();
+      const $docPath = $path<TargetObject>();
+      const operation = $push($docPath("foo", "bar"), { age: 30 });
+      assert.deepStrictEqual(operation, {
+        $push: { "foo.bar": { age: 30 } },
+      });
+    });
+
     it("contains $currentDate function", () => {
       type TargetObject = { foo: { bar: { date: number } } };
       const { $currentDate } = $op<TargetObject>();
@@ -136,6 +166,16 @@ describe("$op", () => {
 
     it("contains $unset function", () => {
       type TargetObject = { foo: { bar: { baz: number } } };
+      const { $unset } = $op<TargetObject>();
+      const $docPath = $path<TargetObject>();
+      const operation = $unset($docPath("foo", "bar", "baz"), "");
+      assert.deepStrictEqual(operation, {
+        $unset: { "foo.bar.baz": "" },
+      });
+    });
+
+    it("contains $unset function accepting accesses to optional props", () => {
+      type TargetObject = { foo?: { bar?: { baz?: number } } };
       const { $unset } = $op<TargetObject>();
       const $docPath = $path<TargetObject>();
       const operation = $unset($docPath("foo", "bar", "baz"), "");

@@ -1,5 +1,15 @@
 import { createDocumentPath, getNestedValueWithoutType } from "./document-path";
 
+export type DeepRequired<T> = T extends Array<infer InnerType>
+  ? DeepRequiredArray<InnerType>
+  : T extends number | string | boolean | Function | RegExp // TODO: Add more native types
+  ? T
+  : T extends Object
+  ? { [K in keyof T]-?: DeepRequired<T[K]> }
+  : T;
+
+interface DeepRequiredArray<T> extends Array<DeepRequired<T>> {}
+
 export type BoundDocumentPathOfDepth1<
   T extends Object,
   K1 extends keyof T
@@ -137,6 +147,32 @@ export type BoundDocumentPath<
   K8,
   K9,
   K10
+> = RawBoundDocumentPath<
+  DeepRequired<T>,
+  K1,
+  K2,
+  K3,
+  K4,
+  K5,
+  K6,
+  K7,
+  K8,
+  K9,
+  K10
+>;
+
+type RawBoundDocumentPath<
+  T,
+  K1,
+  K2,
+  K3,
+  K4,
+  K5,
+  K6,
+  K7,
+  K8,
+  K9,
+  K10
 > = K1 extends keyof T
   ? K2 extends keyof T[K1]
     ? K3 extends keyof T[K1][K2]
@@ -182,7 +218,11 @@ export type BoundDocumentPath<
     : BoundDocumentPathOfDepth1<T, K1>
   : string;
 
-export interface BoundDocumentPathCreator<T> {
+export type BoundDocumentPathCreator<T> = RawBoundDocumentPathCreator<
+  DeepRequired<T>
+>;
+
+interface RawBoundDocumentPathCreator<T> {
   <K1 extends keyof T>(k1: K1): BoundDocumentPathOfDepth1<T, K1>;
   <K1 extends keyof T, K2 extends keyof T[K1]>(
     k1: K1,
@@ -320,6 +360,20 @@ export function $path<T>(): BoundDocumentPathCreator<T> {
 }
 
 export type NestedValue<
+  T,
+  K1,
+  K2,
+  K3,
+  K4,
+  K5,
+  K6,
+  K7,
+  K8,
+  K9,
+  K10
+> = RawNestedValue<DeepRequired<T>, K1, K2, K3, K4, K5, K6, K7, K8, K9, K10>;
+
+export type RawNestedValue<
   T,
   K1,
   K2,
