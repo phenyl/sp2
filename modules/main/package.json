@@ -1,6 +1,6 @@
 {
   "name": "sp2",
-  "version": "1.2.3",
+  "version": "1.2.4",
   "description": "Immutable updater of objects using JSON operation.",
   "bugs": "https://github.com/phenyl-js/sp2/issues",
   "repository": "phenyl-js/sp2",
@@ -30,9 +30,9 @@
     "type-check": "upbin tsc --noEmit"
   },
   "dependencies": {
-    "@sp2/format": "^1.2.3",
-    "@sp2/retriever": "^1.2.3",
-    "@sp2/updater": "^1.2.3"
+    "@sp2/format": "^1.2.4",
+    "@sp2/retriever": "^1.2.4",
+    "@sp2/updater": "^1.2.4"
   },
   "devDependencies": {
     "upbin": "^0.8.1"

@@ -1,6 +1,6 @@
 {
   "name": "@sp2/updater",
-  "version": "1.2.3",
+  "version": "1.2.4",
   "description": "@sp2/updater provides core update() function of sp2.",
   "bugs": "https://github.com/phenyl-js/sp2/issues",
   "repository": "phenyl-js/sp2",
@@ -23,8 +23,8 @@
     "watch": "upbin tsc --declaration --watch"
   },
   "dependencies": {
-    "@sp2/format": "^1.2.3",
-    "@sp2/retriever": "^1.2.3"
+    "@sp2/format": "^1.2.4",
+    "@sp2/retriever": "^1.2.4"
   },
   "devDependencies": {
     "upbin": "^0.8.1"
