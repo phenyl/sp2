@@ -117,7 +117,7 @@ type ValueOf<OP extends UpdateOperator, V> = BoundUpdateOperandItemValue<
 export type UpdateOperationCreator<
   OP extends UpdateOperator,
   T
-> = RawUpdateOperationCreator<OP, DeepRequired<T>>;
+> = RawUpdateOperationCreator<OP, DeepRequired<T> | T>;
 
 export interface RawUpdateOperationCreator<OP extends UpdateOperator, T> {
   <K1 extends keyof T>(
