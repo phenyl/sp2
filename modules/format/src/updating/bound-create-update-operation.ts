@@ -10,6 +10,7 @@ import {
   BoundDocumentPathOfDepth7,
   BoundDocumentPathOfDepth8,
   BoundDocumentPathOfDepth9,
+  DeepRequired,
   NestedValue,
 } from "../common/bound-document-path";
 import {
@@ -113,7 +114,12 @@ type ValueOf<OP extends UpdateOperator, V> = BoundUpdateOperandItemValue<
   RegularUpdateValue<OP>
 >[OP];
 
-export interface UpdateOperationCreator<OP extends UpdateOperator, T> {
+export type UpdateOperationCreator<
+  OP extends UpdateOperator,
+  T
+> = RawUpdateOperationCreator<OP, DeepRequired<T> | T>;
+
+export interface RawUpdateOperationCreator<OP extends UpdateOperator, T> {
   <K1 extends keyof T>(
     docPath: BoundDocumentPathOfDepth1<T, K1>,
     value: ValueOf<OP, T[K1]>
