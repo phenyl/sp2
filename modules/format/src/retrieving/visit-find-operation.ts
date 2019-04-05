@@ -18,28 +18,29 @@ export type FindOperationVisitor = {
  * @public
  * Modify FindOperation by passing visitor functions.
  */
-export function visitFindOperation(
-  where: FindOperation,
+export function visitFindOperation<T extends FindOperation>(
+  where: T,
   visitor: FindOperationVisitor
-): FindOperation {
+): T {
   if (isAndFindOperation(where)) {
     return {
       $and: where.$and.map(subWhere => visitFindOperation(subWhere, visitor)),
-    };
+    } as T;
   }
 
   if (isNorFindOperation(where)) {
     return {
       $nor: where.$nor.map(subWhere => visitFindOperation(subWhere, visitor)),
-    };
+    } as T;
   }
 
   if (isOrFindOperation(where)) {
     return {
       $or: where.$or.map(subWhere => visitFindOperation(subWhere, visitor)),
-    };
+    } as T;
   }
-  return visitSimpleFindOperation(where, visitor);
+  // @ts-ignore `where` is SimpleFindOperation
+  return visitSimpleFindOperation(where as SimpleFindOperation, visitor);
 }
 
 /**

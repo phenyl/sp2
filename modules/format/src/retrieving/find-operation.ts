@@ -1,4 +1,8 @@
-import { EqCondition, QueryCondition } from "./query-condition";
+import {
+  EqCondition,
+  QueryCondition,
+  firstKeyBeginsWithDollar,
+} from "./query-condition";
 
 export type SimpleFindOperation = {
   [docPath: string]: QueryCondition | EqCondition;
@@ -56,3 +60,18 @@ export type ComplexFindOperation =
   | SimpleFindOperation
   | QueryCondition
   | EqCondition;
+
+export function complexFindOperationIsSimpleFindOperation(
+  val: ComplexFindOperation
+): val is SimpleFindOperation {
+  if (typeof val !== "object" || val == null) {
+    return false;
+  }
+  if (Array.isArray(val)) {
+    return false;
+  }
+  if (firstKeyBeginsWithDollar(val)) {
+    return false;
+  }
+  return true;
+}

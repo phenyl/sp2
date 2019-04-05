@@ -209,6 +209,11 @@ export function getBSONTypeNumber(val: any): BSONTypeNumber {
 export function isQueryCondition(val: any): val is QueryCondition {
   if (val == null) return false;
   if (typeof val !== "object") return false;
+  return firstKeyBeginsWithDollar(val);
+}
+
+// Utility function to be used at complexFindOperationIsSimpleFindOperation()
+export function firstKeyBeginsWithDollar(val: Object): boolean {
   const firstKey = Object.keys(val)[0];
   if (!firstKey) return false;
   return firstKey.charAt(0) === "$";

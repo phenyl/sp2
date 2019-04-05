@@ -93,3 +93,5 @@ export {
 } from "./retrieving/normalize-query-condition";
 export { visitFindOperation } from "./retrieving/visit-find-operation";
 export { visitUpdateOperation } from "./updating/visit-update-operation";
+export { toMongoFindOperation } from "./retrieving/to-mongo-find-operation";
+export { toMongoUpdateOperation } from "./updating/to-mongo-update-operation";
