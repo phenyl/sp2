@@ -1,12 +1,27 @@
-import { FindOperation, SimpleFindOperation } from "./find-operation";
+import {
+  ComplexFindOperation,
+  FindOperation,
+  SimpleFindOperation,
+  complexFindOperationIsSimpleFindOperation,
+} from "./find-operation";
 
+import { QueryCondition } from "./query-condition";
 import { convertToDotNotationString } from "../common/document-path";
 import { visitFindOperation } from "./visit-find-operation";
 
-export function toMongoFindOperation(operation: FindOperation): FindOperation {
+export function toMongoFindOperation<T extends FindOperation>(operation: T): T {
   return visitFindOperation(operation, {
-    simpleFindOperation: convertDocumentPathFormat,
+    simpleFindOperation: simpleFindOperationToMongoFindOperation,
   });
+}
+
+function simpleFindOperationToMongoFindOperation(
+  operation: SimpleFindOperation
+): SimpleFindOperation {
+  return [convertDocumentPathFormat, convertElemMatchOperand].reduce(
+    (operation, convertFn) => convertFn(operation),
+    operation
+  );
 }
 
 function convertDocumentPathFormat(
@@ -20,4 +35,31 @@ function convertDocumentPathFormat(
     },
     {}
   );
+}
+
+function convertElemMatchOperand(
+  operation: SimpleFindOperation
+): SimpleFindOperation {
+  return visitFindOperation(operation, {
+    queryCondition: (queryCondition: QueryCondition) => {
+      const elemMatchOperand = queryCondition.$elemMatch;
+      if (!elemMatchOperand) return queryCondition;
+      const convertedOperand = convertComplexFindOperationToMongoFormat(
+        elemMatchOperand
+      );
+      return Object.assign({}, queryCondition, {
+        $elemMatch: convertedOperand,
+      });
+    },
+  });
+}
+
+// Utility function to be used at toMongoUpdateOperation()
+export function convertComplexFindOperationToMongoFormat(
+  complexFindOperation: ComplexFindOperation
+): ComplexFindOperation {
+  if (complexFindOperationIsSimpleFindOperation(complexFindOperation)) {
+    return toMongoFindOperation(complexFindOperation);
+  }
+  return complexFindOperation;
 }

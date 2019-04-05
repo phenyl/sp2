@@ -1,5 +1,6 @@
 import { GeneralUpdateOperation, UpdateOperand } from "./update-operation";
 
+import { convertComplexFindOperationToMongoFormat } from "../retrieving/to-mongo-find-operation";
 import { convertToDotNotationString } from "../common/document-path";
 import { visitUpdateOperation } from "./visit-update-operation";
 
@@ -7,30 +8,47 @@ export function toMongoUpdateOperation(
   updateOperation: GeneralUpdateOperation
 ): GeneralUpdateOperation {
   // The order is important. convertRenameOperand must be put after convertDocumentPathFormat
-  return [convertDocumentPathFormat, convertRenameOperand].reduce(
-    (operation, convertFn) => convertFn(operation),
-    updateOperation
-  );
+  return [
+    convertDocumentPathFormat,
+    convertRenameOperand,
+    convertPullOperand,
+  ].reduce((operation, convertFn) => convertFn(operation), updateOperation);
 }
 
 function convertRenameOperand(
   operation: GeneralUpdateOperation
 ): GeneralUpdateOperation {
-  const renameOperator = operation.$rename;
-  if (!renameOperator) return operation;
+  const renameOperand = operation.$rename;
+  if (!renameOperand) return operation;
 
-  const renameOperatorWithParent = Object.keys(renameOperator).reduce(
-    (operator: UpdateOperand<"$rename">, key: string) => {
-      operator[key] = key
+  const convertedRenameOperand = Object.keys(renameOperand).reduce(
+    (operand: UpdateOperand<"$rename">, key: string) => {
+      operand[key] = key
         .split(".")
         .slice(0, -1)
-        .concat(renameOperator[key])
+        .concat(renameOperand[key])
         .join(".");
-      return operator;
+      return operand;
     },
     {}
   );
-  return Object.assign({}, operation, { $rename: renameOperatorWithParent });
+  return Object.assign({}, operation, { $rename: convertedRenameOperand });
+}
+
+function convertPullOperand(
+  operation: GeneralUpdateOperation
+): GeneralUpdateOperation {
+  const pullOperand = operation.$pull;
+  if (!pullOperand) return operation;
+
+  const convertedPullOperand = Object.keys(pullOperand).reduce(
+    (operand: UpdateOperand<"$pull">, key: string) => {
+      operand[key] = convertComplexFindOperationToMongoFormat(pullOperand[key]);
+      return operand;
+    },
+    {}
+  );
+  return Object.assign({}, operation, { $pull: convertedPullOperand });
 }
 
 function convertDocumentPathFormat(
