@@ -67,6 +67,9 @@ export const updateOpearationCreator = {
 
   $rename: (...params: any[]): UpdateOperation<"$rename"> =>
     createUpdateOperation("$rename", ...params),
+
+  $append: (...params: any[]): UpdateOperation<"$append"> =>
+    createUpdateOperation("$append", ...params),
 };
 
 Object.freeze(updateOpearationCreator);
@@ -107,6 +110,7 @@ type BoundUpdateOperandItemValue<V, ItemVal> = {
   $unset: ItemVal;
   $restore: V extends Object ? ItemVal : never;
   $rename: ItemVal;
+  $append: V extends Object ? Partial<V> : never;
 };
 
 type ValueOf<OP extends UpdateOperator, V> = BoundUpdateOperandItemValue<
