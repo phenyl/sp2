@@ -122,6 +122,16 @@ describe("$op", () => {
       });
     });
 
+    it("contains $pullAll function", () => {
+      type TargetObject = { foo: { bar: { age: number }[] } };
+      const { $pullAll } = $op<TargetObject>();
+      const $docPath = $path<TargetObject>();
+      const operation = $pullAll($docPath("foo", "bar"), [{ age: 33 }]);
+      assert.deepStrictEqual(operation, {
+        $pullAll: { "foo.bar": [{ age: 33 }] },
+      });
+    });
+
     it("contains $push function", () => {
       type TargetObject = { foo: { bar: { age: number }[] } };
       const { $push } = $op<TargetObject>();

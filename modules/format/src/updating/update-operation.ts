@@ -154,6 +154,7 @@ type RegularUpdateValueMap = {
   $addToSet: { $each: any[] };
   $pop: 1 | -1;
   $pull: ComplexFindOperation;
+  $pullAll: any[];
   $push: RegularPushUpdateValue<any>;
   $currentDate: true | { $type: "timestamp" | "date" };
   $bit: { and?: number; or?: number; xor?: number };
@@ -273,6 +274,7 @@ const allUpdateOperatorMap: { [K in keyof UpdateOperationMap]: 1 } = {
   $addToSet: 1,
   $pop: 1,
   $pull: 1,
+  $pullAll: 1,
   $push: 1,
   $currentDate: 1,
   $bit: 1,
