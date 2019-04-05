@@ -50,6 +50,9 @@ export const updateOpearationCreator = {
   $pull: (...params: any[]): UpdateOperation<"$pull"> =>
     createUpdateOperation("$pull", ...params),
 
+  $pullAll: (...params: any[]): UpdateOperation<"$pullAll"> =>
+    createUpdateOperation("$pullAll", ...params),
+
   $push: (...params: any[]): UpdateOperation<"$push"> =>
     createUpdateOperation("$push", ...params),
 
@@ -104,6 +107,7 @@ type BoundUpdateOperandItemValue<V, ItemVal> = {
   $addToSet: V extends (infer U)[] ? U | { $each: U[] } : never;
   $pop: V extends any[] ? ItemVal : never;
   $pull: V extends any[] ? ItemVal : never;
+  $pullAll: V extends (infer U)[] ? U[] : never;
   $push: V extends (infer U)[] ? (U | RegularPushUpdateValue<U>) : never;
   $currentDate: V extends (string | Date | number) ? ItemVal : never;
   $bit: V extends number ? ItemVal : never;

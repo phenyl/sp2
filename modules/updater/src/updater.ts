@@ -146,6 +146,8 @@ function updateByOperator<OP extends UpdateOperator>(
       return Updater.$pop(obj, <RegularUpdateOperand<"$pop">>operand);
     case "$pull":
       return Updater.$pull(obj, <RegularUpdateOperand<"$pull">>operand);
+    case "$pullAll":
+      return Updater.$pullAll(obj, <RegularUpdateOperand<"$pullAll">>operand);
     case "$push":
       return Updater.$push(obj, <RegularUpdateOperand<"$push">>operand);
     case "$currentDate":
@@ -361,6 +363,30 @@ class Updater {
           complexFindOperation
         );
         return { [docPath]: classified.ng, ...valuesToSet };
+      },
+      {}
+    );
+    return this.$set(obj, setOperand);
+  }
+
+  /**
+   *
+   */
+  static $pullAll<T extends Object>(
+    obj: T,
+    operand: RegularUpdateOperand<"$pullAll">
+  ): T {
+    const setOperand = reduceUpdateOperand<
+      RegularUpdateOperand<"$set">,
+      "$pullAll"
+    >(
+      operand,
+      (valuesToSet, docPath, valuesToPull) => {
+        let arr = prepareArrayFromOperand(obj, docPath, "$pullAll");
+        arr = arr.filter(
+          val => !valuesToPull.some(arrEl => deepEqual(arrEl, val))
+        );
+        return { [docPath]: arr, ...valuesToSet };
       },
       {}
     );
