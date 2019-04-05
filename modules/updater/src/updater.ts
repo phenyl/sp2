@@ -158,6 +158,8 @@ function updateByOperator<OP extends UpdateOperator>(
       return Updater.$unset(obj, <RegularUpdateOperand<"$unset">>operand);
     case "$rename":
       return Updater.$rename(obj, <RegularUpdateOperand<"$rename">>operand);
+    case "$append":
+      return Updater.$append(obj, <RegularUpdateOperand<"$append">>operand);
   }
   return obj;
 }
@@ -564,6 +566,38 @@ class Updater {
       {}
     );
     return this.$set(targetObj, setOperand);
+  }
+
+  /**
+   *
+   */
+  static $append<T extends Object>(
+    obj: T,
+    operand: RegularUpdateOperand<"$append">
+  ): T {
+    const setOperand = reduceUpdateOperand<
+      RegularUpdateOperand<"$set">,
+      "$append"
+    >(
+      operand,
+      (valuesToSet, docPath, value) => {
+        const currentVal = getNestedValue(obj, docPath);
+        if (currentVal == null || typeof currentVal !== "object") {
+          return { [docPath]: value, ...valuesToSet };
+        }
+        if (Array.isArray(currentVal)) {
+          throw new Error(
+            `"$append" operator cannot be applied to an array. DocumentPath: "${docPath}".`
+          );
+        }
+        return {
+          [docPath]: Object.assign({}, currentVal, value),
+          ...valuesToSet,
+        };
+      },
+      {}
+    );
+    return this.$set(obj, setOperand);
   }
 }
 

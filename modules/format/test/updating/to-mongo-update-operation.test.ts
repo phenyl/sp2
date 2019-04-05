@@ -44,4 +44,45 @@ describe("toMongoUpdateOperation", () => {
       },
     });
   });
+
+  it("converts AppendOperand into SetOperand", () => {
+    const operation = {
+      $append: {
+        "foo.bar1": { baz: 100, biz: { abc: 123 } },
+        "foo.bar2": { baz: "xxx", biz: { abc: "yyy" } },
+      },
+    };
+    const convertedOperation = toMongoUpdateOperation(operation);
+    assert.deepEqual(convertedOperation, {
+      $set: {
+        "foo.bar1.baz": 100,
+        "foo.bar1.biz": { abc: 123 },
+        "foo.bar2.baz": "xxx",
+        "foo.bar2.biz": { abc: "yyy" },
+      },
+    });
+  });
+
+  it("converts AppendOperand into SetOperand and override an existing SetOperand", () => {
+    const operation = {
+      $set: {
+        hoge: 123,
+        "foo.bar1.baz": 90,
+      },
+      $append: {
+        "foo.bar1": { baz: 100, biz: { abc: 123 } },
+        "foo.bar2": { baz: "xxx", biz: { abc: "yyy" } },
+      },
+    };
+    const convertedOperation = toMongoUpdateOperation(operation);
+    assert.deepEqual(convertedOperation, {
+      $set: {
+        hoge: 123,
+        "foo.bar1.baz": 100,
+        "foo.bar1.biz": { abc: 123 },
+        "foo.bar2.baz": "xxx",
+        "foo.bar2.biz": { abc: "yyy" },
+      },
+    });
+  });
 });

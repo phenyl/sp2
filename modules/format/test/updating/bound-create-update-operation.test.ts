@@ -194,13 +194,23 @@ describe("$op", () => {
       });
     });
 
-    it("contains rename function", () => {
+    it("contains $rename function", () => {
       type TargetObject = { foo: { bar: { bza: number } } };
       const { $rename } = $op<TargetObject>();
       const $docPath = $path<TargetObject>();
       const operation = $rename($docPath("foo", "bar", "bza"), "baz");
       assert.deepStrictEqual(operation, {
         $rename: { "foo.bar.bza": "baz" },
+      });
+    });
+
+    it("contains $append function", () => {
+      type TargetObject = { foo: { bar: { bza: number } } };
+      const { $append } = $op<TargetObject>();
+      const $docPath = $path<TargetObject>();
+      const operation = $append($docPath("foo", "bar"), { bza: 123 });
+      assert.deepStrictEqual(operation, {
+        $append: { "foo.bar": { bza: 123 } },
       });
     });
   });

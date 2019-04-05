@@ -160,6 +160,7 @@ type RegularUpdateValueMap = {
   $unset: "";
   $restore: "" | ({ new (plain: Object): Object }); // strictFunctionTypes should be false.
   $rename: string;
+  $append: Object;
 };
 
 export type RegularPushUpdateValue<T> = {
@@ -278,6 +279,7 @@ const allUpdateOperatorMap: { [K in keyof UpdateOperationMap]: 1 } = {
   $unset: 1,
   $restore: 1,
   $rename: 1,
+  $append: 1,
 };
 
 Object.freeze(allUpdateOperatorMap);
