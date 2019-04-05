@@ -35,6 +35,12 @@ describe("convertToDotNotation", () => {
     const dotnotationString = convertToDotNotationString(docPath);
     assert(dotnotationString === "user.favorites.1.music.30000");
   });
+
+  it("converts [1] to 1", () => {
+    const docPath = "[1].name";
+    const dotnotationString = convertToDotNotationString(docPath);
+    assert.equal(dotnotationString, "1.name");
+  });
 });
 
 describe("createDocumentPath", () => {

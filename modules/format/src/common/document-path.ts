@@ -71,7 +71,8 @@ export function createDocumentPath(...attributes: Attribute[]): DocumentPath {
 export function convertToDotNotationString(
   docPath: DocumentPath
 ): DotNotationString {
-  return docPath.replace(/\[(\d{1,})\]/g, ".$1") as DotNotationString;
+  const replaced = docPath.replace(/\[(\d{1,})\]/g, ".$1") as DotNotationString;
+  return replaced.charAt(0) === "." ? replaced.slice(1) : replaced;
 }
 
 function escapePathDelimiter(attr: string): string {
