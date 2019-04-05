@@ -19,6 +19,8 @@ export {
   retargetAndRestore,
   retargetOperation,
   SimpleFindOperation,
+  toMongoFindOperation,
+  toMongoUpdateOperation,
   UpdateOperand,
   UpdateOperation,
   UpdateOperationOrSetOperand,
