@@ -110,7 +110,7 @@ type BoundUpdateOperandItemValue<V, ItemVal> = {
   $unset: ItemVal;
   $restore: V extends Object ? ItemVal : never;
   $rename: ItemVal;
-  $append: V extends Object ? Partial<V> : never;
+  $append: V extends Array<any> ? never : V extends Object ? Partial<V> : never;
 };
 
 type ValueOf<OP extends UpdateOperator, V> = BoundUpdateOperandItemValue<

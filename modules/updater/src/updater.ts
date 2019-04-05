@@ -585,6 +585,11 @@ class Updater {
         if (currentVal == null || typeof currentVal !== "object") {
           return { [docPath]: value, ...valuesToSet };
         }
+        if (Array.isArray(currentVal)) {
+          throw new Error(
+            `"$append" operator cannot be applied to an array. DocumentPath: "${docPath}".`
+          );
+        }
         return {
           [docPath]: Object.assign({}, currentVal, value),
           ...valuesToSet,
