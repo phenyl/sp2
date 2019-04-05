@@ -12,6 +12,7 @@ export function toMongoUpdateOperation(
     convertDocumentPathFormat,
     convertRenameOperand,
     convertPullOperand,
+    convertAppendOperand,
   ].reduce((operation, convertFn) => convertFn(operation), updateOperation);
 }
 
@@ -49,6 +50,27 @@ function convertPullOperand(
     {}
   );
   return Object.assign({}, operation, { $pull: convertedPullOperand });
+}
+
+function convertAppendOperand(
+  operation: GeneralUpdateOperation
+): GeneralUpdateOperation {
+  const appendOperand = operation.$append;
+  if (!appendOperand) return operation;
+
+  const convertedSetOperand = Object.keys(appendOperand).reduce(
+    (operand: UpdateOperand<"$append">, key: string) => {
+      const values = appendOperand[key];
+      Object.entries(values).forEach(([appendKey, appendValue]) => {
+        operand[`${key}.${appendKey}`] = appendValue;
+      });
+      return operand;
+    },
+    Object.assign({}, operation.$set)
+  );
+  const ret = Object.assign({}, operation, { $set: convertedSetOperand });
+  delete ret.$append;
+  return ret;
 }
 
 function convertDocumentPathFormat(
