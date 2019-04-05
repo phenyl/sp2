@@ -1,5 +1,6 @@
 /* eslint-env mocha */
 
+import { $bind, toMongoUpdateOperation } from "@sp2/format";
 import { NonRestorablePerson, Person } from "./classes";
 import {
   update,
@@ -8,7 +9,6 @@ import {
   updatePropAndRestore,
 } from "../src/updater";
 
-import { $bind } from "@sp2/format";
 import assert from "assert";
 
 describe("update() can immutably update objects using", () => {
@@ -774,6 +774,17 @@ describe("update() can immutably update objects using", () => {
       assert.deepStrictEqual(updatedObject, {
         foo: { bar: { biz: true, abc: 123, bra: null } },
       });
+    });
+
+    it("returns the same results as an operation converted by toMongoUpdateOperation()", () => {
+      const obj = { foo: { bar: { biz: true, bra: "baz" } } };
+      const operation = {
+        $append: { "foo.bar": { abc: 123, bra: null } },
+      };
+      const convertedOperation = toMongoUpdateOperation(operation);
+      const updatedObject = update(obj, operation);
+      const updatedObjectByConvertedOperation = update(obj, convertedOperation);
+      assert.deepStrictEqual(updatedObject, updatedObjectByConvertedOperation);
     });
   });
 });
