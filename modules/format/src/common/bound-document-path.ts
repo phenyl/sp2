@@ -102,39 +102,6 @@ export type BoundDocumentPathOfDepth8<
   object: T;
 };
 
-export type BoundDocumentPathOfDepth9<
-  T extends Object,
-  K1 extends keyof T,
-  K2 extends keyof T[K1],
-  K3 extends keyof T[K1][K2],
-  K4 extends keyof T[K1][K2][K3],
-  K5 extends keyof T[K1][K2][K3][K4],
-  K6 extends keyof T[K1][K2][K3][K4][K5],
-  K7 extends keyof T[K1][K2][K3][K4][K5][K6],
-  K8 extends keyof T[K1][K2][K3][K4][K5][K6][K7],
-  K9 extends keyof T[K1][K2][K3][K4][K5][K6][K7][K8]
-> = string & {
-  keys: [K1, K2, K3, K4, K5, K6, K7, K8, K9];
-  object: T;
-};
-
-export type BoundDocumentPathOfDepth10<
-  T extends Object,
-  K1 extends keyof T,
-  K2 extends keyof T[K1],
-  K3 extends keyof T[K1][K2],
-  K4 extends keyof T[K1][K2][K3],
-  K5 extends keyof T[K1][K2][K3][K4],
-  K6 extends keyof T[K1][K2][K3][K4][K5],
-  K7 extends keyof T[K1][K2][K3][K4][K5][K6],
-  K8 extends keyof T[K1][K2][K3][K4][K5][K6][K7],
-  K9 extends keyof T[K1][K2][K3][K4][K5][K6][K7][K8],
-  K10 extends keyof T[K1][K2][K3][K4][K5][K6][K7][K8][K9]
-> = string & {
-  keys: [K1, K2, K3, K4, K5, K6, K7, K8, K9, K10];
-  object: T;
-};
-
 export type BoundDocumentPath<
   T,
   K1,
@@ -144,22 +111,8 @@ export type BoundDocumentPath<
   K5,
   K6,
   K7,
-  K8,
-  K9,
-  K10
-> = RawBoundDocumentPath<
-  DeepRequired<T>,
-  K1,
-  K2,
-  K3,
-  K4,
-  K5,
-  K6,
-  K7,
-  K8,
-  K9,
-  K10
->;
+  K8
+> = RawBoundDocumentPath<DeepRequired<T>, K1, K2, K3, K4, K5, K6, K7, K8>;
 
 type RawBoundDocumentPath<
   T,
@@ -170,9 +123,7 @@ type RawBoundDocumentPath<
   K5,
   K6,
   K7,
-  K8,
-  K9,
-  K10
+  K8
 > = K1 extends keyof T
   ? K2 extends keyof T[K1]
     ? K3 extends keyof T[K1][K2]
@@ -181,34 +132,7 @@ type RawBoundDocumentPath<
           ? K6 extends keyof T[K1][K2][K3][K4][K5]
             ? K7 extends keyof T[K1][K2][K3][K4][K5][K6]
               ? K8 extends keyof T[K1][K2][K3][K4][K5][K6][K7]
-                ? K9 extends keyof T[K1][K2][K3][K4][K5][K6][K7][K8]
-                  ? K10 extends keyof T[K1][K2][K3][K4][K5][K6][K7][K8][K9]
-                    ? BoundDocumentPathOfDepth10<
-                        T,
-                        K1,
-                        K2,
-                        K3,
-                        K4,
-                        K5,
-                        K6,
-                        K7,
-                        K8,
-                        K9,
-                        K10
-                      >
-                    : BoundDocumentPathOfDepth9<
-                        T,
-                        K1,
-                        K2,
-                        K3,
-                        K4,
-                        K5,
-                        K6,
-                        K7,
-                        K8,
-                        K9
-                      >
-                  : BoundDocumentPathOfDepth8<T, K1, K2, K3, K4, K5, K6, K7, K8>
+                ? BoundDocumentPathOfDepth8<T, K1, K2, K3, K4, K5, K6, K7, K8>
                 : BoundDocumentPathOfDepth7<T, K1, K2, K3, K4, K5, K6, K7>
               : BoundDocumentPathOfDepth6<T, K1, K2, K3, K4, K5, K6>
             : BoundDocumentPathOfDepth5<T, K1, K2, K3, K4, K5>
@@ -308,50 +232,6 @@ interface RawBoundDocumentPathCreator<T> {
     k7: K7,
     k8: K8
   ): BoundDocumentPathOfDepth8<T, K1, K2, K3, K4, K5, K6, K7, K8>;
-  <
-    K1 extends keyof T,
-    K2 extends keyof T[K1],
-    K3 extends keyof T[K1][K2],
-    K4 extends keyof T[K1][K2][K3],
-    K5 extends keyof T[K1][K2][K3][K4],
-    K6 extends keyof T[K1][K2][K3][K4][K5],
-    K7 extends keyof T[K1][K2][K3][K4][K5][K6],
-    K8 extends keyof T[K1][K2][K3][K4][K5][K6][K7],
-    K9 extends keyof T[K1][K2][K3][K4][K5][K6][K7][K8]
-  >(
-    k1: K1,
-    k2: K2,
-    k3: K3,
-    k4: K4,
-    k5: K5,
-    k6: K6,
-    k7: K7,
-    k8: K8,
-    k9: K9
-  ): BoundDocumentPathOfDepth9<T, K1, K2, K3, K4, K5, K6, K7, K8, K9>;
-  <
-    K1 extends keyof T,
-    K2 extends keyof T[K1],
-    K3 extends keyof T[K1][K2],
-    K4 extends keyof T[K1][K2][K3],
-    K5 extends keyof T[K1][K2][K3][K4],
-    K6 extends keyof T[K1][K2][K3][K4][K5],
-    K7 extends keyof T[K1][K2][K3][K4][K5][K6],
-    K8 extends keyof T[K1][K2][K3][K4][K5][K6][K7],
-    K9 extends keyof T[K1][K2][K3][K4][K5][K6][K7][K8],
-    K10 extends keyof T[K1][K2][K3][K4][K5][K6][K7][K8][K9]
-  >(
-    k1: K1,
-    k2: K2,
-    k3: K3,
-    k4: K4,
-    k5: K5,
-    k6: K6,
-    k7: K7,
-    k8: K8,
-    k9: K9,
-    k10: K10
-  ): BoundDocumentPathOfDepth10<T, K1, K2, K3, K4, K5, K6, K7, K8, K9, K10>;
 }
 
 export function $path<T>(): BoundDocumentPathCreator<T> {
@@ -359,8 +239,8 @@ export function $path<T>(): BoundDocumentPathCreator<T> {
   return createDocumentPath;
 }
 
-export type NestedValue<
-  T,
+export type NestedValue<T, K1, K2, K3, K4, K5, K6, K7, K8> = RawNestedValue<
+  DeepRequired<T>,
   K1,
   K2,
   K3,
@@ -368,10 +248,8 @@ export type NestedValue<
   K5,
   K6,
   K7,
-  K8,
-  K9,
-  K10
-> = RawNestedValue<DeepRequired<T>, K1, K2, K3, K4, K5, K6, K7, K8, K9, K10>;
+  K8
+>;
 
 export type RawNestedValue<
   T,
@@ -382,9 +260,7 @@ export type RawNestedValue<
   K5,
   K6,
   K7,
-  K8,
-  K9,
-  K10
+  K8
 > = K1 extends keyof T
   ? K2 extends keyof T[K1]
     ? K3 extends keyof T[K1][K2]
@@ -393,11 +269,7 @@ export type RawNestedValue<
           ? K6 extends keyof T[K1][K2][K3][K4][K5]
             ? K7 extends keyof T[K1][K2][K3][K4][K5][K6]
               ? K8 extends keyof T[K1][K2][K3][K4][K5][K6][K7]
-                ? K9 extends keyof T[K1][K2][K3][K4][K5][K6][K7][K8]
-                  ? K10 extends keyof T[K1][K2][K3][K4][K5][K6][K7][K8][K9]
-                    ? T[K1][K2][K3][K4][K5][K6][K7][K8][K9][K10]
-                    : T[K1][K2][K3][K4][K5][K6][K7][K8][K9]
-                  : T[K1][K2][K3][K4][K5][K6][K7][K8]
+                ? T[K1][K2][K3][K4][K5][K6][K7][K8]
                 : T[K1][K2][K3][K4][K5][K6][K7]
               : T[K1][K2][K3][K4][K5][K6]
             : T[K1][K2][K3][K4][K5]
@@ -412,27 +284,11 @@ type NullableByBoolean<T, B extends boolean> = B extends true
   : T | null | undefined;
 
 interface NestedValueGetter {
-  <
-    T extends Object,
-    B extends boolean,
-    K1,
-    K2,
-    K3,
-    K4,
-    K5,
-    K6,
-    K7,
-    K8,
-    K9,
-    K10
-  >(
+  <T extends Object, B extends boolean, K1, K2, K3, K4, K5, K6, K7, K8>(
     obj: T,
-    path: BoundDocumentPath<T, K1, K2, K3, K4, K5, K6, K7, K8, K9, K10>,
+    path: BoundDocumentPath<T, K1, K2, K3, K4, K5, K6, K7, K8>,
     noNullAccess?: B
-  ): NullableByBoolean<
-    NestedValue<T, K1, K2, K3, K4, K5, K6, K7, K8, K9, K10>,
-    B
-  >;
+  ): NullableByBoolean<NestedValue<T, K1, K2, K3, K4, K5, K6, K7, K8>, B>;
   (obj: Object, path: string, noNullAccess?: boolean): any;
 }
 

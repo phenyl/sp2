@@ -37,6 +37,6 @@
     "nyc": "^13",
     "rimraf": "^2.6.2",
     "ts-node": "^7",
-    "typescript": "~3.2"
+    "typescript": "~3.4.1"
   }
 }

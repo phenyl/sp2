@@ -13,7 +13,7 @@ export function $retarget<T>(): BoundRetarget<T> {
 
 export interface BoundRetarget<T> {
   <
-    U extends NestedValue<T, K1, K2, K3, K4, K5, K6, K7, K8, K9, K10>,
+    U extends NestedValue<T, K1, K2, K3, K4, K5, K6, K7, K8>,
     K1,
     K2,
     K3,
@@ -21,16 +21,14 @@ export interface BoundRetarget<T> {
     K5,
     K6,
     K7,
-    K8,
-    K9,
-    K10
+    K8
   >(
-    docPath: BoundDocumentPath<T, K1, K2, K3, K4, K5, K6, K7, K8, K9, K10>,
+    docPath: BoundDocumentPath<T, K1, K2, K3, K4, K5, K6, K7, K8>,
     operation: BoundNonBreakingUpdateOperation<U>
   ): BoundNonBreakingUpdateOperation<T>;
 
   <
-    U extends NestedValue<T, K1, K2, K3, K4, K5, K6, K7, K8, K9, K10>,
+    U extends NestedValue<T, K1, K2, K3, K4, K5, K6, K7, K8>,
     K1,
     K2,
     K3,
@@ -38,11 +36,9 @@ export interface BoundRetarget<T> {
     K5,
     K6,
     K7,
-    K8,
-    K9,
-    K10
+    K8
   >(
-    docPath: BoundDocumentPath<T, K1, K2, K3, K4, K5, K6, K7, K8, K9, K10>,
+    docPath: BoundDocumentPath<T, K1, K2, K3, K4, K5, K6, K7, K8>,
     operation: BoundGeneralUpdateOperation<U>
   ): BoundGeneralUpdateOperation<T>;
 }

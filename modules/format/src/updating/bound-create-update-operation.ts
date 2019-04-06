@@ -1,7 +1,6 @@
 import {
   BoundDocumentPath,
   BoundDocumentPathOfDepth1,
-  BoundDocumentPathOfDepth10,
   BoundDocumentPathOfDepth2,
   BoundDocumentPathOfDepth3,
   BoundDocumentPathOfDepth4,
@@ -9,7 +8,6 @@ import {
   BoundDocumentPathOfDepth6,
   BoundDocumentPathOfDepth7,
   BoundDocumentPathOfDepth8,
-  BoundDocumentPathOfDepth9,
   DeepRequired,
   NestedValue,
 } from "../common/bound-document-path";
@@ -203,51 +201,8 @@ export interface RawUpdateOperationCreator<OP extends UpdateOperator, T> {
     value: ValueOf<OP, T[K1][K2][K3][K4][K5][K6][K7][K8]>
   ): BoundUpdateOperation<T, OP>;
 
-  <
-    K1 extends keyof T,
-    K2 extends keyof T[K1],
-    K3 extends keyof T[K1][K2],
-    K4 extends keyof T[K1][K2][K3],
-    K5 extends keyof T[K1][K2][K3][K4],
-    K6 extends keyof T[K1][K2][K3][K4][K5],
-    K7 extends keyof T[K1][K2][K3][K4][K5][K6],
-    K8 extends keyof T[K1][K2][K3][K4][K5][K6][K7],
-    K9 extends keyof T[K1][K2][K3][K4][K5][K6][K7][K8]
-  >(
-    docPath: BoundDocumentPathOfDepth9<T, K1, K2, K3, K4, K5, K6, K7, K8, K9>,
-    value: ValueOf<OP, T[K1][K2][K3][K4][K5][K6][K7][K8][K9]>
-  ): BoundUpdateOperation<T, OP>;
-
-  <
-    K1 extends keyof T,
-    K2 extends keyof T[K1],
-    K3 extends keyof T[K1][K2],
-    K4 extends keyof T[K1][K2][K3],
-    K5 extends keyof T[K1][K2][K3][K4],
-    K6 extends keyof T[K1][K2][K3][K4][K5],
-    K7 extends keyof T[K1][K2][K3][K4][K5][K6],
-    K8 extends keyof T[K1][K2][K3][K4][K5][K6][K7],
-    K9 extends keyof T[K1][K2][K3][K4][K5][K6][K7][K8],
-    K10 extends keyof T[K1][K2][K3][K4][K5][K6][K7][K8][K9]
-  >(
-    docPath: BoundDocumentPathOfDepth10<
-      T,
-      K1,
-      K2,
-      K3,
-      K4,
-      K5,
-      K6,
-      K7,
-      K8,
-      K9,
-      K10
-    >,
-    value: ValueOf<OP, T[K1][K2][K3][K4][K5][K6][K7][K8][K9][K10]>
-  ): BoundUpdateOperation<T, OP>;
-
-  <K1, K2, K3, K4, K5, K6, K7, K8, K9, K10>(
-    docPath: BoundDocumentPath<T, K1, K2, K3, K4, K5, K6, K7, K8, K9, K10>,
-    value: ValueOf<OP, NestedValue<T, K1, K2, K3, K4, K5, K6, K7, K8, K9, K10>>
+  <K1, K2, K3, K4, K5, K6, K7, K8>(
+    docPath: BoundDocumentPath<T, K1, K2, K3, K4, K5, K6, K7, K8>,
+    value: ValueOf<OP, NestedValue<T, K1, K2, K3, K4, K5, K6, K7, K8>>
   ): BoundUpdateOperation<T, OP>;
 }
