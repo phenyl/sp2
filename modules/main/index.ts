@@ -19,6 +19,7 @@ export {
   retargetAndRestore,
   retargetOperation,
   SimpleFindOperation,
+  sortByNotation,
   toMongoFindOperation,
   toMongoUpdateOperation,
   UpdateOperand,
