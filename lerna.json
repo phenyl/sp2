@@ -4,5 +4,5 @@
     "modules/*"
   ],
   "npmClient": "yarn",
-  "version": "1.4.1"
+  "version": "1.5.0"
 }
