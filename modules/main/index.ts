@@ -54,7 +54,9 @@ export {
   UpdateOperation,
   UpdateOperationReducer,
   UpdateOperationOrSetOperand,
+  UpdateOperationValidationResult,
   UpdateOperator,
+  validateUpdateOperation,
   visitFindOperation,
   visitUpdateOperation,
 } from "@sp2/format";
