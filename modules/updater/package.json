@@ -24,7 +24,8 @@
   },
   "dependencies": {
     "@sp2/format": "^1.4.1",
-    "@sp2/retriever": "^1.4.1"
+    "@sp2/retriever": "^1.4.1",
+    "fast-deep-equal": "^2.0.1"
   },
   "devDependencies": {
     "upbin": "^0.8.1"
