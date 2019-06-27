@@ -1,6 +1,6 @@
 {
   "name": "@sp2/retriever",
-  "version": "1.5.0",
+  "version": "1.5.1",
   "description": "@sp2/retriever retrieves objects in array by MongoDB-like find operations.",
   "bugs": "https://github.com/phenyl-js/sp2/issues",
   "repository": "phenyl-js/sp2",
@@ -23,7 +23,7 @@
     "watch": "upbin tsc --declaration --watch"
   },
   "dependencies": {
-    "@sp2/format": "^1.5.0",
+    "@sp2/format": "^1.5.1",
     "fast-deep-equal": "^2.0.1"
   },
   "devDependencies": {
