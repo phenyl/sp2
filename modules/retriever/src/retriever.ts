@@ -256,16 +256,12 @@ class Retriever {
     condValue: any
   ): boolean {
     let compareFunc = COMPARE_FUNC[operator];
-    const isQueryArrayForAnElement =
-      Array.isArray(target) && !Array.isArray(condValue);
 
-    if (isQueryArrayForAnElement) {
+    if (Array.isArray(target) && !Array.isArray(condValue)) {
       if (operator === "$ne") {
         compareFunc = COMPARE_FUNC["$eq"];
-        // @ts-ignore target is Array.
         return !target.some(val => compareFunc(val, condValue));
       }
-      // @ts-ignore target is Array.
       return target.some(val => compareFunc(val, condValue));
     }
 
