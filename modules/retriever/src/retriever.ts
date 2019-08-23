@@ -121,7 +121,7 @@ class Retriever {
     return this.classifySimpleFindOperation(values, where);
   }
 
-  static classifySimpleFindOperation<T>(
+  private static classifySimpleFindOperation<T>(
     values: T[],
     where: SimpleFindOperation
   ): Classified<T> {
@@ -250,7 +250,7 @@ class Retriever {
     return operator === "$in" ? isIn : !isIn;
   }
 
-  static compare(
+  private static compare(
     operator: ComparisonQueryOperator,
     target: any,
     condValue: any
