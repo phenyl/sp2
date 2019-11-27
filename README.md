@@ -21,7 +21,7 @@ Then, update Object by the operation without mutation.
 
 ```js
 const obj = { foo: { bar: "xx" } };
-const newObj = update(newObj, operation);
+const newObj = update(obj, operation);
 ```
 
 ---
