@@ -307,8 +307,32 @@ assert.deepEqual(newInstance, instance);
 ```
 
 Roughly, Restorable object is an instance which can re-created by passing its JSON object to the class constructor.
+Restorablility can be guaranteed by `@Restorable` decorator (TypeScript's grammer, see the following example).
 
-See [is-restorable](https://github.com/phenyl-js/phenyl/tree/master/modules/is-restorable) module for more detail.
+```ts
+import { Restorable } from "sp2";
+
+@Restorable<Person>()
+class Person {
+  name: Name;
+
+  constructor(params: { name: { first: string; last: string } }) {
+    this.name = new Name(params.name);
+  }
+}
+
+@Restorable<Name>()
+class Name {
+  first: string;
+  last: string;
+  constructor(params: { first: string; last: string }) {
+    this.first = params.first;
+    this.last = params.last;
+  }
+}
+```
+
+Awkward look it seems, it actually checks if the passed class is restorable.
 
 ### Parameters
 
