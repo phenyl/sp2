@@ -8,6 +8,10 @@
   "repository": "phenyl-js/sp2",
   "license": "Apache-2.0",
   "author": "Shin Suzuki <shinout310@gmail.com>",
+  "engines": {
+    "npm": ">=6.13.4",
+    "yarn": ">=1.21.1"
+  },
   "scripts": {
     "prepare": "yarn bootstrap && yarn build",
     "bootstrap": "lerna bootstrap",
