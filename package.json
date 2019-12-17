@@ -13,6 +13,7 @@
     "yarn": ">=1.21.1"
   },
   "scripts": {
+    "prepare": "yarn bootstrap && yarn build",
     "bootstrap": "lerna bootstrap",
     "build": "lerna run build",
     "cov-test": "lerna run cov-test",
