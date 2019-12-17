@@ -4,7 +4,7 @@ executors:
   default:
     working_directory: ~/repo
     docker:
-      - image: circleci/node:8.11.3
+      - image: circleci/node:8.16.2
 
 commands:
   prepare:
