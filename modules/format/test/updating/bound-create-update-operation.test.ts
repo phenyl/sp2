@@ -22,6 +22,30 @@ describe("$op", () => {
       });
     });
 
+    it("contains $set function accepting input of objects without keys when they are optional", () => {
+      type TargetObject = {
+        foo?: { bar?: { first?: string; last?: string; age: number } };
+      };
+      const { $set } = $op<TargetObject>();
+      const $docPath = $path<TargetObject>();
+      const operation = $set($docPath("foo", "bar"), { age: 30 });
+      assert.deepStrictEqual(operation, {
+        $set: { "foo.bar": { age: 30 } },
+      });
+    });
+
+    it("contains $set function accepting 'undefined' when it's optional", () => {
+      type TargetObject = {
+        foo?: { bar?: number };
+      };
+      const { $set } = $op<TargetObject>();
+      const $docPath = $path<TargetObject>();
+      const operation = $set($docPath("foo"), undefined);
+      assert.deepStrictEqual(operation, {
+        $set: { foo: undefined },
+      });
+    });
+
     it("contains $set function accepting accesses to optional props", () => {
       type TargetObject = { foo?: { bar?: { name?: string }[] } };
       const { $set } = $op<TargetObject>();
