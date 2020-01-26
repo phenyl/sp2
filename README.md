@@ -1,7 +1,7 @@
 # sp2 - Immutable updater of objects using JSON operation
 
-[![CircleCI](https://img.shields.io/circleci/project/github/phenyl-js/sp2/master.svg?style=flat)](https://circleci.com/gh/phenyl-js/sp2/tree/master)
-[![Coverage Status](https://coveralls.io/repos/github/phenyl-js/sp2/badge.svg?branch=master)](https://coveralls.io/github/phenyl-js/sp2?branch=master)
+[![CircleCI](https://img.shields.io/circleci/project/github/phenyl/sp2/master.svg?style=flat)](https://circleci.com/gh/phenyl/sp2/tree/master)
+[![Coverage Status](https://coveralls.io/repos/github/phenyl/sp2/badge.svg?branch=master)](https://coveralls.io/github/phenyl/sp2?branch=master)
 [![npm version](https://img.shields.io/npm/v/sp2.svg?style=flat)](https://www.npmjs.com/package/sp2)
 ![types](https://img.shields.io/npm/types/sp2.svg?style=flat)
 ![npm downloads](https://img.shields.io/npm/dm/@sp2/updater.svg?style=flat)
@@ -37,7 +37,7 @@ const newObj = update(obj, operation);
 - **Various operators**: `$push`, `$inc`, `$unset`, etc...
 - **Class instance support**: it can restore instance when it's restorable.
 
-The name "sp2" is derived from the name of orbital of chemical bond used in phenyl group. This was once a core function of [Phenyl](https://github.com/phenyl-js/phenyl) framework and extracted from the library.
+The name "sp2" is derived from the name of orbital of chemical bond used in phenyl group. This was once a core function of [Phenyl](https://github.com/phenyl/phenyl) framework and extracted from the library.
 Another meaning of "sp2" is **S**tate-operating **P**rocedures with **P**ortability.
 Portability means that procedures are expressed by JSON data. This makes procedures portable and applicable over different environments.
 
@@ -523,7 +523,7 @@ assert.deepEqual(newObj.categories, ["news", "cooking-recipes"]);
 ### \$pull
 
 An operator to remove elements in array matching the given condition.
-For all condition definitions, see [mongolike-operations/find-operation.js.flow](https://github.com/phenyl-js/phenyl/blob/master/modules/mongolike-operations/decls/query-condition.js.flow).
+For all condition definitions, see [mongolike-operations/find-operation.js.flow](https://github.com/phenyl/phenyl/blob/master/modules/mongolike-operations/decls/query-condition.js.flow).
 
 They are almost compatible with [MongoDB's Query Operators](https://docs.mongodb.com/manual/reference/operator/query/).
 
@@ -801,7 +801,7 @@ const operation = { $restore: { foo: Foo } };
 JSON.stringify(updateOperationToJSON(operation)); // {"$restore":{"foo":""}}
 ```
 
-[oad-utils](https://github.com/phenyl-js/phenyl/blob/master/modules/oad-utils) is also one of Phenyl family offering OAD-related utility functions.
+[oad-utils](https://github.com/phenyl/phenyl/blob/master/modules/oad-utils) is also one of Phenyl family offering OAD-related utility functions.
 
 # LICENSE
 
