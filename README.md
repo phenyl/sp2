@@ -332,7 +332,7 @@ class Name {
 }
 ```
 
-Awkward look it seems, it actually checks if the passed class is restorable.
+It may look awkward, but it actually checks if the passed class is restorable.
 
 ### Parameters
 
