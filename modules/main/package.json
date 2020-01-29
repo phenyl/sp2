@@ -35,6 +35,6 @@
     "@sp2/updater": "^1.5.1"
   },
   "devDependencies": {
-    "upbin": "^0.8.1"
+    "upbin": "0.8.2"
   }
 }

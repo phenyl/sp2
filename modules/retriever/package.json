@@ -27,7 +27,7 @@
     "fast-deep-equal": "^3.0.0"
   },
   "devDependencies": {
-    "upbin": "^0.8.1"
+    "upbin": "0.8.2"
   },
   "publishConfig": {
     "access": "public"

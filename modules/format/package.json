@@ -23,7 +23,7 @@
     "watch": "upbin tsc --declaration --watch"
   },
   "devDependencies": {
-    "upbin": "^0.8.1"
+    "upbin": "0.8.2"
   },
   "publishConfig": {
     "access": "public"
