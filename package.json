@@ -35,13 +35,13 @@
   },
   "devDependencies": {
     "@types/mocha": "^5",
-    "@types/node": "~8.10",
+    "@types/node": "^13.5.0",
     "coveralls": "^3.0.2",
     "lcov-result-merger": "^3.1.0",
     "mocha": "^5",
     "nyc": "^13",
     "rimraf": "^2.6.2",
     "ts-node": "^7",
-    "typescript": "~3.4.1"
+    "typescript": "~3.7.3"
   }
 }
