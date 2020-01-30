@@ -2,8 +2,8 @@
   "name": "@sp2/updater",
   "version": "1.6.0-alpha.0",
   "description": "@sp2/updater provides core update() function of sp2.",
-  "bugs": "https://github.com/phenyl-js/sp2/issues",
-  "repository": "phenyl-js/sp2",
+  "bugs": "https://github.com/phenyl/sp2/issues",
+  "repository": "phenyl/sp2",
   "license": "Apache-2.0",
   "author": "Shin Suzuki <shinout310@gmail.com>",
   "files": [

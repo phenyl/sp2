@@ -2,8 +2,8 @@
   "name": "sp2",
   "version": "1.6.0-alpha.0",
   "description": "Immutable updater of objects using JSON operation.",
-  "bugs": "https://github.com/phenyl-js/sp2/issues",
-  "repository": "phenyl-js/sp2",
+  "bugs": "https://github.com/phenyl/sp2/issues",
+  "repository": "phenyl/sp2",
   "keywords": [
     "immutable",
     "mutable",
