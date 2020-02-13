@@ -1,6 +1,6 @@
 {
   "name": "@sp2/updater",
-  "version": "1.6.0-alpha.1",
+  "version": "1.6.0",
   "description": "@sp2/updater provides core update() function of sp2.",
   "bugs": "https://github.com/phenyl/sp2/issues",
   "repository": "phenyl/sp2",
@@ -23,8 +23,8 @@
     "watch": "upbin tsc --declaration --watch"
   },
   "dependencies": {
-    "@sp2/format": "^1.6.0-alpha.1",
-    "@sp2/retriever": "^1.6.0-alpha.1",
+    "@sp2/format": "^1.6.0",
+    "@sp2/retriever": "^1.6.0",
     "fast-deep-equal": "^3.0.0"
   },
   "devDependencies": {
