@@ -1,6 +1,6 @@
 # sp2 - Immutable updater of objects using JSON operation
 
-[![Github Workflow](https://github.com/phenyl/sp2/workflows/CI/badge.svg)](https://github.com/phenyl/sp2/actions)
+[![Github Workflow](https://github.com/phenyl/sp2/workflows/Build/badge.svg)](https://github.com/phenyl/sp2/actions)
 [![Coverage Status](https://coveralls.io/repos/github/phenyl/sp2/badge.svg?branch=master)](https://coveralls.io/github/phenyl/sp2?branch=master)
 [![npm version](https://img.shields.io/npm/v/sp2.svg?style=flat)](https://www.npmjs.com/package/sp2)
 ![types](https://img.shields.io/npm/types/sp2.svg?style=flat)
