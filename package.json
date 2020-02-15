@@ -3,9 +3,9 @@
   "version": "1",
   "private": true,
   "description": "Immutable updater of objects using JSON operation. This is the monorepo root and `modules/main` package is the one that is published.",
-  "homepage": "https://github.com/phenyl-js/sp2#readme",
-  "bugs": "https://github.com/phenyl-js/sp2/issues",
-  "repository": "phenyl-js/sp2",
+  "homepage": "https://github.com/phenyl/sp2#readme",
+  "bugs": "https://github.com/phenyl/sp2/issues",
+  "repository": "phenyl/sp2",
   "license": "Apache-2.0",
   "author": "Shin Suzuki <shinout310@gmail.com>",
   "engines": {
@@ -29,18 +29,18 @@
     "eslint": "5.16.0",
     "eslint-plugin-prettier": "3.1.2",
     "eslint-plugin-typescript": "0.14.0",
-    "lerna": "3.4.3",
+    "lerna": "3.20.2",
     "prettier": "1.19.1",
     "typescript-eslint-parser": "21.0.2"
   },
   "devDependencies": {
-    "@types/mocha": "5.2.7",
+    "@types/mocha": "7.0.1",
     "@types/node": "13.5.1",
     "coveralls": "3.0.9",
     "lcov-result-merger": "3.1.0",
-    "mocha": "5.2.0",
+    "mocha": "7.0.1",
     "nyc": "13.3.0",
-    "rimraf": "2.7.1",
+    "rimraf": "3.0.2",
     "ts-node": "7.0.1",
     "typescript": "3.7.5"
   }
