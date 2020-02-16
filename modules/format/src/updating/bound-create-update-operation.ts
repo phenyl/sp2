@@ -8,7 +8,6 @@ import {
   BoundDocumentPathOfDepth6,
   BoundDocumentPathOfDepth7,
   BoundDocumentPathOfDepth8,
-  DeepRequired,
   NestedValue,
 } from "../common/bound-document-path";
 import {
@@ -120,85 +119,120 @@ type ValueOf<OP extends UpdateOperator, V> = BoundUpdateOperandItemValue<
   RegularUpdateValue<OP>
 >[OP];
 
-export type UpdateOperationCreator<
-  OP extends UpdateOperator,
-  T
-> = RawUpdateOperationCreator<OP, DeepRequired<T> | T>;
-
-export interface RawUpdateOperationCreator<OP extends UpdateOperator, T> {
+export interface UpdateOperationCreator<OP extends UpdateOperator, T> {
   <K1 extends keyof T>(
     docPath: BoundDocumentPathOfDepth1<T, K1>,
     value: ValueOf<OP, T[K1]>
   ): BoundUpdateOperation<T, OP>;
 
-  <K1 extends keyof T, K2 extends keyof T[K1]>(
+  <K1 extends keyof T, K2 extends keyof Required<T>[K1]>(
     docPath: BoundDocumentPathOfDepth2<T, K1, K2>,
-    value: ValueOf<OP, T[K1][K2]>
-  ): BoundUpdateOperation<T, OP>;
-
-  <K1 extends keyof T, K2 extends keyof T[K1], K3 extends keyof T[K1][K2]>(
-    docPath: BoundDocumentPathOfDepth3<T, K1, K2, K3>,
-    value: ValueOf<OP, T[K1][K2][K3]>
+    value: ValueOf<OP, Required<T>[K1][K2]>
   ): BoundUpdateOperation<T, OP>;
 
   <
     K1 extends keyof T,
-    K2 extends keyof T[K1],
-    K3 extends keyof T[K1][K2],
-    K4 extends keyof T[K1][K2][K3]
+    K2 extends keyof Required<T>[K1],
+    K3 extends keyof Required<Required<T>[K1]>[K2]
+  >(
+    docPath: BoundDocumentPathOfDepth3<T, K1, K2, K3>,
+    value: ValueOf<OP, Required<Required<T>[K1]>[K2][K3]>
+  ): BoundUpdateOperation<T, OP>;
+
+  <
+    K1 extends keyof T,
+    K2 extends keyof Required<T>[K1],
+    K3 extends keyof Required<Required<T>[K1]>[K2],
+    K4 extends keyof Required<Required<Required<T>[K1]>[K2]>[K3]
   >(
     docPath: BoundDocumentPathOfDepth4<T, K1, K2, K3, K4>,
-    value: ValueOf<OP, T[K1][K2][K3][K4]>
+    value: ValueOf<OP, Required<Required<Required<T>[K1]>[K2]>[K3][K4]>
   ): BoundUpdateOperation<T, OP>;
 
   <
     K1 extends keyof T,
-    K2 extends keyof T[K1],
-    K3 extends keyof T[K1][K2],
-    K4 extends keyof T[K1][K2][K3],
-    K5 extends keyof T[K1][K2][K3][K4]
+    K2 extends keyof Required<T>[K1],
+    K3 extends keyof Required<Required<T>[K1]>[K2],
+    K4 extends keyof Required<Required<Required<T>[K1]>[K2]>[K3],
+    K5 extends keyof Required<Required<Required<Required<T>[K1]>[K2]>[K3]>[K4]
   >(
     docPath: BoundDocumentPathOfDepth5<T, K1, K2, K3, K4, K5>,
-    value: ValueOf<OP, T[K1][K2][K3][K4][K5]>
+    value: ValueOf<
+      OP,
+      Required<Required<Required<Required<T>[K1]>[K2]>[K3]>[K4][K5]
+    >
   ): BoundUpdateOperation<T, OP>;
 
   <
     K1 extends keyof T,
-    K2 extends keyof T[K1],
-    K3 extends keyof T[K1][K2],
-    K4 extends keyof T[K1][K2][K3],
-    K5 extends keyof T[K1][K2][K3][K4],
-    K6 extends keyof T[K1][K2][K3][K4][K5]
+    K2 extends keyof Required<T>[K1],
+    K3 extends keyof Required<Required<T>[K1]>[K2],
+    K4 extends keyof Required<Required<Required<T>[K1]>[K2]>[K3],
+    K5 extends keyof Required<Required<Required<Required<T>[K1]>[K2]>[K3]>[K4],
+    K6 extends keyof Required<
+      Required<Required<Required<Required<T>[K1]>[K2]>[K3]>[K4]
+    >[K5]
   >(
     docPath: BoundDocumentPathOfDepth6<T, K1, K2, K3, K4, K5, K6>,
-    value: ValueOf<OP, T[K1][K2][K3][K4][K5][K6]>
+    value: ValueOf<
+      OP,
+      Required<
+        Required<Required<Required<Required<T>[K1]>[K2]>[K3]>[K4]
+      >[K5][K6]
+    >
   ): BoundUpdateOperation<T, OP>;
 
   <
     K1 extends keyof T,
-    K2 extends keyof T[K1],
-    K3 extends keyof T[K1][K2],
-    K4 extends keyof T[K1][K2][K3],
-    K5 extends keyof T[K1][K2][K3][K4],
-    K6 extends keyof T[K1][K2][K3][K4][K5],
-    K7 extends keyof T[K1][K2][K3][K4][K5][K6]
+    K2 extends keyof Required<T>[K1],
+    K3 extends keyof Required<Required<T>[K1]>[K2],
+    K4 extends keyof Required<Required<Required<T>[K1]>[K2]>[K3],
+    K5 extends keyof Required<Required<Required<Required<T>[K1]>[K2]>[K3]>[K4],
+    K6 extends keyof Required<
+      Required<Required<Required<Required<T>[K1]>[K2]>[K3]>[K4]
+    >[K5],
+    K7 extends keyof Required<
+      Required<Required<Required<Required<Required<T>[K1]>[K2]>[K3]>[K4]>[K5]
+    >[K6]
   >(
     docPath: BoundDocumentPathOfDepth7<T, K1, K2, K3, K4, K5, K6, K7>,
-    value: ValueOf<OP, T[K1][K2][K3][K4][K5][K6][K7]>
+    value: ValueOf<
+      OP,
+      Required<
+        Required<Required<Required<Required<Required<T>[K1]>[K2]>[K3]>[K4]>[K5]
+      >[K6][K7]
+    >
   ): BoundUpdateOperation<T, OP>;
 
   <
     K1 extends keyof T,
-    K2 extends keyof T[K1],
-    K3 extends keyof T[K1][K2],
-    K4 extends keyof T[K1][K2][K3],
-    K5 extends keyof T[K1][K2][K3][K4],
-    K6 extends keyof T[K1][K2][K3][K4][K5],
-    K7 extends keyof T[K1][K2][K3][K4][K5][K6],
-    K8 extends keyof T[K1][K2][K3][K4][K5][K6][K7]
+    K2 extends keyof Required<T>[K1],
+    K3 extends keyof Required<Required<T>[K1]>[K2],
+    K4 extends keyof Required<Required<Required<T>[K1]>[K2]>[K3],
+    K5 extends keyof Required<Required<Required<Required<T>[K1]>[K2]>[K3]>[K4],
+    K6 extends keyof Required<
+      Required<Required<Required<Required<T>[K1]>[K2]>[K3]>[K4]
+    >[K5],
+    K7 extends keyof Required<
+      Required<Required<Required<Required<Required<T>[K1]>[K2]>[K3]>[K4]>[K5]
+    >[K6],
+    K8 extends keyof Required<
+      Required<
+        Required<Required<Required<Required<Required<T>[K1]>[K2]>[K3]>[K4]>[K5]
+      >[K6]
+    >[K7]
   >(
     docPath: BoundDocumentPathOfDepth8<T, K1, K2, K3, K4, K5, K6, K7, K8>,
-    value: ValueOf<OP, T[K1][K2][K3][K4][K5][K6][K7][K8]>
+    value: ValueOf<
+      OP,
+      Required<
+        Required<
+          Required<
+            Required<Required<Required<Required<T>[K1]>[K2]>[K3]>[K4]
+          >[K5]
+        >[K6]
+      >[K7][K8]
+    >
   ): BoundUpdateOperation<T, OP>;
 
   <K1, K2, K3, K4, K5, K6, K7, K8>(
