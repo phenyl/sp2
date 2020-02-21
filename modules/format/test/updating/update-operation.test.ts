@@ -15,6 +15,8 @@ describe("Restorable", () => {
         this.name = new Name(params.name);
       }
     }
+
+    @Restorable<Name>()
     class Name {
       first: string;
       last: string;
