@@ -176,7 +176,14 @@ function setValue<T extends Object>(
 ): T {
   const revObjsToBeAssigned = getObjectsToBeAssigned(obj, docPath).reverse();
   const revKeys = parseDocumentPath(docPath).reverse();
-  // assert(objsToBeAssigned.length === keys.length)
+  // assert(revObjsToBeAssigned.length === revKeys.length)
+  // assert(revObjsToBeAssigned.length >= 1)
+
+  // @ts-ignore revObjsToBeAssigned[0] always exists.
+  const originalValue = revObjsToBeAssigned[0][revKeys[0]];
+  if (deepEqual(originalValue, value)) {
+    return obj;
+  }
 
   return revKeys.reduce((newValue, key, i) => {
     const objToBeAssigned = revObjsToBeAssigned[i];
