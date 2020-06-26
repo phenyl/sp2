@@ -42,6 +42,6 @@
     "nyc": "13.3.0",
     "rimraf": "3.0.2",
     "ts-node": "7.0.1",
-    "typescript": "3.8.3"
+    "typescript": "3.9.5"
   }
 }
