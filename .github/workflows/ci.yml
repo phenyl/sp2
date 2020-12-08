@@ -15,12 +15,6 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - run: ls modules/*/package.json | xargs -n1 md5sum > deps.txt
-      - name: Use Yarn@1.21.1
-        # https://yarnpkg.com/ja/docs/install#linux-tab
-        run: |
-          sudo unlink $(which yarn)
-          curl -o- -L https://yarnpkg.com/install.sh | bash -s -- --version 1.21.1
-          echo ::set-env name=PATH::$(echo $HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH)
       - name: Display version of Node.js, npm, Yarn
         run: |
           node -v
@@ -53,12 +47,6 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - run: ls modules/*/package.json | xargs -n1 md5sum > deps.txt
-      - name: Use Yarn@1.21.1
-        # https://yarnpkg.com/ja/docs/install#linux-tab
-        run: |
-          sudo unlink $(which yarn)
-          curl -o- -L https://yarnpkg.com/install.sh | bash -s -- --version 1.21.1
-          echo ::set-env name=PATH::$(echo $HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH)
       - name: Display version of Node.js, npm, Yarn
         run: |
           node -v
@@ -92,13 +80,6 @@ jobs:
           node-version: ${{ matrix.node-version }}
       - run: sudo apt-get install mongodb-clients
       - run: ls modules/*/package.json | xargs -n1 md5sum > deps.txt
-      - name: Use Yarn@1.21.1
-        # https://yarnpkg.com/ja/docs/install#linux-tab
-        run: |
-          sudo unlink $(which yarn)
-          curl -o- -L https://yarnpkg.com/install.sh | bash -s -- --version 1.21.1
-          echo ::set-env name=PATH::$(echo $HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH)
-
       - name: Display version of Node.js, npm, Yarn
         run: |
           node -v
