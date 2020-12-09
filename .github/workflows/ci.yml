@@ -15,12 +15,6 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - run: ls modules/*/package.json | xargs -n1 md5sum > deps.txt
-      - name: Use Yarn@1.21.1
-        # https://yarnpkg.com/ja/docs/install#linux-tab
-        run: |
-          sudo unlink $(which yarn)
-          curl -o- -L https://yarnpkg.com/install.sh | bash -s -- --version 1.21.1
-          echo ::set-env name=PATH::$(echo $HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH)
       - name: Display version of Node.js, npm, Yarn
         run: |
           node -v
@@ -53,12 +47,6 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - run: ls modules/*/package.json | xargs -n1 md5sum > deps.txt
-      - name: Use Yarn@1.21.1
-        # https://yarnpkg.com/ja/docs/install#linux-tab
-        run: |
-          sudo unlink $(which yarn)
-          curl -o- -L https://yarnpkg.com/install.sh | bash -s -- --version 1.21.1
-          echo ::set-env name=PATH::$(echo $HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH)
       - name: Display version of Node.js, npm, Yarn
         run: |
           node -v
@@ -90,15 +78,12 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
-      - run: sudo apt-get install mongodb-clients
-      - run: ls modules/*/package.json | xargs -n1 md5sum > deps.txt
-      - name: Use Yarn@1.21.1
-        # https://yarnpkg.com/ja/docs/install#linux-tab
+      - name: Install MongoDB Client
         run: |
-          sudo unlink $(which yarn)
-          curl -o- -L https://yarnpkg.com/install.sh | bash -s -- --version 1.21.1
-          echo ::set-env name=PATH::$(echo $HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH)
-
+          echo "deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu bionic/mongodb-org/4.4 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-4.4.list
+          sudo apt-get update
+          sudo apt-get install -y mongodb-org
+      - run: ls modules/*/package.json | xargs -n1 md5sum > deps.txt
       - name: Display version of Node.js, npm, Yarn
         run: |
           node -v
