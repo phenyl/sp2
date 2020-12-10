@@ -14,21 +14,18 @@
   "main": "./lib/index.js",
   "types": "./lib/index.d.ts",
   "scripts": {
-    "build": "upbin tsc --declaration",
-    "cov-test": "upbin nyc npm test --color always",
-    "clean": "upbin rimraf $(cat ../../.temporary-files)",
-    "lint": "upbin eslint 'src/**/*.ts' 'test/**/*.ts' --fix",
-    "test": "upbin mocha --require ts-node/register 'test/**/*.test.ts' --color always",
-    "type-check": "upbin tsc --noEmit",
-    "watch": "upbin tsc --declaration --watch"
+    "build": "tsc --declaration",
+    "cov-test": "nyc npm test --color always",
+    "clean": "rimraf $(cat ../../.temporary-files)",
+    "lint": "eslint 'src/**/*.ts' 'test/**/*.ts' --fix",
+    "test": "mocha --require ts-node/register 'test/**/*.test.ts' --color always",
+    "type-check": "tsc --noEmit",
+    "watch": "tsc --declaration --watch"
   },
   "dependencies": {
     "@sp2/format": "^1.6.3",
     "@sp2/retriever": "^1.6.3",
     "fast-deep-equal": "^3.0.0"
-  },
-  "devDependencies": {
-    "upbin": "0.9.2"
   },
   "publishConfig": {
     "access": "public"
