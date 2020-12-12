@@ -13,8 +13,7 @@
     "yarn": ">=1.21.1"
   },
   "scripts": {
-    "prepare": "yarn bootstrap && yarn build",
-    "bootstrap": "lerna bootstrap",
+    "prepare": "yarn build",
     "build": "lerna run build",
     "cov-test": "lerna run cov-test",
     "clean": "lerna run clean && lerna clean --yes",
@@ -25,15 +24,16 @@
     "type-check": "lerna run type-check",
     "watch": "lerna run watch --parallel"
   },
-  "dependencies": {
+  "workspaces":{
+    "packages": ["modules/*"]
+  },
+  "devDependencies": {
     "eslint": "5.16.0",
     "eslint-plugin-prettier": "3.2.0",
     "eslint-plugin-typescript": "0.14.0",
     "lerna": "3.20.2",
     "prettier": "2.0.5",
-    "typescript-eslint-parser": "21.0.2"
-  },
-  "devDependencies": {
+    "typescript-eslint-parser": "21.0.2",
     "@types/mocha": "8.2.0",
     "@types/node": "13.7.7",
     "coveralls": "3.0.9",
