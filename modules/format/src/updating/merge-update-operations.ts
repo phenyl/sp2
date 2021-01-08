@@ -37,8 +37,7 @@ export function mergeNormalizedUpdateOperations(
   const ret: GeneralRegularUpdateOperation = {};
   operations.forEach((operation) => {
     Object.entries(operation).forEach(([k, v]) => {
-      // eslint-disable-next-line no-prototype-builtins
-      if (!ret.hasOwnProperty(k)) {
+      if (!(k in ret)) {
         // @ts-ignore
         ret[k] = Object.assign({}, v);
       } else if (k === "$push" || k === "$addToSet") {
@@ -72,8 +71,7 @@ function mergeIncOperand<OP extends "$inc">(
   const ret: RegularUpdateOperand<OP> = Object.assign({}, operand1);
 
   Object.entries(operand2).forEach(([k, v]) => {
-    // eslint-disable-next-line no-prototype-builtins
-    if (ret.hasOwnProperty(k)) {
+    if (k in ret) {
       ret[k] = ret[k] + v;
     } else {
       ret[k] = v;
@@ -89,8 +87,7 @@ function mergeMinOperand<OP extends "$min">(
   const ret: RegularUpdateOperand<OP> = Object.assign({}, operand1);
 
   Object.entries(operand2).forEach(([k, v]) => {
-    // eslint-disable-next-line no-prototype-builtins
-    if (ret.hasOwnProperty(k)) {
+    if (k in ret) {
       // @ts-ignore
       ret[k] = Math.min(ret[k], v);
     } else {
@@ -107,8 +104,7 @@ function mergeMaxOperand<OP extends "$max">(
   const ret: RegularUpdateOperand<OP> = Object.assign({}, operand1);
 
   Object.entries(operand2).forEach(([k, v]) => {
-    // eslint-disable-next-line no-prototype-builtins
-    if (ret.hasOwnProperty(k)) {
+    if (k in ret) {
       // @ts-ignore
       ret[k] = Math.max(ret[k], v);
     } else {
@@ -125,8 +121,7 @@ function mergeMulOperand<OP extends "$mul">(
   const ret: RegularUpdateOperand<OP> = Object.assign({}, operand1);
 
   Object.entries(operand2).forEach(([k, v]) => {
-    // eslint-disable-next-line no-prototype-builtins
-    if (ret.hasOwnProperty(k)) {
+    if (k in ret) {
       ret[k] = ret[k] * v;
     } else {
       ret[k] = v;
