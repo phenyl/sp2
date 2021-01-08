@@ -14,12 +14,14 @@ export function createUpdateOperation<OP extends UpdateOperator>(
   ...params: KeyValuePair<OP>[]
 ): UpdateOperation<OP>;
 
+// eslint-disable-next-line no-redeclare
 export function createUpdateOperation<OP extends UpdateOperator>(
   operator: OP,
   key: DocumentPath,
   value: UpdateValue<OP>
 ): UpdateOperation<OP>;
 
+// eslint-disable-next-line no-redeclare
 export function createUpdateOperation<OP extends UpdateOperator>(
   operator: OP,
   ...params: KeyValuePair<OP>[] | KeyValuePair<OP>
@@ -31,13 +33,10 @@ export function createUpdateOperation<OP extends UpdateOperator>(
   }
   // @ts-ignore compatible with UpdateOperation<OP>
   return {
-    [operator]: params.reduce(
-      (acc, [docPath, value]) => {
-        acc[docPath] = value;
-        return acc;
-      },
-      <UpdateOperand<OP>>{}
-    ),
+    [operator]: params.reduce((acc, [docPath, value]) => {
+      acc[docPath] = value;
+      return acc;
+    }, <UpdateOperand<OP>>{}),
   };
 }
 

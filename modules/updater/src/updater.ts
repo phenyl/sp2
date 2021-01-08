@@ -151,9 +151,10 @@ function updateByOperator<OP extends UpdateOperator>(
     case "$push":
       return Updater.$push(obj, <RegularUpdateOperand<"$push">>operand);
     case "$currentDate":
-      return Updater.$currentDate(obj, <RegularUpdateOperand<"$currentDate">>(
-        operand
-      ));
+      return Updater.$currentDate(
+        obj,
+        <RegularUpdateOperand<"$currentDate">>operand
+      );
     case "$bit":
       return Updater.$bit(obj, <RegularUpdateOperand<"$bit">>operand);
     case "$unset":
@@ -391,7 +392,7 @@ class Updater {
       (valuesToSet, docPath, valuesToPull) => {
         let arr = prepareArrayFromOperand(obj, docPath, "$pullAll");
         arr = arr.filter(
-          val => !valuesToPull.some(arrEl => deepEqual(arrEl, val))
+          (val) => !valuesToPull.some((arrEl) => deepEqual(arrEl, val))
         );
         return { [docPath]: arr, ...valuesToSet };
       },
@@ -549,11 +550,7 @@ class Updater {
           );
         }
 
-        if (
-          lastObj == null ||
-          lastAttr == null ||
-          !lastObj.hasOwnProperty(lastAttr)
-        ) {
+        if (lastObj == null || lastAttr == null || !(lastAttr in lastObj)) {
           return newObj;
         }
 
