@@ -41,7 +41,7 @@ export function parseDocumentPath(docPath: DocumentPath): Array<Attribute> {
     .split(/\\./)
     .join("$$$")
     .split(/[.[]/)
-    .map(attribute =>
+    .map((attribute) =>
       attribute.charAt(attribute.length - 1) === "]"
         ? parseInt(attribute.slice(0, -1))
         : unescapePathDelimiter(attribute.split("$$$").join("\\."))
@@ -120,7 +120,7 @@ export function hasOwnNestedProperty(
 ): boolean {
   let currentObj = obj;
   for (const key of parseDocumentPath(docPath)) {
-    if (!currentObj || !currentObj.hasOwnProperty(key)) {
+    if (!currentObj || !(key in currentObj)) {
       return false;
     }
     // @ts-ignore this access must be safe.

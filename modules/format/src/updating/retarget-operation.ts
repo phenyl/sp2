@@ -18,11 +18,13 @@ export function retargetOperation(
   _operation: NonBreakingUpdateOperationOrSetOperand
 ): NonBreakingRegularUpdateOperation;
 
+// eslint-disable-next-line no-redeclare
 export function retargetOperation(
   docPath: DocumentPath,
   _operation: UpdateOperationOrSetOperand
 ): GeneralRegularUpdateOperation;
 
+// eslint-disable-next-line no-redeclare
 export function retargetOperation(
   docPath: DocumentPath,
   _operation: Object
@@ -52,11 +54,13 @@ export function retargetAndRestore(
   _operation: NonBreakingUpdateOperationOrSetOperand
 ): NonBreakingRegularUpdateOperation;
 
+// eslint-disable-next-line no-redeclare
 export function retargetAndRestore(
   docPath: DocumentPath,
   _operation: UpdateOperationOrSetOperand
 ): GeneralRegularUpdateOperation;
 
+// eslint-disable-next-line no-redeclare
 export function retargetAndRestore(
   docPath: DocumentPath,
   _operation: Object
