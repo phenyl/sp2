@@ -75,7 +75,7 @@ export const updateOpearationCreator = {
 Object.freeze(updateOpearationCreator);
 
 export function $op<T>(): {
-  [OP in UpdateOperator]: UpdateOperationCreator<OP, T>
+  [OP in UpdateOperator]: UpdateOperationCreator<OP, T>;
 } {
   // @ts-ignore surpress for typing.
   return updateOpearationCreator;
@@ -105,8 +105,8 @@ type BoundUpdateOperandItemValue<V, ItemVal> = {
   $pop: V extends any[] ? ItemVal : never;
   $pull: V extends any[] ? ItemVal : never;
   $pullAll: V extends (infer U)[] ? U[] : never;
-  $push: V extends (infer U)[] ? (U | RegularPushUpdateValue<U>) : never;
-  $currentDate: V extends (string | Date | number) ? ItemVal : never;
+  $push: V extends (infer U)[] ? U | RegularPushUpdateValue<U> : never;
+  $currentDate: V extends string | Date | number ? ItemVal : never;
   $bit: V extends number ? ItemVal : never;
   $unset: ItemVal;
   $restore: V extends Object ? ItemVal : never;
@@ -119,42 +119,56 @@ type ValueOf<OP extends UpdateOperator, V> = BoundUpdateOperandItemValue<
   RegularUpdateValue<OP>
 >[OP];
 
+type Attribute = number | string;
+
 export interface UpdateOperationCreator<OP extends UpdateOperator, T> {
-  <K1 extends keyof T>(
+  <K1 extends Extract<keyof T, Attribute>>(
     docPath: BoundDocumentPathOfDepth1<T, K1>,
     value: ValueOf<OP, T[K1]>
   ): BoundUpdateOperation<T, OP>;
 
-  <K1 extends keyof T, K2 extends keyof Required<T>[K1]>(
+  <
+    K1 extends Extract<keyof T, Attribute>,
+    K2 extends Extract<keyof Required<T>[K1], Attribute>
+  >(
     docPath: BoundDocumentPathOfDepth2<T, K1, K2>,
     value: ValueOf<OP, Required<T>[K1][K2]>
   ): BoundUpdateOperation<T, OP>;
 
   <
-    K1 extends keyof T,
-    K2 extends keyof Required<T>[K1],
-    K3 extends keyof Required<Required<T>[K1]>[K2]
+    K1 extends Extract<keyof T, Attribute>,
+    K2 extends Extract<keyof Required<T>[K1], Attribute>,
+    K3 extends Extract<keyof Required<Required<T>[K1]>[K2], Attribute>
   >(
     docPath: BoundDocumentPathOfDepth3<T, K1, K2, K3>,
     value: ValueOf<OP, Required<Required<T>[K1]>[K2][K3]>
   ): BoundUpdateOperation<T, OP>;
 
   <
-    K1 extends keyof T,
-    K2 extends keyof Required<T>[K1],
-    K3 extends keyof Required<Required<T>[K1]>[K2],
-    K4 extends keyof Required<Required<Required<T>[K1]>[K2]>[K3]
+    K1 extends Extract<keyof T, Attribute>,
+    K2 extends Extract<keyof Required<T>[K1], Attribute>,
+    K3 extends Extract<keyof Required<Required<T>[K1]>[K2], Attribute>,
+    K4 extends Extract<
+      keyof Required<Required<Required<T>[K1]>[K2]>[K3],
+      Attribute
+    >
   >(
     docPath: BoundDocumentPathOfDepth4<T, K1, K2, K3, K4>,
     value: ValueOf<OP, Required<Required<Required<T>[K1]>[K2]>[K3][K4]>
   ): BoundUpdateOperation<T, OP>;
 
   <
-    K1 extends keyof T,
-    K2 extends keyof Required<T>[K1],
-    K3 extends keyof Required<Required<T>[K1]>[K2],
-    K4 extends keyof Required<Required<Required<T>[K1]>[K2]>[K3],
-    K5 extends keyof Required<Required<Required<Required<T>[K1]>[K2]>[K3]>[K4]
+    K1 extends Extract<keyof T, Attribute>,
+    K2 extends Extract<keyof Required<T>[K1], Attribute>,
+    K3 extends Extract<keyof Required<Required<T>[K1]>[K2], Attribute>,
+    K4 extends Extract<
+      keyof Required<Required<Required<T>[K1]>[K2]>[K3],
+      Attribute
+    >,
+    K5 extends Extract<
+      keyof Required<Required<Required<Required<T>[K1]>[K2]>[K3]>[K4],
+      Attribute
+    >
   >(
     docPath: BoundDocumentPathOfDepth5<T, K1, K2, K3, K4, K5>,
     value: ValueOf<
@@ -164,14 +178,23 @@ export interface UpdateOperationCreator<OP extends UpdateOperator, T> {
   ): BoundUpdateOperation<T, OP>;
 
   <
-    K1 extends keyof T,
-    K2 extends keyof Required<T>[K1],
-    K3 extends keyof Required<Required<T>[K1]>[K2],
-    K4 extends keyof Required<Required<Required<T>[K1]>[K2]>[K3],
-    K5 extends keyof Required<Required<Required<Required<T>[K1]>[K2]>[K3]>[K4],
-    K6 extends keyof Required<
-      Required<Required<Required<Required<T>[K1]>[K2]>[K3]>[K4]
-    >[K5]
+    K1 extends Extract<keyof T, Attribute>,
+    K2 extends Extract<keyof Required<T>[K1], Attribute>,
+    K3 extends Extract<keyof Required<Required<T>[K1]>[K2], Attribute>,
+    K4 extends Extract<
+      keyof Required<Required<Required<T>[K1]>[K2]>[K3],
+      Attribute
+    >,
+    K5 extends Extract<
+      keyof Required<Required<Required<Required<T>[K1]>[K2]>[K3]>[K4],
+      Attribute
+    >,
+    K6 extends Extract<
+      keyof Required<
+        Required<Required<Required<Required<T>[K1]>[K2]>[K3]>[K4]
+      >[K5],
+      Attribute
+    >
   >(
     docPath: BoundDocumentPathOfDepth6<T, K1, K2, K3, K4, K5, K6>,
     value: ValueOf<
@@ -183,17 +206,29 @@ export interface UpdateOperationCreator<OP extends UpdateOperator, T> {
   ): BoundUpdateOperation<T, OP>;
 
   <
-    K1 extends keyof T,
-    K2 extends keyof Required<T>[K1],
-    K3 extends keyof Required<Required<T>[K1]>[K2],
-    K4 extends keyof Required<Required<Required<T>[K1]>[K2]>[K3],
-    K5 extends keyof Required<Required<Required<Required<T>[K1]>[K2]>[K3]>[K4],
-    K6 extends keyof Required<
-      Required<Required<Required<Required<T>[K1]>[K2]>[K3]>[K4]
-    >[K5],
-    K7 extends keyof Required<
-      Required<Required<Required<Required<Required<T>[K1]>[K2]>[K3]>[K4]>[K5]
-    >[K6]
+    K1 extends Extract<keyof T, Attribute>,
+    K2 extends Extract<keyof Required<T>[K1], Attribute>,
+    K3 extends Extract<keyof Required<Required<T>[K1]>[K2], Attribute>,
+    K4 extends Extract<
+      keyof Required<Required<Required<T>[K1]>[K2]>[K3],
+      Attribute
+    >,
+    K5 extends Extract<
+      keyof Required<Required<Required<Required<T>[K1]>[K2]>[K3]>[K4],
+      Attribute
+    >,
+    K6 extends Extract<
+      keyof Required<
+        Required<Required<Required<Required<T>[K1]>[K2]>[K3]>[K4]
+      >[K5],
+      Attribute
+    >,
+    K7 extends Extract<
+      keyof Required<
+        Required<Required<Required<Required<Required<T>[K1]>[K2]>[K3]>[K4]>[K5]
+      >[K6],
+      Attribute
+    >
   >(
     docPath: BoundDocumentPathOfDepth7<T, K1, K2, K3, K4, K5, K6, K7>,
     value: ValueOf<
@@ -205,22 +240,39 @@ export interface UpdateOperationCreator<OP extends UpdateOperator, T> {
   ): BoundUpdateOperation<T, OP>;
 
   <
-    K1 extends keyof T,
-    K2 extends keyof Required<T>[K1],
-    K3 extends keyof Required<Required<T>[K1]>[K2],
-    K4 extends keyof Required<Required<Required<T>[K1]>[K2]>[K3],
-    K5 extends keyof Required<Required<Required<Required<T>[K1]>[K2]>[K3]>[K4],
-    K6 extends keyof Required<
-      Required<Required<Required<Required<T>[K1]>[K2]>[K3]>[K4]
-    >[K5],
-    K7 extends keyof Required<
-      Required<Required<Required<Required<Required<T>[K1]>[K2]>[K3]>[K4]>[K5]
-    >[K6],
-    K8 extends keyof Required<
-      Required<
+    K1 extends Extract<keyof T, Attribute>,
+    K2 extends Extract<keyof Required<T>[K1], Attribute>,
+    K3 extends Extract<keyof Required<Required<T>[K1]>[K2], Attribute>,
+    K4 extends Extract<
+      keyof Required<Required<Required<T>[K1]>[K2]>[K3],
+      Attribute
+    >,
+    K5 extends Extract<
+      keyof Required<Required<Required<Required<T>[K1]>[K2]>[K3]>[K4],
+      Attribute
+    >,
+    K6 extends Extract<
+      keyof Required<
+        Required<Required<Required<Required<T>[K1]>[K2]>[K3]>[K4]
+      >[K5],
+      Attribute
+    >,
+    K7 extends Extract<
+      keyof Required<
         Required<Required<Required<Required<Required<T>[K1]>[K2]>[K3]>[K4]>[K5]
-      >[K6]
-    >[K7]
+      >[K6],
+      Attribute
+    >,
+    K8 extends Extract<
+      keyof Required<
+        Required<
+          Required<
+            Required<Required<Required<Required<T>[K1]>[K2]>[K3]>[K4]
+          >[K5]
+        >[K6]
+      >[K7],
+      Attribute
+    >
   >(
     docPath: BoundDocumentPathOfDepth8<T, K1, K2, K3, K4, K5, K6, K7, K8>,
     value: ValueOf<
