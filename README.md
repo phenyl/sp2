@@ -240,17 +240,17 @@ const newObj = updateProp(obj, "baz", { $inc: { biz: 1 } });
 assert(newObj.baz.biz === 3);
 ```
 
-## retarget(docPath, operation)
+## retargetOperation(docPath, operation)
 
 Retarget the given UpdateOperation to the given docPath.
 
 It helps realize loose coupling between parent object and child Object.
 Even if a parent-object-handling layer doesn't know its child object's shape,
-the layer can create an UpdateOperation to modify its child object using `retarget()`
+the layer can create an UpdateOperation to modify its child object using `retargetOperation()`
 if only child-object-handling layer offers the child object's UpdateOperation.
 
 ```js
-retarget(
+retargetOperation(
   docPath: DocumentPath,
   operation: SetOperand | UpdateOperation
 ): UpdateOperation
@@ -271,10 +271,10 @@ New operation object is returned.
 ### Example
 
 ```js
-import { retarget, update } from "sp2";
+import { retargetOperation, update } from "sp2";
 const parent = { child: { foo: { bar: 123 } } };
 const childOp = { $mul: { "foo.bar": 2 } };
-const parentOp = retarget(parent, "child", childOp);
+const parentOp = retargetOperation("child", childOp);
 
 const newParent = update(parent, parentOp);
 assert.deepEqual(parentOp, { $mul: { "child.foo.bar": 2 } });
