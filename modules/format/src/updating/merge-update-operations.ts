@@ -55,6 +55,9 @@ export function mergeNormalizedUpdateOperations(
       } else if (k === "$mul") {
         // @ts-ignore
         ret[k] = mergeMulOperand(ret[k], v);
+      } else if (k === "$pull") {
+        // @ts-ignore
+        ret[k] = mergePullOperand(ret[k], v);
       } else {
         // @ts-ignore
         ret[k] = overwriteOperand(ret[k], v);
@@ -123,6 +126,40 @@ function mergeMulOperand<OP extends "$mul">(
   Object.entries(operand2).forEach(([k, v]) => {
     if (k in ret) {
       ret[k] = ret[k] * v;
+    } else {
+      ret[k] = v;
+    }
+  });
+  return ret;
+}
+
+function mergePullOperand<OP extends "$pull">(
+  operand1: RegularUpdateOperand<OP>,
+  operand2: RegularUpdateOperand<OP>
+): RegularUpdateOperand<OP> {
+  // Merge $pull で考慮するパターン ($neq などは除く。query は$eq のみに限定)
+  // {anyPath: $eq: anyValue} + {anyPath: $eq: anyValue}
+  // {anyPath: $in: [anyValues]} + {anyPath: $eq: anyValue}  // mergeを繰り返す場合、このパターンも必要
+  // {anyPath: $eq: anyValue} + {anyPath: $in: [anyValues]}
+  // {anyPath: $in: [anyValues]} + {anyPath: $in: }   //  複数回deleteするだけなら不要そうだが念のため
+  // {anyPath1: $eq: anyValue} + {anyPath2: $eq: anyValue}
+  // {anyPath1: $eq: anyValue} + {anyPath2: $in: [anyValues]}
+  // {anyPath1: $eq: anyValue, anyPath2:$eq: anyValue2} + {anyPath: $eq: anyValue}  // このパターンもできそう
+  const ret: RegularUpdateOperand<OP> = Object.assign({}, operand1);
+  Object.entries(operand2).forEach(([k, v]) => {
+    if (k in ret) {
+      const query1 = ret[k];
+      const query2 = v;
+      if ("$eq" in query1 && "$eq" in query2) {
+        // FIXME: 同じ値の場合は省略できる
+        ret[k] = { $in: [query1["$eq"], query2["$eq"]] };
+      } else if ("$in" in query1 && "$eq" in query2) {
+        // FIXME: a は配列とは限らない？
+        ret[k] = { $in: [...(query1["$in"] as []), query2["$eq"]] };
+      } else if ("$eq" in query1 && "$in" in query2) {
+        // FIXME: a は配列とは限らない？
+        ret[k] = { $in: [query1["$eq"], ...(query2["$in"] as [])] };
+      }
     } else {
       ret[k] = v;
     }

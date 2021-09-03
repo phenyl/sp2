@@ -107,6 +107,38 @@ describe("mergeUpdateOperations", () => {
     });
   });
 
+  it("merge multiple $pull with $eq operands", () => {
+    const op1 = { $pull: { foo: { $eq: "1" } } };
+    const op2 = { $pull: { foo: { $eq: "2" } } };
+    const mergedOperation = mergeUpdateOperations(op1, op2);
+    assert.deepStrictEqual(mergedOperation, {
+      $pull: { foo: { $in: ["1", "2"] } },
+    });
+  });
+  it("merge $pull with $eq operand and $pull with $in operand", () => {
+    const op1 = { $pull: { foo: { $eq: "1" } } };
+    const op2 = { $pull: { foo: { $in: ["2", "3"] } } };
+    assert.deepStrictEqual(mergeUpdateOperations(op1, op2), {
+      $pull: { foo: { $in: ["1", "2", "3"] } },
+    });
+    assert.deepStrictEqual(mergeUpdateOperations(op2, op1), {
+      $pull: { foo: { $in: ["2", "3", "1"] } },
+    });
+  });
+
+  it("merge multiple $pull with $eq and $unset operands", () => {
+    const op1 = { $unset: { "hoge[0]": "" }, $pull: { foo: { $eq: "1" } } };
+    const op2 = { $unset: { "hoge[1]": "" }, $pull: { foo: { $eq: "2" } } };
+    const mergedOperation = mergeUpdateOperations(op1, op2);
+    assert.deepStrictEqual(mergedOperation, {
+      $unset: {
+        "hoge[0]": "",
+        "hoge[1]": "",
+      },
+      $pull: { foo: { $in: ["1", "2"] } },
+    });
+  });
+
   it("overwrites former objects to the latter one if the same key is given in $set operand", () => {
     const op1 = { name: { first: "John" } };
     const op2 = { name: { middle: "M" } };
