@@ -137,28 +137,43 @@ function mergePullOperand<OP extends "$pull">(
   operand1: RegularUpdateOperand<OP>,
   operand2: RegularUpdateOperand<OP>
 ): RegularUpdateOperand<OP> {
-  // Merge $pull で考慮するパターン ($neq などは除く。query は$eq のみに限定)
-  // {anyPath: $eq: anyValue} + {anyPath: $eq: anyValue}
-  // {anyPath: $in: [anyValues]} + {anyPath: $eq: anyValue}  // mergeを繰り返す場合、このパターンも必要
-  // {anyPath: $eq: anyValue} + {anyPath: $in: [anyValues]}
-  // {anyPath: $in: [anyValues]} + {anyPath: $in: }   //  複数回deleteするだけなら不要そうだが念のため
-  // {anyPath1: $eq: anyValue} + {anyPath2: $eq: anyValue}
-  // {anyPath1: $eq: anyValue} + {anyPath2: $in: [anyValues]}
-  // {anyPath1: $eq: anyValue, anyPath2:$eq: anyValue2} + {anyPath: $eq: anyValue}  // このパターンもできそう
   const ret: RegularUpdateOperand<OP> = Object.assign({}, operand1);
   Object.entries(operand2).forEach(([k, v]) => {
     if (k in ret) {
       const query1 = ret[k];
       const query2 = v;
       if ("$eq" in query1 && "$eq" in query2) {
-        // FIXME: 同じ値の場合は省略できる
-        ret[k] = { $in: [query1["$eq"], query2["$eq"]] };
+        // case: {anyPath: $eq: anyValue} + {anyPath: $eq: anyValue}
+        const value1 = query1["$eq"];
+        const value2 = query2["$eq"];
+        if (value1 == value2) {
+          ret[k] = v;
+        } else {
+          ret[k] = { $in: [query1["$eq"], query2["$eq"]] };
+        }
       } else if ("$in" in query1 && "$eq" in query2) {
-        // FIXME: a は配列とは限らない？
-        ret[k] = { $in: [...(query1["$in"] as []), query2["$eq"]] };
-      } else if ("$eq" in query1 && "$in" in query2) {
-        // FIXME: a は配列とは限らない？
-        ret[k] = { $in: [query1["$eq"], ...(query2["$in"] as [])] };
+        // case: {anyPath: $in: [anyValues]} + {anyPath: $eq: anyValue}
+        const values = query1["$in"] as any[];
+        const value = query2["$eq"];
+        if (values.includes(value)) {
+          ret[k] = query1;
+        } else {
+          ret[k] = { $in: [...values, value] };
+        }
+      } else if ("$in" in query2 && "$eq" in query1) {
+        // case: {anyPath: $eq: anyValue} + {anyPath: $in: [anyValues]}
+        const values = query2["$in"] as any[];
+        const value = query1["$eq"];
+        if (values.includes(value)) {
+          ret[k] = query2;
+        } else {
+          ret[k] = { $in: [value, ...values] };
+        }
+      } else if ("$in" in query1 && "$in" in query2) {
+        // case: {anyPath: $in: [anyValues]} + {anyPath: $in: [anyvalues]}
+        const values1 = query1["$in"] as any[];
+        const values2 = query2["$in"] as any[];
+        ret[k] = { $in: Array.from(new Set(values1.concat(values2))) };
       }
     } else {
       ret[k] = v;
