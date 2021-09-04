@@ -143,7 +143,7 @@ function mergePullOperand<OP extends "$pull">(
       const query1 = ret[k];
       const query2 = v;
       if ("$eq" in query1 && "$eq" in query2) {
-        // merge $eq query operators
+        // merges $eq query operators
         const value1 = query1["$eq"];
         const value2 = query2["$eq"];
         if (deepEqual(value1, value2)) {
@@ -151,8 +151,16 @@ function mergePullOperand<OP extends "$pull">(
         } else {
           ret[k] = { $in: [query1["$eq"], query2["$eq"]] };
         }
+      } else if ("$in" in query1 && "$in" in query2) {
+        // merges $in query operators
+        const values1 = query1["$in"] as any[];
+        const values2 = query2["$in"] as any[];
+        const diffValues2 = values2.filter((v2) =>
+          values1.every((v1) => !deepEqual(v1, v2))
+        );
+        ret[k] = { $in: values1.concat(diffValues2) };
       } else if ("$in" in query1 && "$eq" in query2) {
-        // merge $in and $eq $eq query operators
+        // merges $in and $eq query operators
         const values = query1["$in"] as any[];
         const value = query2["$eq"];
         if (values.some((v) => deepEqual(v, value))) {
@@ -160,8 +168,8 @@ function mergePullOperand<OP extends "$pull">(
         } else {
           ret[k] = { $in: [...values, value] };
         }
-      } else if ("$in" in query2 && "$eq" in query1) {
-        // merge $eq and $in $eq query operators
+      } else if ("$eq" in query1 && "$in" in query2) {
+        // merges $eq and $in query operators
         const values = query2["$in"] as any[];
         const value = query1["$eq"];
         if (values.some((v) => deepEqual(v, value))) {
@@ -169,14 +177,6 @@ function mergePullOperand<OP extends "$pull">(
         } else {
           ret[k] = { $in: [value, ...values] };
         }
-      } else if ("$in" in query1 && "$in" in query2) {
-        // merge $in query operators
-        const values1 = query1["$in"] as any[];
-        const values2 = query2["$in"] as any[];
-        const diffValues2 = values2.filter((v2) =>
-          values1.every((v1) => !deepEqual(v1, v2))
-        );
-        ret[k] = { $in: values1.concat(diffValues2) };
       }
     } else {
       ret[k] = v;
