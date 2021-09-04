@@ -118,9 +118,13 @@ describe("mergeUpdateOperations", () => {
   it("merges $pull operands with same $eq query operators", () => {
     const op1 = { $pull: { foo: { $eq: "1" } } };
     const op2 = { $pull: { foo: { $eq: "1" } } };
-    const mergedOperation = mergeUpdateOperations(op1, op2);
-    assert.deepStrictEqual(mergedOperation, {
+    assert.deepStrictEqual(mergeUpdateOperations(op1, op2), {
       $pull: { foo: { $eq: "1" } },
+    });
+    const op3 = { $pull: { foo: { $eq: { first: "John" } } } };
+    const op4 = { $pull: { foo: { $eq: { first: "John" } } } };
+    assert.deepStrictEqual(mergeUpdateOperations(op3, op4), {
+      $pull: { foo: { $eq: { first: "John" } } },
     });
   });
   it("merges $pull operands with $eq and $in query operators", () => {
@@ -141,6 +145,14 @@ describe("mergeUpdateOperations", () => {
     });
     assert.deepStrictEqual(mergeUpdateOperations(op2, op1), {
       $pull: { foo: { $in: ["1", "2"] } },
+    });
+    const op3 = { $pull: { foo: { $eq: { first: "John" } } } };
+    const op4 = { $pull: { foo: { $in: [{ first: "John" }, "2"] } } };
+    assert.deepStrictEqual(mergeUpdateOperations(op3, op4), {
+      $pull: { foo: { $in: [{ first: "John" }, "2"] } },
+    });
+    assert.deepStrictEqual(mergeUpdateOperations(op4, op3), {
+      $pull: { foo: { $in: [{ first: "John" }, "2"] } },
     });
   });
   it("merges $pull operands with $eq and $in query operators", () => {

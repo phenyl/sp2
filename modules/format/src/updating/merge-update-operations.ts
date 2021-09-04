@@ -1,3 +1,4 @@
+import deepEqual from "fast-deep-equal";
 import {
   GeneralRegularUpdateOperation,
   NonBreakingRegularUpdateOperation,
@@ -6,7 +7,6 @@ import {
   UpdateOperationOrSetOperand,
   UpdateOperator,
 } from "./update-operation";
-
 import { normalizeUpdateOperation } from "./normalize-update-operation";
 
 /**
@@ -146,7 +146,7 @@ function mergePullOperand<OP extends "$pull">(
         // merge $eq query operators
         const value1 = query1["$eq"];
         const value2 = query2["$eq"];
-        if (value1 === value2) {
+        if (deepEqual(value1, value2)) {
           ret[k] = v;
         } else {
           ret[k] = { $in: [query1["$eq"], query2["$eq"]] };
@@ -155,7 +155,7 @@ function mergePullOperand<OP extends "$pull">(
         // merge $in and $eq $eq query operators
         const values = query1["$in"] as any[];
         const value = query2["$eq"];
-        if (values.includes(value)) {
+        if (values.some((v) => deepEqual(v, value))) {
           ret[k] = query1;
         } else {
           ret[k] = { $in: [...values, value] };
@@ -164,7 +164,7 @@ function mergePullOperand<OP extends "$pull">(
         // merge $eq and $in $eq query operators
         const values = query2["$in"] as any[];
         const value = query1["$eq"];
-        if (values.includes(value)) {
+        if (values.some((v) => deepEqual(v, value))) {
           ret[k] = query2;
         } else {
           ret[k] = { $in: [value, ...values] };
