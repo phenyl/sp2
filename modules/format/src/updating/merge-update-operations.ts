@@ -156,7 +156,7 @@ function mergePullOperand<OP extends "$pull">(
         const values = query1["$in"] as any[];
         const value = query2["$eq"];
         if (values.some((v) => deepEqual(v, value))) {
-          ret[k] = query1;
+          ret[k] = values;
         } else {
           ret[k] = { $in: [...values, value] };
         }
@@ -165,7 +165,7 @@ function mergePullOperand<OP extends "$pull">(
         const values = query2["$in"] as any[];
         const value = query1["$eq"];
         if (values.some((v) => deepEqual(v, value))) {
-          ret[k] = query2;
+          ret[k] = values;
         } else {
           ret[k] = { $in: [value, ...values] };
         }
