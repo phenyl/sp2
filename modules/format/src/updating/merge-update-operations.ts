@@ -173,7 +173,10 @@ function mergePullOperand<OP extends "$pull">(
         // merge $in query operators
         const values1 = query1["$in"] as any[];
         const values2 = query2["$in"] as any[];
-        ret[k] = { $in: Array.from(new Set(values1.concat(values2))) };
+        const diffValues2 = values2.filter((v2) =>
+          values1.every((v1) => !deepEqual(v1, v2))
+        );
+        ret[k] = { $in: values1.concat(diffValues2) };
       }
     } else {
       ret[k] = v;
