@@ -149,7 +149,7 @@ function mergePullOperand<OP extends "$pull">(
         if (deepEqual(value1, value2)) {
           ret[k] = v;
         } else {
-          ret[k] = { $in: [query1["$eq"], query2["$eq"]] };
+          ret[k] = { $in: [value1, value2] };
         }
       } else if ("$in" in query1 && "$in" in query2) {
         // merges $in query operators
