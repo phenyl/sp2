@@ -143,16 +143,16 @@ function mergePullOperand<OP extends "$pull">(
       const query1 = ret[k];
       const query2 = v;
       if ("$eq" in query1 && "$eq" in query2) {
-        // case: {anyPath: $eq: anyValue} + {anyPath: $eq: anyValue}
+        // merge $eq query operators
         const value1 = query1["$eq"];
         const value2 = query2["$eq"];
-        if (value1 == value2) {
+        if (value1 === value2) {
           ret[k] = v;
         } else {
           ret[k] = { $in: [query1["$eq"], query2["$eq"]] };
         }
       } else if ("$in" in query1 && "$eq" in query2) {
-        // case: {anyPath: $in: [anyValues]} + {anyPath: $eq: anyValue}
+        // merge $in and $eq $eq query operators
         const values = query1["$in"] as any[];
         const value = query2["$eq"];
         if (values.includes(value)) {
@@ -161,7 +161,7 @@ function mergePullOperand<OP extends "$pull">(
           ret[k] = { $in: [...values, value] };
         }
       } else if ("$in" in query2 && "$eq" in query1) {
-        // case: {anyPath: $eq: anyValue} + {anyPath: $in: [anyValues]}
+        // merge $eq and $in $eq query operators
         const values = query2["$in"] as any[];
         const value = query1["$eq"];
         if (values.includes(value)) {
@@ -170,7 +170,7 @@ function mergePullOperand<OP extends "$pull">(
           ret[k] = { $in: [value, ...values] };
         }
       } else if ("$in" in query1 && "$in" in query2) {
-        // case: {anyPath: $in: [anyValues]} + {anyPath: $in: [anyvalues]}
+        // merge $in query operators
         const values1 = query1["$in"] as any[];
         const values2 = query2["$in"] as any[];
         ret[k] = { $in: Array.from(new Set(values1.concat(values2))) };
