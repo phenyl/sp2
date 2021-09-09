@@ -79,11 +79,6 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           cache: 'yarn'
-      - name: Install MongoDB Client
-        run: |
-          echo "deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu bionic/mongodb-org/4.4 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-4.4.list
-          sudo apt-get update
-          sudo apt-get install -y mongodb-org
       - run: ls modules/*/package.json | xargs -n1 md5sum > deps.txt
       - name: Display version of Node.js, npm, Yarn
         run: |
