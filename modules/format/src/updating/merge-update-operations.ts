@@ -1,3 +1,4 @@
+import deepEqual from "fast-deep-equal";
 import {
   GeneralRegularUpdateOperation,
   NonBreakingRegularUpdateOperation,
@@ -6,7 +7,6 @@ import {
   UpdateOperationOrSetOperand,
   UpdateOperator,
 } from "./update-operation";
-
 import { normalizeUpdateOperation } from "./normalize-update-operation";
 
 /**
@@ -55,6 +55,9 @@ export function mergeNormalizedUpdateOperations(
       } else if (k === "$mul") {
         // @ts-ignore
         ret[k] = mergeMulOperand(ret[k], v);
+      } else if (k === "$pull") {
+        // @ts-ignore
+        ret[k] = mergePullOperand(ret[k], v);
       } else {
         // @ts-ignore
         ret[k] = overwriteOperand(ret[k], v);
@@ -123,6 +126,58 @@ function mergeMulOperand<OP extends "$mul">(
   Object.entries(operand2).forEach(([k, v]) => {
     if (k in ret) {
       ret[k] = ret[k] * v;
+    } else {
+      ret[k] = v;
+    }
+  });
+  return ret;
+}
+
+function mergePullOperand<OP extends "$pull">(
+  operand1: RegularUpdateOperand<OP>,
+  operand2: RegularUpdateOperand<OP>
+): RegularUpdateOperand<OP> {
+  const ret: RegularUpdateOperand<OP> = Object.assign({}, operand1);
+  Object.entries(operand2).forEach(([k, v]) => {
+    if (k in ret) {
+      const query1 = ret[k];
+      const query2 = v;
+      if ("$eq" in query1 && "$eq" in query2) {
+        // merges $eq query operators
+        const value1 = query1["$eq"];
+        const value2 = query2["$eq"];
+        if (deepEqual(value1, value2)) {
+          ret[k] = v;
+        } else {
+          ret[k] = { $in: [value1, value2] };
+        }
+      } else if ("$in" in query1 && "$in" in query2) {
+        // merges $in query operators
+        const values1 = query1["$in"] as any[];
+        const values2 = query2["$in"] as any[];
+        const diffValues2 = values2.filter((v2) =>
+          values1.every((v1) => !deepEqual(v1, v2))
+        );
+        ret[k] = { $in: values1.concat(diffValues2) };
+      } else if ("$in" in query1 && "$eq" in query2) {
+        // merges $in and $eq query operators
+        const values = query1["$in"] as any[];
+        const value = query2["$eq"];
+        if (values.some((v) => deepEqual(v, value))) {
+          ret[k] = query1;
+        } else {
+          ret[k] = { $in: [...values, value] };
+        }
+      } else if ("$eq" in query1 && "$in" in query2) {
+        // merges $eq and $in query operators
+        const values = query2["$in"] as any[];
+        const value = query1["$eq"];
+        if (values.some((v) => deepEqual(v, value))) {
+          ret[k] = query2;
+        } else {
+          ret[k] = { $in: [value, ...values] };
+        }
+      }
     } else {
       ret[k] = v;
     }
