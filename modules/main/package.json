@@ -1,6 +1,6 @@
 {
   "name": "sp2",
-  "version": "1.6.3",
+  "version": "1.6.4",
   "description": "Immutable updater of objects using JSON operation.",
   "bugs": "https://github.com/phenyl/sp2/issues",
   "repository": "phenyl/sp2",
@@ -30,8 +30,8 @@
     "type-check": "tsc --noEmit"
   },
   "dependencies": {
-    "@sp2/format": "^1.6.3",
-    "@sp2/retriever": "^1.6.3",
-    "@sp2/updater": "^1.6.3"
+    "@sp2/format": "^1.6.4",
+    "@sp2/retriever": "^1.6.4",
+    "@sp2/updater": "^1.6.4"
   }
 }
