@@ -159,7 +159,7 @@ type RegularUpdateValueMap = {
   $currentDate: true | { $type: "timestamp" | "date" };
   $bit: { and?: number; or?: number; xor?: number };
   $unset: "";
-  $restore: "" | ({ new (plain: Object): Object }); // strictFunctionTypes should be false.
+  $restore: "" | { new (plain: Object): Object }; // strictFunctionTypes should be false.
   $rename: string;
   $append: Object;
 };
@@ -185,7 +185,7 @@ type BroaderUpdateValueMap = {
   $push: any;
   $currentDate: true | { $type: string };
   $unset: string;
-  $restore: string | ({ new (plain: Object): Object });
+  $restore: string | { new (plain: Object): Object };
 };
 
 /**
@@ -210,7 +210,7 @@ export type UpdateValue<
  * }
  */
 type RegularUpdateOperationMap = {
-  [K in keyof RegularUpdateValueMap]: RegularUpdateOperand<K>
+  [K in keyof RegularUpdateValueMap]: RegularUpdateOperand<K>;
 };
 
 /**
@@ -223,7 +223,7 @@ type RegularUpdateOperationMap = {
  * }
  */
 type UpdateOperationMap = {
-  [K in keyof RegularUpdateValueMap]: UpdateOperand<K>
+  [K in keyof RegularUpdateValueMap]: UpdateOperand<K>;
 };
 
 /**
@@ -306,7 +306,7 @@ export type UpdateOperationOrSetOperand =
   | UpdateOperand<"$set">;
 
 type NonFunctionPropNames<T> = {
-  [K in keyof T]: T[K] extends Function ? never : K
+  [K in keyof T]: T[K] extends Function ? never : K;
 }[keyof T];
 
 type NonFunctionProps<T> = Pick<T, NonFunctionPropNames<T>>;

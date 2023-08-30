@@ -142,7 +142,13 @@ function mergePullOperand<OP extends "$pull">(
     if (k in ret) {
       const query1 = ret[k];
       const query2 = v;
-      if ("$eq" in query1 && "$eq" in query2) {
+
+      if (
+        typeof query1 === "object" &&
+        typeof query2 === "object" &&
+        "$eq" in query1 &&
+        "$eq" in query2
+      ) {
         // merges $eq query operators
         const value1 = query1["$eq"];
         const value2 = query2["$eq"];
@@ -151,7 +157,12 @@ function mergePullOperand<OP extends "$pull">(
         } else {
           ret[k] = { $in: [value1, value2] };
         }
-      } else if ("$in" in query1 && "$in" in query2) {
+      } else if (
+        typeof query1 === "object" &&
+        typeof query2 === "object" &&
+        "$in" in query1 &&
+        "$in" in query2
+      ) {
         // merges $in query operators
         const values1 = query1["$in"] as any[];
         const values2 = query2["$in"] as any[];
@@ -159,7 +170,12 @@ function mergePullOperand<OP extends "$pull">(
           values1.every((v1) => !deepEqual(v1, v2))
         );
         ret[k] = { $in: values1.concat(diffValues2) };
-      } else if ("$in" in query1 && "$eq" in query2) {
+      } else if (
+        typeof query1 === "object" &&
+        typeof query2 === "object" &&
+        "$in" in query1 &&
+        "$eq" in query2
+      ) {
         // merges $in and $eq query operators
         const values = query1["$in"] as any[];
         const value = query2["$eq"];
@@ -168,7 +184,12 @@ function mergePullOperand<OP extends "$pull">(
         } else {
           ret[k] = { $in: [...values, value] };
         }
-      } else if ("$eq" in query1 && "$in" in query2) {
+      } else if (
+        typeof query1 === "object" &&
+        typeof query2 === "object" &&
+        "$eq" in query1 &&
+        "$in" in query2
+      ) {
         // merges $eq and $in query operators
         const values = query2["$in"] as any[];
         const value = query1["$eq"];

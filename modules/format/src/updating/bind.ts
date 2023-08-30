@@ -19,8 +19,8 @@ const updateOperationCreatorAndDocumentPathCreatorAndRetargetFunctionAndMergeFun
   }
 );
 
-export function $bind<T>(): {
-  [OP in UpdateOperator]: UpdateOperationCreator<OP, T>
+export function $bind<T extends Object>(): {
+  [OP in UpdateOperator]: UpdateOperationCreator<OP, T>;
 } & {
   $docPath: BoundDocumentPathCreator<T>;
   $merge: BoundMergeOperations<T>;
