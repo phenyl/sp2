@@ -133,7 +133,7 @@ export type BoundDocumentPathOfDepth8<
 > = `${K1}${DocumentPathSegment<K2>}${DocumentPathSegment<K3>}${DocumentPathSegment<K4>}${DocumentPathSegment<K5>}${DocumentPathSegment<K6>}${DocumentPathSegment<K7>}${DocumentPathSegment<K8>}`;
 
 export type BoundDocumentPath<
-  T,
+  T extends Object,
   K1,
   K2,
   K3,
@@ -163,7 +163,7 @@ export type BoundDocumentPath<
     : BoundDocumentPathOfDepth1<T, K1>
   : string;
 
-export interface BoundDocumentPathCreator<T> {
+export interface BoundDocumentPathCreator<T extends Object> {
   <K1 extends Extract<keyof T, Attribute>>(k1: K1): BoundDocumentPathOfDepth1<
     T,
     K1
@@ -322,14 +322,14 @@ export interface BoundDocumentPathCreator<T> {
   ): BoundDocumentPathOfDepth8<T, K1, K2, K3, K4, K5, K6, K7, K8>;
 }
 
-export function $path<T>(): BoundDocumentPathCreator<T> {
+export function $path<T extends Object>(): BoundDocumentPathCreator<T> {
   // @ts-ignore surpress for typing.
   return createDocumentPath;
 }
 
 // prettier-ignore
 export type NestedValue<
-  T,
+  T extends Object,
   K1,
   K2,
   K3,

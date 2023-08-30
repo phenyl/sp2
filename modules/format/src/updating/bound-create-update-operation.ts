@@ -74,7 +74,7 @@ export const updateOpearationCreator = {
 
 Object.freeze(updateOpearationCreator);
 
-export function $op<T>(): {
+export function $op<T extends Object>(): {
   [OP in UpdateOperator]: UpdateOperationCreator<OP, T>;
 } {
   // @ts-ignore surpress for typing.
@@ -121,7 +121,10 @@ type ValueOf<OP extends UpdateOperator, V> = BoundUpdateOperandItemValue<
 
 type Attribute = number | string;
 
-export interface UpdateOperationCreator<OP extends UpdateOperator, T> {
+export interface UpdateOperationCreator<
+  OP extends UpdateOperator,
+  T extends Object
+> {
   <K1 extends Extract<keyof T, Attribute>>(
     docPath: BoundDocumentPathOfDepth1<T, K1>,
     value: ValueOf<OP, T[K1]>

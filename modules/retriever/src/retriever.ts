@@ -48,7 +48,7 @@ export function checkCondition(value: any, condition: QueryCondition): boolean {
  * 2. `QueryCondition` (e.g. `{ $eq: "foo" }` )
  * 3. `JSONValue` (number|string|boolean|Array)
  */
-export function classifyByComplexFindOperation<T>(
+export function classifyByComplexFindOperation<T extends Object>(
   values: T[],
   cond: ComplexFindOperation
 ): Classified<T> {
@@ -121,14 +121,14 @@ class Retriever {
     return this.classifySimpleFindOperation(values, where);
   }
 
-  private static classifySimpleFindOperation<T>(
+  private static classifySimpleFindOperation<T extends Object>(
     values: T[],
     where: SimpleFindOperation
   ): Classified<T> {
     const documentPaths = Object.keys(where);
     return values.reduce(
       (classified, value) => {
-        const isOk = documentPaths.every(documentPath => {
+        const isOk = documentPaths.every((documentPath) => {
           const queryCondition = where[documentPath];
           const nestedValue = getNestedValue(value, documentPath);
           return this.checkCondition(
@@ -148,7 +148,7 @@ class Retriever {
    */
   static checkCondition(leftOperand: any, condition: QueryCondition): boolean {
     const operators = Object.keys(condition);
-    return operators.every(operator => {
+    return operators.every((operator) => {
       switch (operator) {
         case "$eq":
         case "$gt":
@@ -196,8 +196,8 @@ class Retriever {
           );
         case "$all":
           if (!Array.isArray(leftOperand)) return false;
-          return condition.$all!.every(val =>
-            leftOperand.some(elem => deepEqual(elem, val))
+          return condition.$all!.every((val) =>
+            leftOperand.some((elem) => deepEqual(elem, val))
           );
 
         case "$elemMatch":
@@ -244,7 +244,7 @@ class Retriever {
       return COMPARE_FUNC[operator](target, condValues);
     }
 
-    const isIn = condValues.some(condValue =>
+    const isIn = condValues.some((condValue) =>
       this.compare("$eq", target, condValue)
     );
     return operator === "$in" ? isIn : !isIn;
@@ -260,9 +260,9 @@ class Retriever {
     if (Array.isArray(target) && !Array.isArray(condValue)) {
       if (operator === "$ne") {
         compareFunc = COMPARE_FUNC["$eq"];
-        return !target.some(val => compareFunc(val, condValue));
+        return !target.some((val) => compareFunc(val, condValue));
       }
-      return target.some(val => compareFunc(val, condValue));
+      return target.some((val) => compareFunc(val, condValue));
     }
 
     return compareFunc(target, condValue);
@@ -270,14 +270,14 @@ class Retriever {
 }
 
 const COMPARE_FUNC: {
-  [K in ComparisonQueryOperator]: (val1: any, val2: any) => boolean
+  [K in ComparisonQueryOperator]: (val1: any, val2: any) => boolean;
 } = {
   $eq: deepEqual,
   $gt: (t, c) => t > c,
   $gte: (t, c) => t >= c,
-  $in: (t, c: any[]) => c.some(v => deepEqual(t, v)),
+  $in: (t, c: any[]) => c.some((v) => deepEqual(t, v)),
   $lt: (t, c) => t < c,
   $lte: (t, c) => t <= c,
   $ne: (t, c) => !deepEqual(t, c),
-  $nin: (t, c: any[]) => !c.some(v => deepEqual(t, v)),
+  $nin: (t, c: any[]) => !c.some((v) => deepEqual(t, v)),
 };
