@@ -1,4 +1,5 @@
 import { createDocumentPath, getNestedValueWithoutType } from "./document-path";
+import { DefaultDocumentType } from "./default-document-type";
 
 type Attribute = string | number;
 type DocumentPathSegment<K extends Attribute> = K extends string
@@ -163,7 +164,7 @@ export type BoundDocumentPath<
     : BoundDocumentPathOfDepth1<T, K1>
   : string;
 
-export interface BoundDocumentPathCreator<T> {
+export interface BoundDocumentPathCreator<T = DefaultDocumentType> {
   <K1 extends Extract<keyof T, Attribute>>(k1: K1): BoundDocumentPathOfDepth1<
     T,
     K1

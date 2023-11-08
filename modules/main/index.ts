@@ -59,6 +59,7 @@ export {
   validateUpdateOperation,
   visitFindOperation,
   visitUpdateOperation,
+  DefaultDocumentType,
 } from "@sp2/format";
 
 export { checkCondition, retrieve } from "@sp2/retriever";

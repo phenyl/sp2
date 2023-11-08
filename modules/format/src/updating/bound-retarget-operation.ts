@@ -1,4 +1,5 @@
 import { BoundDocumentPath, NestedValue } from "../common/bound-document-path";
+import { DefaultDocumentType } from "../common/default-document-type";
 import {
   BoundGeneralUpdateOperation,
   BoundNonBreakingUpdateOperation,
@@ -11,7 +12,7 @@ export function $retarget<T>(): BoundRetarget<T> {
   return retargetOperation;
 }
 
-export interface BoundRetarget<T> {
+export interface BoundRetarget<T = DefaultDocumentType> {
   <
     U extends NestedValue<T, K1, K2, K3, K4, K5, K6, K7, K8>,
     K1,

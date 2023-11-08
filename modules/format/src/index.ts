@@ -4,6 +4,7 @@ export {
   BoundDocumentPath,
   BoundDocumentPathCreator,
 } from "./common/bound-document-path";
+export { DefaultDocumentType } from "./common/default-document-type";
 export {
   $op,
   BoundGeneralUpdateOperation,
@@ -88,9 +89,7 @@ export {
 
 export { createUpdateOperation } from "./updating/create-update-operation";
 export { mergeUpdateOperations } from "./updating/merge-update-operations";
-export {
-  normalizeQueryCondition,
-} from "./retrieving/normalize-query-condition";
+export { normalizeQueryCondition } from "./retrieving/normalize-query-condition";
 export { visitFindOperation } from "./retrieving/visit-find-operation";
 export { visitUpdateOperation } from "./updating/visit-update-operation";
 export { toMongoFindOperation } from "./retrieving/to-mongo-find-operation";

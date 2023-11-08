@@ -7,6 +7,7 @@ import { createDocumentPath } from "../common/document-path";
 import { mergeUpdateOperations } from "./merge-update-operations";
 import { retargetOperation } from "./retarget-operation";
 import { updateOpearationCreator } from "./bound-create-update-operation";
+import { DefaultDocumentType } from "../common/default-document-type";
 
 const updateOperationCreatorAndDocumentPathCreatorAndRetargetFunctionAndMergeFunction = Object.assign(
   {},
@@ -19,8 +20,8 @@ const updateOperationCreatorAndDocumentPathCreatorAndRetargetFunctionAndMergeFun
   }
 );
 
-export function $bind<T>(): {
-  [OP in UpdateOperator]: UpdateOperationCreator<OP, T>
+export function $bind<T = DefaultDocumentType>(): {
+  [OP in UpdateOperator]: UpdateOperationCreator<OP, T>;
 } & {
   $docPath: BoundDocumentPathCreator<T>;
   $merge: BoundMergeOperations<T>;
